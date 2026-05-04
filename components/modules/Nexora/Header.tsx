@@ -2,19 +2,37 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, Search, ShoppingBag, Sparkles, X } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag, Sparkles, User, X } from "lucide-react";
 import { NX_NAV } from "./data";
+import AISearchDialog from "./AISearchDialog";
+import { useCart } from "@/src/providers/CartProvider";
+import { useWishlist } from "@/src/providers/WishlistProvider";
 import { cn } from "@/src/lib/utils";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const { count, hydrated } = useCart();
+  const { count: wishCount, hydrated: wishHydrated } = useWishlist();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Cmd/Ctrl + K opens AI search.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setAiOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   useEffect(() => {
@@ -66,6 +84,7 @@ export default function Header() {
             <button
               type="button"
               aria-label="AI search"
+              onClick={() => setAiOpen(true)}
               className="hidden h-9 items-center gap-2 rounded-full border border-border bg-background/60 px-3 text-xs text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
             >
               <Sparkles className="h-3.5 w-3.5 text-[#3B82F6]" />
@@ -77,19 +96,41 @@ export default function Header() {
             <button
               type="button"
               aria-label="Search"
+              onClick={() => setAiOpen(true)}
               className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary md:hidden"
             >
               <Search className="h-4.5 w-4.5" />
             </button>
             <Link
+              href="/account/wishlist"
+              aria-label={`Wishlist (${wishCount} items)`}
+              className="relative hidden h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary md:grid"
+            >
+              <Heart className="h-4.5 w-4.5" />
+              {wishHydrated && wishCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+                  {wishCount > 99 ? "99+" : wishCount}
+                </span>
+              )}
+            </Link>
+            <Link
+              href="/account"
+              aria-label="Account"
+              className="hidden h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary md:grid"
+            >
+              <User className="h-4.5 w-4.5" />
+            </Link>
+            <Link
               href="/cart"
-              aria-label="Cart"
+              aria-label={`Cart (${count} items)`}
               className="relative grid h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary"
             >
               <ShoppingBag className="h-4.5 w-4.5" />
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#3B82F6] px-1 text-[10px] font-semibold text-white">
-                2
-              </span>
+              {hydrated && count > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#3B82F6] px-1 text-[10px] font-semibold text-white">
+                  {count > 99 ? "99+" : count}
+                </span>
+              )}
             </Link>
             <button
               type="button"
@@ -147,6 +188,10 @@ export default function Header() {
           <div className="border-t border-border p-5">
             <button
               type="button"
+              onClick={() => {
+                setOpen(false);
+                setAiOpen(true);
+              }}
               className="nx-btn-primary inline-flex h-11 w-full items-center justify-center gap-2 px-5 text-sm font-medium"
             >
               <Sparkles className="h-4 w-4" />
@@ -155,6 +200,8 @@ export default function Header() {
           </div>
         </aside>
       </div>
+
+      <AISearchDialog open={aiOpen} onClose={() => setAiOpen(false)} />
     </>
   );
 }

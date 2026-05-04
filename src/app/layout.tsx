@@ -6,6 +6,8 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProviders from "../providers/QueryProvider";
 import LenisProvider from "../providers/LenisProvider";
+import { CartProvider } from "../providers/CartProvider";
+import { WishlistProvider } from "../providers/WishlistProvider";
 import ScrollToTop from "@/components/modules/shared/ScrollToTop";
 
 const geistSans = Geist({
@@ -41,7 +43,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LenisProvider>
-            <QueryProviders>{children}</QueryProviders>
+            <CartProvider>
+              <WishlistProvider>
+                <QueryProviders>{children}</QueryProviders>
+              </WishlistProvider>
+            </CartProvider>
             <ScrollToTop />
           </LenisProvider>
           <Toaster richColors />

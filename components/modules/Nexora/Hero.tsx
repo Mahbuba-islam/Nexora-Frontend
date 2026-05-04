@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
+import HeroMedia from "./HeroMedia";
 
 /**
  * Nexora Hero — Apple-class typographic hero, Nike-class energy.
@@ -83,13 +83,9 @@ export default function Hero() {
         {/* Hero visual */}
         <div className="relative lg:col-span-6">
           <div className="relative mx-auto aspect-4/5 w-full max-w-140 overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#4BBFF9]/30 dark:from-[#242424] dark:via-[#1c1c20] dark:to-[#3B82F6]/30">
-            <Image
-              src="https://images.unsplash.com/photo-1592890288564-76628a30a657?auto=format&fit=crop&w=1400&q=85"
+            <HeroMedia
+              poster="https://images.unsplash.com/photo-1592890288564-76628a30a657?auto=format&fit=crop&w=1400&q=85"
               alt="Nexora Vision Pro headset in studio light"
-              fill
-              priority
-              sizes="(min-width: 1024px) 560px, 100vw"
-              className="nx-float object-cover"
             />
             {/* Floating spec card */}
             <div className="nx-rise nx-rise-delay-3 absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-2xl border border-white/30 bg-white/70 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-black/40">
