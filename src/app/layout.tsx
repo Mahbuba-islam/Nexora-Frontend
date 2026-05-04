@@ -19,9 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ConsultEdge — Expert Consultation Marketplace",
+  title: "Nexora — AI-Powered Tech Commerce",
   description:
-    "Connect with verified experts and get guidance that gives you a real advantage.",
+    "Nexora is the AI-native marketplace for premium tech — personalized recommendations, intelligent search, and a buying experience designed for the next decade.",
 };
 
 export default function RootLayout({
@@ -32,12 +32,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col antialiased bg-background text-foreground`}
       >
-        <div className="mx-auto flex min-h-screen w-full max-w-360 flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
@@ -47,7 +46,6 @@ export default function RootLayout({
           </LenisProvider>
           <Toaster richColors />
         </ThemeProvider>
-        </div>
       </body>
     </html>
   );
