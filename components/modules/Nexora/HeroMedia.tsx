@@ -18,10 +18,7 @@ interface Props {
   sources?: { src: string; type: string }[];
 }
 
-const DEFAULT_SOURCES: Props["sources"] = [
-  { src: "/banner/hero.webm", type: "video/webm" },
-  { src: "/banner/hero.mp4", type: "video/mp4" },
-];
+const DEFAULT_SOURCES: Props["sources"] = [];
 
 export default function HeroMedia({
   poster,
@@ -30,21 +27,24 @@ export default function HeroMedia({
 }: Props) {
   return (
     <>
-      {/* Video layer — autoplay muted loop, plays inline on iOS. */}
-      <video
-        className="nx-float absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={poster}
-        aria-label={alt}
-      >
-        {sources.map((s) => (
-          <source key={s.src} src={s.src} type={s.type} />
-        ))}
-      </video>
+      {/* Video layer — only rendered when caller provides sources, so we
+          don't fire 404s for non-existent placeholder files. */}
+      {sources.length > 0 && (
+        <video
+          className="nx-float absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={poster}
+          aria-label={alt}
+        >
+          {sources.map((s) => (
+            <source key={s.src} src={s.src} type={s.type} />
+          ))}
+        </video>
+      )}
 
       {/* Image fallback for browsers that block autoplay or have JS off.
           Sits underneath the video so it shows when the <video> can't

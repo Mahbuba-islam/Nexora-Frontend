@@ -111,7 +111,7 @@ export default function CartPage() {
                     )}
                     <Link
                       href={`/shop/${item.slug}`}
-                      className="mt-0.5 line-clamp-2 text-sm font-semibold text-foreground hover:text-[#3B82F6] sm:text-base"
+                      className="mt-0.5 line-clamp-2 text-sm font-semibold text-foreground hover:text-[#4E8D9C] sm:text-base"
                     >
                       {item.name}
                     </Link>

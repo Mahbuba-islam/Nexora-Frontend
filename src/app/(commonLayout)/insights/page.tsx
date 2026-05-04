@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Clock3, Compass, LineChart, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Clock3, Compass, LineChart, Wand2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -124,7 +124,7 @@ export default function InsightsPage() {
         </div>
 
         <div className="mt-6 flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-xs text-slate-200/90">
-          <Sparkles className="size-3.5 text-cyan-200" />
+          <Wand2 className="size-3.5 text-cyan-200" />
           New insights are continuously curated from real booking and consultation patterns.
         </div>
       </section>

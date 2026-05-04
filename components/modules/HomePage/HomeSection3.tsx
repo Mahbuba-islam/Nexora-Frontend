@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, HeadphonesIcon, Layers3, ShieldCheck, Sparkles, Clock3 } from "lucide-react";
+import { ArrowRight, CheckCircle2, HeadphonesIcon, Layers3, ShieldCheck, Wand2, Clock3 } from "lucide-react";
 
 import {
   Accordion,

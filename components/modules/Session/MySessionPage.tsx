@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarClock, CheckCircle2, Clock, RefreshCw, Sparkles, AlertTriangle } from "lucide-react";
+import { CalendarClock, CheckCircle2, Clock, RefreshCw, Wand2, AlertTriangle } from "lucide-react";
 
 import ExpertConsultationCard from "@/components/modules/Bokings/ExpertConsultationCard";
 import ConsultationTabs from "@/components/modules/Tabs/ConsultationTabs";
@@ -158,7 +158,7 @@ export default function MySessionPage() {
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <Badge className="border-white/20 bg-white/10 text-white backdrop-blur">
-              <Sparkles className="mr-1 size-3.5" />
+              <Wand2 className="mr-1 size-3.5" />
               Expert Dashboard
             </Badge>
             <h1 className="text-3xl font-bold tracking-tight">

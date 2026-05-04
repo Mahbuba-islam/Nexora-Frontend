@@ -18,7 +18,7 @@ import {
   Clock3,
   Loader2,
   ShieldCheck,
-  Sparkles,
+  Wand2,
 } from "lucide-react";
 
 type BookingSummaryProps = {
@@ -83,7 +83,7 @@ export default function BookingSummary({
         <div className="flex items-center justify-between gap-3">
           <div>
             <Badge className="mb-2 bg-white/15 text-white hover:bg-white/15">
-              <Sparkles className="mr-1 size-3.5" />
+              <Wand2 className="mr-1 size-3.5" />
               Booking Summary
             </Badge>
             <CardTitle className="text-xl text-white">Reserve your session</CardTitle>

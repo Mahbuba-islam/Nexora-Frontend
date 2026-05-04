@@ -8,7 +8,7 @@ import {
   Compass,
   MessageSquare,
   Search,
-  Sparkles,
+  Wand2,
   UserCircle2,
 } from "lucide-react";
 
@@ -86,7 +86,7 @@ const ClientDashboardContent = () => {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <Card className="relative overflow-hidden border-white/30 bg-linear-to-br from-blue-700 via-cyan-600 to-teal-500 text-white shadow-2xl shadow-blue-500/20 dark:border-white/10 dark:from-blue-900 dark:via-cyan-900 dark:to-slate-900 dark:shadow-cyan-500/10">
+      <Card className="relative overflow-hidden border-white/30 bg-linear-to-br from-[#5BA8C7] via-[#6FB6CC] to-[#A8DCB8] text-white shadow-2xl shadow-blue-400/20 dark:border-white/10 dark:from-[#22416A] dark:via-[#3F88A8] dark:to-[#1A2742] dark:shadow-cyan-500/10">
         {/* Decorative background */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -right-24 -top-24 size-72 rounded-full bg-white/15 blur-3xl" />
@@ -104,7 +104,7 @@ const ClientDashboardContent = () => {
         <CardContent className="relative z-10 grid gap-8 p-6 md:p-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
           <div className="space-y-4">
             <Badge className="border-white/30 bg-white/15 text-white backdrop-blur hover:bg-white/15">
-              <Sparkles className="mr-1 size-3.5" />
+              <Wand2 className="mr-1 size-3.5" />
               Welcome back
             </Badge>
 
@@ -259,7 +259,7 @@ const ClientDashboardContent = () => {
           <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-blue-600 via-cyan-500 to-teal-400" />
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="size-4 text-cyan-500" />
+              <Wand2 className="size-4 text-cyan-500" />
               Smart next steps
             </CardTitle>
             <CardDescription>

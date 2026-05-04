@@ -6,7 +6,7 @@ import {
   Building2,
   CalendarRange,
   ChevronLeft,
-  Sparkles,
+  Wand2,
   Users,
 } from "lucide-react";
 
@@ -146,7 +146,7 @@ export default async function IndustryDetailPage({ params }: PageProps) {
 
             <div className="space-y-4 text-center md:text-left">
               <Badge className="border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-50 dark:border-white/10 dark:bg-white/5 dark:text-cyan-200">
-                <Sparkles className="mr-1 size-3.5" aria-hidden="true" />
+                <Wand2 className="mr-1 size-3.5" aria-hidden="true" />
                 Industry
               </Badge>
               <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">

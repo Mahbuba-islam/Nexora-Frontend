@@ -1,4 +1,4 @@
-import { KeyRound, ShieldCheck, Sparkles } from "lucide-react";
+import { KeyRound, ShieldCheck, Wand2 } from "lucide-react";
 
 import ForgetPasswordForm from "@/components/modules/auth/ForgetPasswordForm";
 import { getUserInfo } from "@/src/services/auth.services";
@@ -38,7 +38,7 @@ export default async function ChangePasswordPage({
                 <KeyRound className="size-7" />
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/60 bg-blue-50/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-200">
-                <Sparkles className="size-3.5" />
+                <Wand2 className="size-3.5" />
                 Secure account update
               </span>
             </div>

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Wand2 } from "lucide-react";
 import {
   getBrands,
-  getCategories,
+  getCategoryTree,
   getProducts,
 } from "@/src/services/nexora.service";
 import type { NxProductQuery } from "@/src/types/nexora.types";
@@ -51,9 +51,9 @@ export default async function ShopPage({
   }
 
   // Parallel reads — never block on filters waiting for products.
-  const [productsRes, categories, brands] = await Promise.all([
+  const [productsRes, categoryTree, brands] = await Promise.all([
     getProducts(query),
-    getCategories(),
+    getCategoryTree(),
     getBrands(),
   ]);
 
@@ -71,7 +71,7 @@ export default async function ShopPage({
       <header className="border-b border-border bg-[#F9F8F6] dark:bg-[#1c1c20]">
         <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-20">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-[12px] font-medium text-muted-foreground backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5 text-[#3B82F6]" />
+            <Wand2 className="h-3.5 w-3.5 text-[#4E8D9C]" />
             All products · curated by AI
           </div>
           <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl">
@@ -89,7 +89,7 @@ export default async function ShopPage({
         <div className="lg:col-span-3">
           <Suspense fallback={null}>
             <ShopFilters
-              categories={categories}
+              categoryTree={categoryTree}
               brands={brands}
               current={{
                 category: sp.category,
@@ -127,7 +127,7 @@ function EmptyState({ searchTerm }: { searchTerm?: string }) {
   return (
     <div className="nx-card flex min-h-80 flex-col items-center justify-center px-8 py-14 text-center">
       <div className="grid h-14 w-14 place-items-center rounded-2xl bg-secondary text-foreground/70">
-        <Sparkles className="h-6 w-6" />
+        <Wand2 className="h-6 w-6" />
       </div>
       <h2 className="mt-5 text-xl font-semibold tracking-tight">
         No products match your filters

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, Home, Loader2, Sparkles } from "lucide-react";
+import { CheckCircle2, Home, Loader2, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import PaymentStatusBanner from "@/components/modules/Bokings/PaymentStatusBanner";
@@ -148,7 +148,7 @@ export default function PaymentSuccessContent() {
         />
         <CardHeader className="relative">
           <Badge className="mb-2 w-fit border-emerald-200/60 bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-400/30 dark:bg-emerald-500/15 dark:text-emerald-200 dark:hover:bg-emerald-500/15">
-            <Sparkles className="mr-1 size-3.5" />
+            <Wand2 className="mr-1 size-3.5" />
             Consultation payment
           </Badge>
           <CardTitle className="text-2xl text-foreground">Payment completed</CardTitle>

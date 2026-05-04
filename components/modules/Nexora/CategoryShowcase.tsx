@@ -8,7 +8,7 @@ import { CATEGORIES } from "./data";
  */
 export default function CategoryShowcase() {
   return (
-    <section className="relative bg-[#EFE9E3] py-20 dark:bg-[#1c1c20] md:py-28">
+    <section className="relative bg-[#EFE9E3] py-12 dark:bg-[#1c1c20] md:py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -16,7 +16,7 @@ export default function CategoryShowcase() {
               Shop by category
             </p>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
-              Built for every <span className="text-[#3B82F6]">moment.</span>
+              Built for every <span className="text-[#4E8D9C]">moment.</span>
             </h2>
           </div>
           <Link
@@ -62,7 +62,7 @@ export default function CategoryShowcase() {
                   <p className="mt-2 max-w-xs text-sm text-white/85">
                     {c.desc}
                   </p>
-                  <span className="mt-5 inline-flex h-10 w-fit items-center gap-2 rounded-full bg-white/95 px-5 text-xs font-medium text-[#242424] transition-transform group-hover:translate-x-1">
+                  <span className="mt-5 inline-flex h-10 w-fit items-center gap-2 rounded-full bg-white/95 px-5 text-xs font-medium text-[#281C59] transition-transform group-hover:translate-x-1">
                     Shop {c.title}
                     <ArrowRight className="h-3.5 w-3.5" />
                   </span>

@@ -26,7 +26,7 @@ export default function CTABanner() {
       className="relative mx-auto my-12 flex max-w-3xl flex-col items-center justify-center overflow-hidden rounded-3xl px-8 py-12 text-center shadow-xl"
       style={{
         background:
-          "linear-gradient(120deg, #2563eb 0%, #06b6d4 50%, #3b82f6 100%)",
+          "linear-gradient(120deg, #2563eb 0%, #06b6d4 50%, #4E8D9C 100%)",
         backgroundSize: "200% 200%",
         animation: "cta-gradient-pulse 18s ease-in-out infinite",
       }}

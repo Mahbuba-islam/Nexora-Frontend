@@ -10,7 +10,7 @@ import {
   Mail,
   Phone,
   ShieldCheck,
-  Sparkles,
+  Wand2,
   Star,
   TrendingUp,
 } from "lucide-react";
@@ -122,7 +122,7 @@ export default function ExpertDetails({
           <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-2">
               <Badge className="bg-white/10 text-white hover:bg-white/10">
-                <Sparkles className="mr-1 size-3.5" />
+                <Wand2 className="mr-1 size-3.5" />
                 ConsultEdge expert
               </Badge>
 

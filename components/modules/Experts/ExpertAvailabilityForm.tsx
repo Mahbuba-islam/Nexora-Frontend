@@ -9,7 +9,7 @@ import {
   CalendarRange,
   Clock,
   Loader2,
-  Sparkles,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -303,7 +303,7 @@ export default function ExpertAvailabilityForm() {
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 size-4" />
+                    <Wand2 className="mr-2 size-4" />
                     Create schedule
                   </>
                 )}

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Sparkles } from "lucide-react";
+import { Store } from "lucide-react";
 
 interface AuthShellHighlight {
   icon: LucideIcon;
@@ -50,7 +50,7 @@ export default function AuthShell({
         <div className="hidden flex-col gap-8 lg:flex">
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-cyan-200">
-              <Sparkles className="size-3.5" />
+              <Store className="size-3.5" />
               {eyebrow}
             </div>
             <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">

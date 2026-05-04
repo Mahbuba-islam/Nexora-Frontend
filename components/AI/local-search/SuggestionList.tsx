@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Clock, Flame, Sparkles } from "lucide-react";
+import { ArrowUpRight, Clock, Flame, Wand2 } from "lucide-react";
 
 import type { SearchDropdownItem } from "@/components/AI/local-search/types";
 import { cn } from "@/src/lib/utils";
@@ -17,8 +17,8 @@ interface SuggestionListProps {
 function getItemIcon(section: SuggestionListProps["section"]) {
   if (section === "recent") return <Clock className="size-3.5 text-slate-500" />;
   if (section === "trending") return <Flame className="size-3.5 text-orange-500" />;
-  if (section === "matches") return <Sparkles className="size-3.5 text-cyan-500" />;
-  return <Sparkles className="size-3.5 text-blue-600" />;
+  if (section === "matches") return <Wand2 className="size-3.5 text-cyan-500" />;
+  return <Wand2 className="size-3.5 text-blue-600" />;
 }
 
 export default function SuggestionList({

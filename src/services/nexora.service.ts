@@ -2,6 +2,7 @@ import type { ApiResponse } from "@/src/types/api.types";
 import type {
   NxBrand,
   NxCategory,
+  NxCategoryNode,
   NxProduct,
   NxProductQuery,
 } from "@/src/types/nexora.types";
@@ -74,6 +75,18 @@ export const getCategories = async (): Promise<NxCategory[]> => {
     return Array.isArray(res?.data) ? res.data : [];
   } catch (err) {
     console.warn("[nexora] getCategories failed:", (err as Error)?.message);
+    return [];
+  }
+};
+
+export const getCategoryTree = async (): Promise<NxCategoryNode[]> => {
+  try {
+    const res = await httpClient.get<NxCategoryNode[]>("/categories/tree", {
+      silent: true,
+    });
+    return Array.isArray(res?.data) ? res.data : [];
+  } catch (err) {
+    console.warn("[nexora] getCategoryTree failed:", (err as Error)?.message);
     return [];
   }
 };

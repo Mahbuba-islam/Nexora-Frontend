@@ -109,8 +109,14 @@ export default function SupportChatWidget() {
           <span>
             <span className="font-semibold text-blue-700 dark:text-blue-400">AI Assistant</span>
             <br />
-            <span>
-              How can I help you? <span className="consultedge-hand-wave">👋</span>
+            <span className="inline-flex items-center">
+              How can I help you?{" "}
+              <span className="ml-1 nx-hand-wave">👋</span>
+              <span className="nx-typing-dots text-blue-600 dark:text-cyan-300" aria-hidden>
+                <span />
+                <span />
+                <span />
+              </span>
             </span>
           </span>
           <span

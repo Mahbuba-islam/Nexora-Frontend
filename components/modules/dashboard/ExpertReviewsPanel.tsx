@@ -5,7 +5,7 @@ import {
   Copy,
   Mail,
   MessageSquareReply,
-  Sparkles,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -144,7 +144,7 @@ export default function ExpertReviewsPanel({ profile }: Props) {
         {/* HEADER */}
         <section className="rounded-3xl bg-linear-to-r from-slate-900 via-blue-900 to-cyan-800 p-6 text-white">
           <Badge className="bg-white/10 text-white">
-            <Sparkles className="mr-1 size-3.5" />
+            <Wand2 className="mr-1 size-3.5" />
             Expert Dashboard
           </Badge>
 

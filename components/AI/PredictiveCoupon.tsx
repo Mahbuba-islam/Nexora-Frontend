@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Check, Copy, Sparkles, Tag } from "lucide-react";
+import { Check, Copy, Wand2, Tag } from "lucide-react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -72,7 +72,7 @@ function pickCoupon(opts: { industryName?: string | null }): CouponOffer | null 
   return {
     code: "WELCOME5",
     percent: 5,
-      reason: "Welcome to ConsultEdge — here's 5% off your first expert session.",
+      reason: "Welcome to Nexora — here's 5% off your first order.",
     tone: "first-visit",
   };
 }
@@ -144,7 +144,7 @@ export default function PredictiveCoupon({
       />
       <div className="relative flex items-center gap-3">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-amber-400 to-orange-500 text-white shadow">
-          <Sparkles className="size-4" />
+          <Wand2 className="size-4" />
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">

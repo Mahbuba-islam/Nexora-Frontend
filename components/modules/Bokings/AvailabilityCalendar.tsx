@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { format, isSameDay, parseISO } from "date-fns";
-import { CalendarDays, Clock3, Sparkles } from "lucide-react";
+import { CalendarDays, Clock3, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import BookingCard from "./BookingCard";
@@ -224,7 +224,7 @@ export default function AvailabilityCalendar({
       <Card className="border-blue-200/70 shadow-lg shadow-blue-500/5 dark:border-white/10" id="availability-calendar">
         <CardHeader>
           <Badge className="w-fit bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-500/15 dark:text-blue-200 dark:hover:bg-blue-500/15">
-            <Sparkles className="mr-1 size-3.5" />
+            <Wand2 className="mr-1 size-3.5" />
             Availability Calendar
           </Badge>
           <CardTitle className="text-2xl">Choose your consultation slot</CardTitle>

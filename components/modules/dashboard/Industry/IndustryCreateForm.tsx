@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useForm } from "@tanstack/react-form";
-import { ImagePlus, Sparkles, Trash2, Wand2 } from "lucide-react";
+import { ImagePlus, Wand2, Trash2 } from "lucide-react";
 
 import AppField from "@/components/form/AppField";
 import AppSubmitButton from "@/components/form/AppSubmitButton";
@@ -318,7 +318,7 @@ export default function IndustryCreateForm() {
         isPending={form.state.isSubmitting}
         className="h-11 w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-cyan-500/25 hover:from-blue-700 hover:to-cyan-600"
       >
-        <Sparkles className="mr-2 size-4" />
+        <Wand2 className="mr-2 size-4" />
         Create industry
       </AppSubmitButton>
     </form>

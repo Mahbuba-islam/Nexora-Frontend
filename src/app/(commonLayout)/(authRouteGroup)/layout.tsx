@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Wand2 } from "lucide-react";
 
 /**
  * Nexora auth route group layout.
@@ -19,14 +19,14 @@ export default function AuthRouteGroupLayout({
         aria-hidden
         className="nx-orb pointer-events-none absolute -left-40 top-10 h-130 w-130 rounded-full"
         style={{
-          background: "radial-gradient(circle, #3B82F6 0%, transparent 65%)",
+          background: "radial-gradient(circle, #4E8D9C 0%, transparent 65%)",
         }}
       />
       <div
         aria-hidden
         className="nx-orb pointer-events-none absolute -right-40 bottom-0 h-130 w-130 rounded-full"
         style={{
-          background: "radial-gradient(circle, #4BBFF9 0%, transparent 65%)",
+          background: "radial-gradient(circle, #85C79A 0%, transparent 65%)",
           animationDelay: "-6s",
         }}
       />
@@ -44,7 +44,7 @@ export default function AuthRouteGroupLayout({
 
           <div className="mt-12 lg:mt-0">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-[12px] font-medium text-muted-foreground backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5 text-[#3B82F6]" />
+              <Wand2 className="h-3.5 w-3.5 text-[#4E8D9C]" />
               Welcome to Nexora
             </div>
             <h1 className="mt-5 text-4xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">

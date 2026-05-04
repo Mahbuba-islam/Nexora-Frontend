@@ -53,7 +53,7 @@ const TEMPLATES: InsightTemplate[] = [
     type: "Playbook",
     title: (i) => `The 7-step ${i} growth playbook for 2026`,
     description: (i) =>
-      `A pragmatic blueprint built from how top ${i} consultants on ConsultEdge advise founders right now.`,
+      `A pragmatic blueprint built from how top ${i} brands on Nexora are growing right now.`,
     readMinutes: 8,
     icon: Target,
   },

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Sparkles, X } from "lucide-react";
+import { Wand2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -79,7 +79,7 @@ export default function SmartAutofillBanner({
       }
     >
       <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-600 to-cyan-500 text-white shadow">
-        <Sparkles className="size-3.5" />
+        <Wand2 className="size-3.5" />
       </span>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-semibold text-cyan-900 dark:text-cyan-100">

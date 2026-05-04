@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
-import { CalendarDays, LockKeyhole, Sparkles } from "lucide-react";
+import { CalendarDays, LockKeyhole, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import AvailabilityCalendar from "./AvailabilityCalendar";
@@ -138,7 +138,7 @@ export default function BookSessionPanel({
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <Badge className="mb-2 bg-cyan-100 text-cyan-700">
-                <Sparkles className="mr-1 size-3.5" />
+                <Wand2 className="mr-1 size-3.5" />
                 Smart booking flow
               </Badge>
               <CardTitle className="text-2xl">

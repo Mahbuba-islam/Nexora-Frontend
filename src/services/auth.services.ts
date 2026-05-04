@@ -407,15 +407,24 @@ export async function getUserInfo() {
         .join("; ");
 
     const fetchUser = async () => {
-      return fetch(`${BASE_API_URL}/auth/me`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: buildCookieHeader(),
-          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        },
-        cache: "no-store",
-      });
+      // Hard timeout — without this, an offline backend would make every
+      // protected page (e.g. /account) hang indefinitely on the server.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 6000);
+      try {
+        return await fetch(`${BASE_API_URL}/auth/me`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: buildCookieHeader(),
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+          },
+          cache: "no-store",
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
     };
 
     let res = await fetchUser();

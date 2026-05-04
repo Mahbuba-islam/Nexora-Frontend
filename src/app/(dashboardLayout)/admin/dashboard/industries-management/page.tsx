@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Layers, PlusCircle, Sparkles } from "lucide-react";
+import { Layers, PlusCircle, Wand2 } from "lucide-react";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 import IndustryList from "@/components/modules/dashboard/Industry/IndustryList";
@@ -25,7 +25,7 @@ export default async function IndustryListPage() {
           <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="space-y-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/60 bg-blue-50/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-200">
-                <Sparkles className="size-3.5" />
+                <Wand2 className="size-3.5" />
                 Platform catalog
               </span>
               <h1 className="text-2xl font-bold tracking-tight">Manage industries</h1>

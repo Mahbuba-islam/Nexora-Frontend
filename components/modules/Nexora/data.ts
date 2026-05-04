@@ -23,7 +23,7 @@ export const FEATURED_PRODUCTS: NxProduct[] = [
     badge: "new",
     image:
       "https://images.unsplash.com/photo-1592890288564-76628a30a657?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-[#3B82F6]/15 via-[#4BBFF9]/10 to-transparent",
+    accent: "from-[#4E8D9C]/15 via-[#85C79A]/10 to-transparent",
   },
   {
     id: "nx-aurora-laptop",
@@ -35,7 +35,7 @@ export const FEATURED_PRODUCTS: NxProduct[] = [
     badge: "ai-pick",
     image:
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-[#242424]/10 via-[#3B82F6]/10 to-transparent",
+    accent: "from-[#281C59]/10 via-[#4E8D9C]/10 to-transparent",
   },
   {
     id: "nx-pulse-buds",
@@ -46,7 +46,7 @@ export const FEATURED_PRODUCTS: NxProduct[] = [
     badge: "ai-pick",
     image:
       "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-[#4BBFF9]/20 via-[#3B82F6]/10 to-transparent",
+    accent: "from-[#85C79A]/20 via-[#4E8D9C]/10 to-transparent",
   },
   {
     id: "nx-orbit-watch",
@@ -67,7 +67,7 @@ export const FEATURED_PRODUCTS: NxProduct[] = [
     badge: "new",
     image:
       "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-[#3B82F6]/10 via-[#4BBFF9]/10 to-transparent",
+    accent: "from-[#4E8D9C]/10 via-[#85C79A]/10 to-transparent",
   },
   {
     id: "nx-studio-cam",
@@ -78,7 +78,7 @@ export const FEATURED_PRODUCTS: NxProduct[] = [
     badge: "limited",
     image:
       "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-[#242424]/15 via-[#3B82F6]/10 to-transparent",
+    accent: "from-[#281C59]/15 via-[#4E8D9C]/10 to-transparent",
   },
 ];
 
@@ -148,12 +148,9 @@ export const NX_TESTIMONIALS = [
 ];
 
 export const NX_NAV = [
-  { label: "Shop", href: "/shop" },
-  { label: "Phones", href: "/shop/phones" },
-  { label: "Laptops", href: "/shop/laptops" },
-  { label: "Audio", href: "/shop/audio" },
-  { label: "Wearables", href: "/shop/wearables" },
   { label: "Deals", href: "/deals" },
+  { label: "New arrivals", href: "/shop?sort=newest" },
+  { label: "Brands", href: "/brands" },
   { label: "Support", href: "/support" },
 ];
 

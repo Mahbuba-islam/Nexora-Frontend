@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Bot, ImagePlus, Loader2, PanelLeft, Send, Sparkles } from "lucide-react";
+import { Bot, ImagePlus, Loader2, PanelLeft, Send, Wand2 } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import { useAiChat } from "@/src/hooks/useAiChat";
 import AiChatSidebar from "./AiChatSidebar";
@@ -270,7 +270,7 @@ export default function AiChatWorkspace({ mode = "page" }: AiChatWorkspaceProps)
           >
             <PanelLeft className="h-4 w-4" />
           </Button>
-          <Sparkles className="h-4 w-4 text-primary" />
+          <Wand2 className="h-4 w-4 text-primary" />
           <span className="text-sm font-semibold">AI Assistant</span>
           {activeConversationId && (
             <span className="ml-auto max-w-40 truncate text-xs text-muted-foreground md:max-w-xs">

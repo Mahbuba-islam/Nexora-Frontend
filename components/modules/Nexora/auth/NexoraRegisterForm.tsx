@@ -126,7 +126,7 @@ export default function NexoraRegisterForm({ redirectPath }: Props) {
               autoComplete="new-password"
               required
               minLength={6}
-              className="h-12 w-full rounded-2xl border border-border bg-background px-4 pr-12 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#3B82F6]"
+              className="h-12 w-full rounded-2xl border border-border bg-background px-4 pr-12 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#4E8D9C]"
               placeholder="At least 6 characters"
             />
             <button
@@ -185,7 +185,7 @@ export default function NexoraRegisterForm({ redirectPath }: Props) {
         Already have an account?{" "}
         <Link
           href={loginHref}
-          className="font-semibold text-foreground hover:text-[#3B82F6]"
+          className="font-semibold text-foreground hover:text-[#4E8D9C]"
         >
           Sign in
         </Link>
@@ -226,7 +226,7 @@ function Field({
         autoComplete={autoComplete}
         placeholder={placeholder}
         required={required}
-        className="mt-1.5 h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#3B82F6]"
+        className="mt-1.5 h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#4E8D9C]"
       />
       {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
     </div>

@@ -8,7 +8,7 @@ import {
   Layers,
   LineChart,
   ShieldCheck,
-  Sparkles,
+  Wand2,
   Star,
   Target,
   Users,
@@ -98,7 +98,7 @@ const aiFeatures = [
     description: "Ask anything about bookings, experts, payments, or process. Answers grounded in real platform data via RAG.",
   },
   {
-    icon: Sparkles,
+    icon: Wand2,
     title: "Personalised recommendations",
     description: "Your activity shapes a unique feed of experts and topics — the more you explore, the smarter it gets.",
   },
@@ -172,7 +172,7 @@ export default function AboutPage() {
 
           <div className="relative mx-auto max-w-3xl space-y-6">
             <Badge className="border-white/20 bg-white/10 text-white hover:bg-white/10">
-              <Sparkles className="mr-1.5 size-3.5" />
+              <Wand2 className="mr-1.5 size-3.5" />
               Our story
             </Badge>
 

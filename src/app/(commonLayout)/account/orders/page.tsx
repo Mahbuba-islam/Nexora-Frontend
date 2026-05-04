@@ -1,8 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Package, Truck } from "lucide-react";
+import { ArrowRight, Package, Store, Truck } from "lucide-react";
 
-import { getMyOrders, type NxOrder, type NxOrderStatus } from "@/src/services/orders.service";
+import {
+  getMyOrders,
+  type NxOrder,
+  type NxOrderItem,
+  type NxOrderStatus,
+} from "@/src/services/orders.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import { toNumberPrice } from "@/src/types/nexora.types";
 
@@ -15,6 +20,7 @@ const STATUS_STYLES: Record<NxOrderStatus, string> = {
   PAID: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
   PROCESSING: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
   SHIPPED: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300",
+  PARTIAL: "bg-violet-500/15 text-violet-700 dark:text-violet-300",
   DELIVERED: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
   CANCELLED: "bg-red-500/15 text-red-700 dark:text-red-300",
   REFUNDED: "bg-foreground/10 text-foreground/70",
@@ -22,10 +28,7 @@ const STATUS_STYLES: Record<NxOrderStatus, string> = {
 
 export default async function OrdersPage() {
   const orders = await getMyOrders();
-
-  if (orders.length === 0) {
-    return <EmptyState />;
-  }
+  if (orders.length === 0) return <EmptyState />;
 
   return (
     <div>
@@ -48,22 +51,22 @@ export default async function OrdersPage() {
   );
 }
 
+function flattenItems(order: NxOrder): NxOrderItem[] {
+  return order.sellerOrders.flatMap((so) => so.items);
+}
+
 function OrderCard({ order }: { order: NxOrder }) {
   const placed = new Date(order.placedAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
-  const eta = order.estimatedDeliveryAt
-    ? new Date(order.estimatedDeliveryAt).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      })
-    : null;
+  const items = flattenItems(order);
+  const sellerCount = order.sellerOrders.length;
+  const trackingPreview = order.sellerOrders.find((s) => s.trackingNumber);
 
   return (
     <li className="nx-card overflow-hidden p-0">
-      {/* Header strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-secondary/40 px-5 py-3 text-xs">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <div>
@@ -84,8 +87,16 @@ function OrderCard({ order }: { order: NxOrder }) {
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
               Order #
             </p>
-            <p className="mt-0.5 font-mono text-foreground">{order.orderNumber}</p>
+            <p className="mt-0.5 font-mono text-foreground">
+              {order.orderNumber}
+            </p>
           </div>
+          {sellerCount > 1 && (
+            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <Store className="h-3 w-3" />
+              {sellerCount} sellers
+            </div>
+          )}
         </div>
         <span
           className={[
@@ -102,9 +113,8 @@ function OrderCard({ order }: { order: NxOrder }) {
         </span>
       </div>
 
-      {/* Items */}
       <ul className="divide-y divide-border">
-        {order.items.slice(0, 3).map((item) => (
+        {items.slice(0, 3).map((item) => (
           <li key={item.id} className="flex items-center gap-4 px-5 py-4">
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary">
               {item.image && (
@@ -121,7 +131,7 @@ function OrderCard({ order }: { order: NxOrder }) {
               {item.productSlug ? (
                 <Link
                   href={`/shop/${item.productSlug}`}
-                  className="line-clamp-1 text-sm font-semibold text-foreground hover:text-[#3B82F6]"
+                  className="line-clamp-1 text-sm font-semibold text-foreground hover:text-[#4E8D9C]"
                 >
                   {item.name}
                 </Link>
@@ -139,33 +149,31 @@ function OrderCard({ order }: { order: NxOrder }) {
             </div>
           </li>
         ))}
-        {order.items.length > 3 && (
+        {items.length > 3 && (
           <li className="px-5 py-3 text-xs text-muted-foreground">
-            + {order.items.length - 3} more {order.items.length - 3 === 1 ? "item" : "items"}
+            + {items.length - 3} more {items.length - 3 === 1 ? "item" : "items"}
           </li>
         )}
       </ul>
 
-      {/* Footer actions */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-5 py-3 text-xs">
         <div>
-          {order.trackingNumber ? (
+          {trackingPreview?.trackingNumber ? (
             <p className="text-muted-foreground">
               Tracking{" "}
               <span className="font-mono text-foreground">
-                {order.trackingNumber}
+                {trackingPreview.trackingNumber}
               </span>
-              {order.carrier && ` · ${order.carrier}`}
+              {trackingPreview.carrier && ` · ${trackingPreview.carrier}`}
+              {sellerCount > 1 && ` (${sellerCount - 1} more)`}
             </p>
-          ) : eta ? (
-            <p className="text-muted-foreground">Estimated delivery {eta}</p>
           ) : (
             <p className="text-muted-foreground">{order.itemsCount} items</p>
           )}
         </div>
         <Link
           href={`/account/orders/${order.id}`}
-          className="inline-flex items-center gap-1 font-semibold text-foreground hover:text-[#3B82F6]"
+          className="inline-flex items-center gap-1 font-semibold text-foreground hover:text-[#4E8D9C]"
         >
           View details
           <ArrowRight className="h-3.5 w-3.5" />

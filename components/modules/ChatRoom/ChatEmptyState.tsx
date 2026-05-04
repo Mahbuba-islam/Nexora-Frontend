@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageCircleMore, Sparkles } from "lucide-react";
+import { MessageCircleMore, Wand2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -64,7 +64,7 @@ export default function ChatEmptyState({
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button asChild className="bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-cyan-500/25 hover:from-blue-700 hover:to-cyan-600">
             <Link href={primaryAction.href}>
-              <Sparkles className="mr-2 size-4" />
+              <Wand2 className="mr-2 size-4" />
               {primaryAction.label}
             </Link>
           </Button>

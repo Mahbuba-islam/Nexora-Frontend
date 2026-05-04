@@ -153,7 +153,7 @@ export default function WishlistAccountPage() {
               )}
               <Link
                 href={`/shop/${item.slug}`}
-                className="line-clamp-2 text-sm font-semibold text-foreground hover:text-[#3B82F6]"
+                className="line-clamp-2 text-sm font-semibold text-foreground hover:text-[#4E8D9C]"
               >
                 {item.name}
               </Link>
@@ -168,7 +168,7 @@ export default function WishlistAccountPage() {
                     addToCart(itemToProduct(item), 1);
                     toast.success(`Added to bag · ${item.name}`);
                   }}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground hover:text-[#3B82F6]"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground hover:text-[#4E8D9C]"
                 >
                   <ShoppingBag className="h-3.5 w-3.5" />
                   Add to bag

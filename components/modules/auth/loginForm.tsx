@@ -3,8 +3,8 @@
 
 import { loginAction } from "@/src/app/(commonLayout)/(authRouteGroup)/login/_action";
 import {
-  demoLoginAction,
-  expertDemoLoginAction,
+  customerDemoLoginAction,
+  sellerDemoLoginAction,
   adminDemoLoginAction,
 } from "@/src/app/(commonLayout)/(authRouteGroup)/login/_action";
 import AppField from "@/components/form/AppField";
@@ -24,7 +24,7 @@ import { ILoginPayload, loginZodSchema } from "@/src/zod/auth.validation";
 import { getFriendlyAuthErrorMessage } from "@/src/lib/authErrorMessages";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { Eye, EyeOff, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -76,11 +76,11 @@ const LoginForm = ({ redirectPath, passwordReset = false }: LoginFormProps) => {
   });
 
   const { mutateAsync: mutateDemoLogin, isPending: isDemoPending } = useMutation({
-    mutationFn: () => demoLoginAction(redirectPath),
+    mutationFn: () => customerDemoLoginAction(redirectPath),
   });
 
   const { mutateAsync: mutateExpertDemo, isPending: isExpertDemoPending } = useMutation({
-    mutationFn: () => expertDemoLoginAction(redirectPath),
+    mutationFn: () => sellerDemoLoginAction(redirectPath),
   });
 
   const { mutateAsync: mutateAdminDemo, isPending: isAdminDemoPending } = useMutation({
@@ -268,7 +268,7 @@ const LoginForm = ({ redirectPath, passwordReset = false }: LoginFormProps) => {
               disabled={isPending || isAnyDemoPending}
               className="w-full justify-center gap-2 rounded-full border-blue-200 bg-blue-50/70 text-blue-700 hover:bg-blue-100 hover:text-blue-800 dark:border-cyan-400/30 dark:bg-cyan-500/10 dark:text-cyan-200 dark:hover:bg-cyan-500/15"
             >
-              <Sparkles className="size-4" aria-hidden="true" />
+              <Wand2 className="size-4" aria-hidden="true" />
               {isDemoPending ? "Starting…" : "Demo client"}
             </Button>
 
@@ -284,7 +284,7 @@ const LoginForm = ({ redirectPath, passwordReset = false }: LoginFormProps) => {
               disabled={isPending || isAnyDemoPending}
               className="w-full justify-center gap-2 rounded-full border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-500/10 dark:text-emerald-200 dark:hover:bg-emerald-500/15"
             >
-              <Sparkles className="size-4" aria-hidden="true" />
+              <Wand2 className="size-4" aria-hidden="true" />
               {isExpertDemoPending ? "Starting…" : "Demo expert"}
             </Button>
 
@@ -300,7 +300,7 @@ const LoginForm = ({ redirectPath, passwordReset = false }: LoginFormProps) => {
               disabled={isPending || isAnyDemoPending}
               className="w-full justify-center gap-2 rounded-full border-amber-200 bg-amber-50/70 text-amber-700 hover:bg-amber-100 hover:text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-200 dark:hover:bg-amber-500/15"
             >
-              <Sparkles className="size-4" aria-hidden="true" />
+              <Wand2 className="size-4" aria-hidden="true" />
               {isAdminDemoPending ? "Starting…" : "Demo admin"}
             </Button>
           </div>

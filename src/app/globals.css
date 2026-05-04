@@ -75,20 +75,23 @@
    Palette:
      Soft Beige    #F9F8F6
      Warm Sand     #EFE9E3
-     Tech Blue     #3B82F6
-     Cyan Accent   #4BBFF9
-     Dark Charcoal #242424
+     Tech Blue     #4E8D9C
+     Cyan Accent   #85C79A
+     Dark Charcoal #281C59
      Deep Charcoal #18181B
      Neon Lime     #F9FF56  (dark theme spotlight)
    ============================================================ */
 :root {
   --nx-beige: #f9f8f6;
   --nx-sand: #efe9e3;
-  --nx-blue: #3b82f6;
-  --nx-cyan: #4bbff9;
-  --nx-ink: #242424;
+  --nx-cream: #edf7bd;
+  --nx-blue: #6FB6CC;       /* lighter teal-blue (was #4E8D9C) */
+  --nx-blue-deep: #4E8D9C;  /* original kept as deep variant */
+  --nx-cyan: #A8DCB8;       /* lighter mint (was #85C79A) */
+  --nx-ink: #281C59;
   --nx-ink-2: #18181b;
-  --nx-neon: #f9ff56;
+  --nx-neon: #edf7bd;
+  --nx-sky: #DCEFF5;        /* very light blue tint for hero washes */
 
   --background: #f9f8f6;
   --foreground: #18181b;
@@ -96,66 +99,114 @@
   --card-foreground: #18181b;
   --popover: #ffffff;
   --popover-foreground: #18181b;
-  --primary: #3b82f6;
+  --primary: #281C59;
   --primary-foreground: #ffffff;
   --secondary: #efe9e3;
-  --secondary-foreground: #242424;
+  --secondary-foreground: #281C59;
   --muted: #efe9e3;
   --muted-foreground: #6b6b6b;
-  --accent: #4bbff9;
-  --accent-foreground: #0b1220;
+  --accent: #6FB6CC;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(36, 36, 36, 0.10);
-  --input: rgba(36, 36, 36, 0.12);
-  --ring: #3b82f6;
-  --chart-1: #3b82f6;
-  --chart-2: #4bbff9;
-  --chart-3: #242424;
-  --chart-4: #efe9e3;
-  --chart-5: #f9ff56;
+  --border: rgba(40, 28, 89, 0.10);
+  --input: rgba(40, 28, 89, 0.12);
+  --ring: #6FB6CC;
+  --chart-1: #281C59;
+  --chart-2: #6FB6CC;
+  --chart-3: #A8DCB8;
+  --chart-4: #edf7bd;
+  --chart-5: #efe9e3;
   --radius: 0.875rem;
   --sidebar: #ffffff;
   --sidebar-foreground: #18181b;
-  --sidebar-primary: #3b82f6;
+  --sidebar-primary: #281C59;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #efe9e3;
-  --sidebar-accent-foreground: #242424;
-  --sidebar-border: rgba(36, 36, 36, 0.10);
-  --sidebar-ring: #3b82f6;
+  --sidebar-accent-foreground: #281C59;
+  --sidebar-border: rgba(40, 28, 89, 0.10);
+  --sidebar-ring: #6FB6CC;
 }
 
 .dark {
-  --background: #18181b;
-  --foreground: #f9f8f6;
-  --card: #242424;
-  --card-foreground: #f9f8f6;
-  --popover: #242424;
-  --popover-foreground: #f9f8f6;
-  --primary: #4bbff9;
-  --primary-foreground: #0b1220;
-  --secondary: #2a2a2d;
-  --secondary-foreground: #f9f8f6;
-  --muted: #2a2a2d;
-  --muted-foreground: #a1a1a8;
-  --accent: #3b82f6;
-  --accent-foreground: #ffffff;
+  --background: #0F1A2B;       /* deep navy (was flat #18181b) */
+  --foreground: #F1F5FB;
+  --card: #1A2742;             /* lighter navy card (was #281C59) */
+  --card-foreground: #F1F5FB;
+  --popover: #1A2742;
+  --popover-foreground: #F1F5FB;
+  --primary: #A8DCB8;
+  --primary-foreground: #0F1A2B;
+  --secondary: #213152;
+  --secondary-foreground: #F1F5FB;
+  --muted: #213152;
+  --muted-foreground: #B5C4DA;
+  --accent: #6FB6CC;
+  --accent-foreground: #0F1A2B;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: rgba(249, 248, 246, 0.10);
-  --input: rgba(249, 248, 246, 0.14);
-  --ring: #4bbff9;
-  --chart-1: #4bbff9;
-  --chart-2: #3b82f6;
+  --border: rgba(241, 245, 251, 0.12);
+  --input: rgba(241, 245, 251, 0.16);
+  --ring: #A8DCB8;
+  --chart-1: #A8DCB8;
+  --chart-2: #6FB6CC;
   --chart-3: #f9ff56;
   --chart-4: #48423d;
-  --chart-5: #f9f8f6;
-  --sidebar: #18181b;
-  --sidebar-foreground: #f9f8f6;
-  --sidebar-primary: #4bbff9;
-  --sidebar-primary-foreground: #0b1220;
-  --sidebar-accent: #2a2a2d;
-  --sidebar-accent-foreground: #f9f8f6;
-  --sidebar-border: rgba(249, 248, 246, 0.10);
-  --sidebar-ring: #4bbff9;
+  --chart-5: #F1F5FB;
+  --sidebar: #0F1A2B;
+  --sidebar-foreground: #F1F5FB;
+  --sidebar-primary: #A8DCB8;
+  --sidebar-primary-foreground: #0F1A2B;
+  --sidebar-accent: #213152;
+  --sidebar-accent-foreground: #F1F5FB;
+  --sidebar-border: rgba(241, 245, 251, 0.12);
+  --sidebar-ring: #A8DCB8;
+}
+
+/* ---- Global premium body background ---- */
+html, body { min-height: 100%; }
+body {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(900px 600px at 8% -10%, rgba(111, 182, 204, 0.20), transparent 60%),
+    radial-gradient(800px 520px at 100% 0%, rgba(168, 220, 184, 0.18), transparent 65%),
+    radial-gradient(720px 480px at 50% 110%, rgba(237, 247, 189, 0.22), transparent 60%);
+  background-attachment: fixed;
+}
+.dark body {
+  background-image:
+    radial-gradient(900px 600px at 5% -10%, rgba(111, 182, 204, 0.22), transparent 60%),
+    radial-gradient(820px 540px at 100% 8%, rgba(168, 220, 184, 0.14), transparent 65%),
+    radial-gradient(760px 520px at 50% 115%, rgba(40, 28, 89, 0.55), transparent 60%);
+}
+
+/* Reusable aurora / mesh layers for section premium feel */
+.nx-aurora {
+  position: relative;
+  isolation: isolate;
+}
+.nx-aurora::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(60% 60% at 12% 0%, rgba(111,182,204,0.22), transparent 70%),
+    radial-gradient(55% 55% at 100% 18%, rgba(168,220,184,0.20), transparent 70%),
+    radial-gradient(50% 50% at 50% 110%, rgba(237,247,189,0.25), transparent 70%);
+}
+.dark .nx-aurora::before {
+  background:
+    radial-gradient(60% 60% at 10% 0%, rgba(111,182,204,0.30), transparent 70%),
+    radial-gradient(55% 55% at 100% 18%, rgba(168,220,184,0.18), transparent 70%),
+    radial-gradient(50% 50% at 50% 110%, rgba(40,28,89,0.55), transparent 70%);
+}
+
+.nx-mesh {
+  background-image:
+    linear-gradient(135deg, rgba(111,182,204,0.10) 0%, rgba(168,220,184,0.10) 50%, rgba(237,247,189,0.12) 100%);
+}
+.dark .nx-mesh {
+  background-image:
+    linear-gradient(135deg, rgba(111,182,204,0.14) 0%, rgba(40,28,89,0.45) 60%, rgba(15,26,43,0.7) 100%);
 }
 
 /* ---- Nexora helpers ---- */
@@ -184,12 +235,33 @@
   100% { background-position: 200% 0; }
 }
 .nx-shimmer-text {
-  background: linear-gradient(90deg, currentColor 0%, var(--nx-cyan) 45%, var(--nx-blue) 55%, currentColor 100%);
+  background: linear-gradient(
+    90deg,
+    var(--nx-blue-deep) 0%,
+    var(--nx-blue) 35%,
+    var(--nx-cyan) 55%,
+    var(--nx-blue) 75%,
+    var(--nx-blue-deep) 100%
+  );
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: nx-shimmer 6s linear infinite;
+  animation: nx-shimmer 9s linear infinite;
+}
+.dark .nx-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--nx-cyan) 0%,
+    var(--nx-blue) 35%,
+    var(--nx-cream) 55%,
+    var(--nx-blue) 75%,
+    var(--nx-cyan) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .nx-grid-bg {
@@ -460,32 +532,29 @@
 
 @keyframes consultedge-hand-wave {
   0%,
+  60%,
   100% {
     transform: rotate(0deg);
   }
 
-  10% {
-    transform: rotate(15deg);
+  65% {
+    transform: rotate(18deg);
   }
 
-  20% {
-    transform: rotate(-10deg);
+  72% {
+    transform: rotate(-12deg);
   }
 
-  30% {
-    transform: rotate(14deg);
+  80% {
+    transform: rotate(16deg);
   }
 
-  40% {
-    transform: rotate(-6deg);
+  88% {
+    transform: rotate(-8deg);
   }
 
-  50% {
-    transform: rotate(9deg);
-  }
-
-  60% {
-    transform: rotate(0deg);
+  95% {
+    transform: rotate(10deg);
   }
 }
 
@@ -507,8 +576,36 @@
 .consultedge-hand-wave {
   display: inline-block;
   transform-origin: 72% 72%;
-  animation: consultedge-hand-wave 1.6s ease-in-out infinite;
+  animation: consultedge-hand-wave 3.2s ease-in-out infinite;
 }
+
+/* Big slow waving hand for hero/dashboard greetings */
+.nx-hand-wave {
+  display: inline-block;
+  transform-origin: 70% 80%;
+  animation: consultedge-hand-wave 3.6s ease-in-out infinite;
+}
+
+/* Typing dots for chat greeting */
+@keyframes nx-typing-dot {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40%           { opacity: 1;    transform: translateY(-3px); }
+}
+.nx-typing-dots {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  margin-left: 4px;
+}
+.nx-typing-dots > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+  animation: nx-typing-dot 1.2s ease-in-out infinite;
+}
+.nx-typing-dots > span:nth-child(2) { animation-delay: 0.15s; }
+.nx-typing-dots > span:nth-child(3) { animation-delay: 0.3s; }
 .consultedge-ai-scrollbar [data-radix-scroll-area-viewport] {
   scrollbar-width: none;
   -ms-overflow-style: none;

@@ -6,10 +6,16 @@ export const metadata = {
 };
 
 interface Props {
-  searchParams: Promise<{ redirect?: string }>;
+  searchParams: Promise<{ redirect?: string; email?: string; verified?: string }>;
 }
 
 export default async function LoginPage({ searchParams }: Props) {
   const sp = await searchParams;
-  return <NexoraLoginForm redirectPath={sp.redirect} />;
+  return (
+    <NexoraLoginForm
+      redirectPath={sp.redirect}
+      initialEmail={sp.email}
+      verifiedFlag={sp.verified === "1"}
+    />
+  );
 }

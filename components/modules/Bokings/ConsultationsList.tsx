@@ -3,7 +3,7 @@
 // import Link from "next/link";
 // import { useEffect, useMemo, useRef, useState } from "react";
 // import { useMutation, useQuery } from "@tanstack/react-query";
-// import { Loader2, RefreshCw, Sparkles } from "lucide-react";
+// import { Loader2, RefreshCw, Wand2 } from "lucide-react";
 // import { toast } from "sonner";
 // import { motion } from "framer-motion";
 
@@ -231,7 +231,7 @@
 //         <CardHeader className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 //           <div>
 //             <Badge className="mb-2 bg-blue-100 text-blue-700 hover:bg-blue-100">
-//               <Sparkles className="mr-1 size-3.5" />
+//               <Wand2 className="mr-1 size-3.5" />
 //               Client dashboard
 //             </Badge>
 //             <CardTitle className="text-2xl">My consultations</CardTitle>

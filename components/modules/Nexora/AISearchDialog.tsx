@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Search, Sparkles, X } from "lucide-react";
+import { ArrowRight, Search, Wand2, X } from "lucide-react";
 
 import {
   primaryImage,
@@ -121,7 +121,7 @@ export default function AISearchDialog({ open, onClose }: Props) {
       <div className="relative mx-auto mt-[10vh] w-[min(94vw,720px)] overflow-hidden rounded-3xl border border-border bg-background shadow-2xl">
         {/* Input */}
         <div className="flex items-center gap-3 border-b border-border px-5 py-4">
-          <Sparkles className="h-5 w-5 text-[#3B82F6]" />
+          <Wand2 className="h-5 w-5 text-[#4E8D9C]" />
           <input
             ref={inputRef}
             type="text"
@@ -131,7 +131,7 @@ export default function AISearchDialog({ open, onClose }: Props) {
             className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
           {loading && (
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#3B82F6] border-t-transparent" />
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#4E8D9C] border-t-transparent" />
           )}
           <button
             type="button"
@@ -156,7 +156,7 @@ export default function AISearchDialog({ open, onClose }: Props) {
                     <button
                       type="button"
                       onClick={() => setQuery(s)}
-                      className="group flex w-full items-center justify-between rounded-2xl border border-border bg-background px-4 py-3 text-left text-sm text-foreground/80 transition-colors hover:border-[#3B82F6]/40 hover:bg-secondary"
+                      className="group flex w-full items-center justify-between rounded-2xl border border-border bg-background px-4 py-3 text-left text-sm text-foreground/80 transition-colors hover:border-[#4E8D9C]/40 hover:bg-secondary"
                     >
                       <span className="flex items-center gap-2">
                         <Search className="h-4 w-4 text-foreground/40" />
@@ -220,7 +220,7 @@ export default function AISearchDialog({ open, onClose }: Props) {
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-border bg-secondary/40 px-5 py-3 text-[11px] text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
-            <Sparkles className="h-3 w-3 text-[#3B82F6]" />
+            <Wand2 className="h-3 w-3 text-[#4E8D9C]" />
             Powered by Nexora AI
           </span>
           <kbd className="rounded-md border border-border bg-background px-1.5 py-0.5 font-mono text-[10px]">

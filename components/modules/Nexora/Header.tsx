@@ -2,14 +2,23 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Heart, Menu, Search, ShoppingBag, Sparkles, User, X } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag, Wand2, Store, ArrowRight, X } from "lucide-react";
 import { NX_NAV } from "./data";
 import AISearchDialog from "./AISearchDialog";
+import AccountMenu from "./AccountMenu";
+import CategoriesMegaMenu from "./CategoriesMegaMenu";
+import NotificationBell from "./NotificationBell";
+import { logoutAction } from "@/src/app/(commonLayout)/(authRouteGroup)/logOut/_action";
 import { useCart } from "@/src/providers/CartProvider";
 import { useWishlist } from "@/src/providers/WishlistProvider";
 import { cn } from "@/src/lib/utils";
 
-export default function Header() {
+interface HeaderProps {
+  isAuthenticated?: boolean;
+  role?: string | null;
+}
+
+export default function Header({ isAuthenticated = false, role = null }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
@@ -59,15 +68,16 @@ export default function Header() {
             className="group inline-flex items-center gap-2 font-semibold tracking-tight"
             aria-label="Nexora home"
           >
-            <span className="relative grid h-8 w-8 place-items-center rounded-xl bg-[#242424] text-[#F9F8F6] dark:bg-[#F9F8F6] dark:text-[#242424]">
+            <span className="relative grid h-8 w-8 place-items-center rounded-xl bg-[#281C59] text-[#F9F8F6] dark:bg-[#F9F8F6] dark:text-[#281C59]">
               <span className="text-sm font-black">N</span>
-              <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#4BBFF9] shadow-[0_0_10px_rgba(75,191,249,0.9)]" />
+              <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_10px_rgba(75,191,249,0.9)]" />
             </span>
             <span className="text-[15px] md:text-base">Nexora</span>
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
+            <CategoriesMegaMenu />
             {NX_NAV.map((item) => (
               <Link
                 key={item.href}
@@ -87,7 +97,7 @@ export default function Header() {
               onClick={() => setAiOpen(true)}
               className="hidden h-9 items-center gap-2 rounded-full border border-border bg-background/60 px-3 text-xs text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
             >
-              <Sparkles className="h-3.5 w-3.5 text-[#3B82F6]" />
+              <Wand2 className="h-3.5 w-3.5 text-[#4E8D9C]" />
               Ask Nexora AI
               <span className="ml-2 rounded-md border border-border px-1.5 py-0.5 text-[10px] font-medium text-foreground/70">
                 ⌘K
@@ -102,6 +112,18 @@ export default function Header() {
               <Search className="h-4.5 w-4.5" />
             </button>
             <Link
+              href="/sell/start"
+              className="group hidden h-9 items-center gap-2 rounded-full bg-linear-to-r from-[#281C59] to-[#4E8D9C] px-4 text-xs font-semibold text-white shadow-[0_8px_24px_-12px_rgba(40,28,89,0.6)] transition-all hover:shadow-[0_12px_30px_-10px_rgba(78,141,156,0.7)] hover:-translate-y-px md:inline-flex"
+              aria-label="Sell on Nexora"
+            >
+              <Store className="h-3.5 w-3.5" />
+              Sell on Nexora
+              <span className="hidden text-[10px] font-medium uppercase tracking-[0.18em] text-white/70 lg:inline">
+                Join now
+              </span>
+              <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <Link
               href="/account/wishlist"
               aria-label={`Wishlist (${wishCount} items)`}
               className="relative hidden h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary md:grid"
@@ -113,13 +135,10 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link
-              href="/account"
-              aria-label="Account"
-              className="hidden h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary md:grid"
-            >
-              <User className="h-4.5 w-4.5" />
-            </Link>
+            <div className="hidden md:block">
+              <NotificationBell visible={isAuthenticated} />
+            </div>
+            <AccountMenu isAuthenticated={isAuthenticated} role={role} />
             <Link
               href="/cart"
               aria-label={`Cart (${count} items)`}
@@ -127,7 +146,7 @@ export default function Header() {
             >
               <ShoppingBag className="h-4.5 w-4.5" />
               {hydrated && count > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#3B82F6] px-1 text-[10px] font-semibold text-white">
+                <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#4E8D9C] px-1 text-[10px] font-semibold text-white">
                   {count > 99 ? "99+" : count}
                 </span>
               )}
@@ -173,6 +192,17 @@ export default function Header() {
             </button>
           </div>
           <nav className="flex-1 overflow-y-auto p-2">
+            <Link
+              href="/sell/start"
+              onClick={() => setOpen(false)}
+              className="mx-2 my-2 flex items-center justify-between rounded-2xl bg-linear-to-r from-[#281C59] to-[#4E8D9C] px-4 py-3.5 text-sm font-semibold text-white"
+            >
+              <span className="flex items-center gap-2">
+                <Store className="h-4 w-4" />
+                Sell on Nexora · Join now
+              </span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
             {NX_NAV.map((item) => (
               <Link
                 key={item.href}
@@ -184,8 +214,29 @@ export default function Header() {
                 <span aria-hidden className="text-foreground/40">→</span>
               </Link>
             ))}
+            {isAuthenticated && (
+              <>
+                <div className="my-3 h-px bg-border" />
+                <Link
+                  href="/account"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
+                >
+                  Account
+                  <span aria-hidden className="text-foreground/40">→</span>
+                </Link>
+                <Link
+                  href="/account/settings"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
+                >
+                  Settings
+                  <span aria-hidden className="text-foreground/40">→</span>
+                </Link>
+              </>
+            )}
           </nav>
-          <div className="border-t border-border p-5">
+          <div className="space-y-3 border-t border-border p-5">
             <button
               type="button"
               onClick={() => {
@@ -194,9 +245,19 @@ export default function Header() {
               }}
               className="nx-btn-primary inline-flex h-11 w-full items-center justify-center gap-2 px-5 text-sm font-medium"
             >
-              <Sparkles className="h-4 w-4" />
+              <Wand2 className="h-4 w-4" />
               Ask Nexora AI
             </button>
+            {isAuthenticated && (
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-border bg-background text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                >
+                  Sign out
+                </button>
+              </form>
+            )}
           </div>
         </aside>
       </div>

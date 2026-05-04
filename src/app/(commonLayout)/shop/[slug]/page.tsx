@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import {
   ArrowRight,
   Check,
-  Sparkles,
+  Wand2,
   Star,
   ArrowUpRight,
 } from "lucide-react";
@@ -130,18 +130,18 @@ export default async function ProductDetailPage({
         <div className="flex flex-col">
           <div className="flex flex-wrap items-center gap-2">
             {product.isFeatured && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#F9FF56] px-3 py-1 text-[11px] font-semibold text-[#242424]">
-                <Sparkles className="h-3 w-3" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#F9FF56] px-3 py-1 text-[11px] font-semibold text-[#281C59]">
+                <Wand2 className="h-3 w-3" />
                 AI pick
               </span>
             )}
             {product.isNewArrival && (
-              <span className="rounded-full bg-[#3B82F6] px-3 py-1 text-[11px] font-semibold text-white">
+              <span className="rounded-full bg-[#4E8D9C] px-3 py-1 text-[11px] font-semibold text-white">
                 New
               </span>
             )}
             {onSale && (
-              <span className="rounded-full bg-[#242424] px-3 py-1 text-[11px] font-semibold text-[#F9F8F6]">
+              <span className="rounded-full bg-[#281C59] px-3 py-1 text-[11px] font-semibold text-[#F9F8F6]">
                 Save {discount}%
               </span>
             )}
@@ -343,7 +343,7 @@ export default async function ProductDetailPage({
                     ? `/shop?category=${product.category.slug}`
                     : "/shop"
                 }
-                className="hidden items-center gap-1 text-sm font-medium text-foreground hover:text-[#3B82F6] sm:inline-flex"
+                className="hidden items-center gap-1 text-sm font-medium text-foreground hover:text-[#4E8D9C] sm:inline-flex"
               >
                 View all
                 <ArrowRight className="h-4 w-4" />
@@ -375,7 +375,7 @@ function Gallery({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#4BBFF9]/15 dark:from-[#242424] dark:via-[#1c1c20] dark:to-[#3B82F6]/15">
+      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/15 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/15">
         <Image
           src={heroImg}
           alt={images?.[0]?.alt ?? name}

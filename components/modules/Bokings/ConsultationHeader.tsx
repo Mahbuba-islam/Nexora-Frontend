@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarClock, Clock, RefreshCw, Sparkles, Wallet } from "lucide-react";
+import { CalendarClock, Clock, RefreshCw, Wand2, Wallet } from "lucide-react";
 
 type ConsultationHeaderProps = {
   isFetching: boolean;
@@ -31,7 +31,7 @@ export default function ConsultationHeader({
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <Badge className="border-white/20 bg-white/10 text-white backdrop-blur">
-              <Sparkles className="mr-1 size-3.5" />
+              <Wand2 className="mr-1 size-3.5" />
               Client Dashboard
             </Badge>
             <h1 className="text-3xl font-bold tracking-tight">

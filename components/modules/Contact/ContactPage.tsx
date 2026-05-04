@@ -29,32 +29,32 @@ const contactInfoItems = [
   {
     icon: Mail,
     label: "Email us",
-    value: "hello@consultedge.com",
+    value: "support@nexora.shop",
     sub: "We reply within 24 hours",
-    href: "mailto:hello@consultedge.com",
+    href: "mailto:support@nexora.shop",
     accent: "from-blue-500 to-cyan-500",
   },
   {
     icon: Phone,
     label: "Call us",
-    value: "+1 (800) 123-4567",
+    value: "+1 (800) 663-9672",
     sub: "Mon – Fri, 9 am – 6 pm EST",
-    href: "tel:+18001234567",
+    href: "tel:+18006639672",
     accent: "from-cyan-500 to-teal-500",
   },
   {
     icon: MapPin,
     label: "Headquarters",
-    value: "New York, NY 10001",
+    value: "Brooklyn, NY 11201",
     sub: "United States",
     href: "https://maps.google.com",
     accent: "from-sky-500 to-blue-500",
   },
   {
     icon: Clock,
-    label: "Support hours",
+    label: "Order support",
     value: "24 / 7 live chat",
-    sub: "AI support always available",
+    sub: "Nexora AI assistant always on",
     href: null,
     accent: "from-emerald-500 to-cyan-500",
   },
@@ -68,16 +68,16 @@ const promises = [
 
 const faqs = [
   {
-    q: "How do I book an expert session?",
-    a: "Browse our expert directory, choose a specialist, pick an available slot, and confirm your booking in one click.",
+    q: "Where's my order?",
+    a: "Open your account dashboard and head to Orders. You'll see live tracking, ETA, and carrier details for every shipment.",
   },
   {
-    q: "Can I reschedule or cancel a booking?",
-    a: "Yes. Open your dashboard, navigate to bookings, and use the reschedule or cancel option up to 24 hours before your session.",
+    q: "Can I cancel or change a recent order?",
+    a: "Yes — if your order hasn't shipped yet, you can edit the address or cancel it from the Orders page. Once shipped, contact us and we'll arrange a return.",
   },
   {
-    q: "How are payments handled?",
-    a: "All payments are processed securely through our payment gateway. You'll receive an invoice immediately after booking.",
+    q: "How are payments and refunds handled?",
+    a: "All payments are processed securely. Refunds are issued to your original payment method within 5–7 business days of approval.",
   },
 ];
 
@@ -117,7 +117,7 @@ export default function ContactPage() {
   return (
     <div className="space-y-16 pb-16">
       {/* ── Hero ────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden rounded-[32px] border border-white/10 bg-linear-to-br from-slate-950 via-blue-950 to-cyan-900 px-6 py-10 text-center text-white shadow-[0_40px_100px_-30px_rgba(34,211,238,0.4)] md:px-12 md:py-12">
+      <section className="nx-aurora relative overflow-hidden rounded-[32px] border border-white/15 bg-linear-to-br from-[#1A2742] via-[#22416A] to-[#3F88A8] px-6 py-10 text-center text-white shadow-[0_40px_100px_-30px_rgba(111,182,204,0.45)] md:px-12 md:py-12">
         <div
           aria-hidden
           className="pointer-events-none absolute -left-24 -top-24 size-80 rounded-full bg-blue-500/30 blur-[100px]"
@@ -227,18 +227,18 @@ export default function ContactPage() {
             <div className="relative">
               <div className="flex items-center gap-2 text-blue-700 dark:text-cyan-300">
                 <Search className="size-4" />
-                <span className="text-sm font-semibold">Looking for an expert?</span>
+                <span className="text-sm font-semibold">Looking for something specific?</span>
               </div>
               <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                Browse our vetted specialists and book a session in minutes.
+                Browse trending products, deals, and curated collections in seconds.
               </p>
               <Button
                 asChild
                 size="sm"
                 className="mt-3 rounded-full bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-cyan-500/25 hover:from-blue-700 hover:to-cyan-600"
               >
-                <Link href="/experts">
-                  Browse experts
+                <Link href="/shop">
+                  Shop Nexora
                   <ArrowRight className="ml-1.5 size-3.5" />
                 </Link>
               </Button>

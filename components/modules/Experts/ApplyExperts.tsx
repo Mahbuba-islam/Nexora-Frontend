@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Sparkles, RefreshCw, CheckCircle2, ChevronDown } from "lucide-react";
+import { Wand2, RefreshCw, CheckCircle2, ChevronDown } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -393,7 +393,7 @@ export default function ApplyExpertForm() {
         <CardTitle className="flex items-center gap-2">
           Apply as an Expert
           <Badge className="gap-1 bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300">
-            <Sparkles className="size-3" />
+            <Wand2 className="size-3" />
             {hasAISuggestions ? "AI assisted" : "AI ready"}
           </Badge>
         </CardTitle>
@@ -515,7 +515,7 @@ export default function ApplyExpertForm() {
                 )}
                 {isAILoading && (
                   <p className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400">
-                    <Sparkles className="size-3 animate-pulse" />
+                    <Wand2 className="size-3 animate-pulse" />
                     AI is generating suggestions for this industry…
                   </p>
                 )}
@@ -531,7 +531,7 @@ export default function ApplyExpertForm() {
                   Expert Title
                   {aiFilledFields.has("title") && (
                     <span className="inline-flex items-center gap-0.5 text-[10px] font-normal text-blue-600 dark:text-blue-400">
-                      <Sparkles className="size-3" /> AI suggested
+                      <Wand2 className="size-3" /> AI suggested
                     </span>
                   )}
                 </label>
@@ -555,7 +555,7 @@ export default function ApplyExpertForm() {
                   Bio
                   {aiFilledFields.has("bio") && (
                     <span className="inline-flex items-center gap-0.5 text-[10px] font-normal text-blue-600 dark:text-blue-400">
-                      <Sparkles className="size-3" /> AI suggested
+                      <Wand2 className="size-3" /> AI suggested
                     </span>
                   )}
                 </label>
@@ -583,7 +583,7 @@ export default function ApplyExpertForm() {
                 className="rounded-xl border border-blue-200/80 bg-blue-50/60 p-3 dark:border-blue-500/20 dark:bg-blue-500/8"
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <Sparkles className="size-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                  <Wand2 className="size-4 shrink-0 text-blue-600 dark:text-blue-400" />
                   <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
                     Not happy with the AI suggestion?
                   </p>
@@ -667,7 +667,7 @@ export default function ApplyExpertForm() {
                   Consultation Fee ($/hr)
                   {aiFilledFields.has("consultationFee") && (
                     <span className="inline-flex items-center gap-0.5 text-[10px] font-normal text-blue-600 dark:text-blue-400">
-                      <Sparkles className="size-3" /> AI suggested
+                      <Wand2 className="size-3" /> AI suggested
                     </span>
                   )}
                 </label>

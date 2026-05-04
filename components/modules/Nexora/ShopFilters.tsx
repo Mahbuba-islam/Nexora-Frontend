@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useTransition } from "react";
-import { Search } from "lucide-react";
-import type { NxBrand, NxCategory } from "@/src/types/nexora.types";
+import { useState, useTransition } from "react";
+import { ChevronRight, Search } from "lucide-react";
+import type {
+  NxBrand,
+  NxCategoryNode,
+} from "@/src/types/nexora.types";
 
 interface Props {
-  categories: NxCategory[];
+  /** Hierarchical category tree from /categories/tree. */
+  categoryTree: NxCategoryNode[];
   brands: NxBrand[];
   current: {
     category?: string;
@@ -25,7 +29,11 @@ const SORTS = [
   { value: "avgRating:desc", label: "Top rated" },
 ];
 
-export default function ShopFilters({ categories, brands, current }: Props) {
+export default function ShopFilters({
+  categoryTree,
+  brands,
+  current,
+}: Props) {
   const router = useRouter();
   const params = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -44,9 +52,6 @@ export default function ShopFilters({ categories, brands, current }: Props) {
     setParam("search", String(fd.get("search") ?? "").trim() || null);
   };
 
-  // Only show top-level categories in the filter bar.
-  const rootCategories = categories.filter((c) => !c.parentId && c.isActive);
-
   return (
     <aside className="sticky top-20 space-y-7">
       <form onSubmit={onSubmitSearch} className="relative">
@@ -56,7 +61,7 @@ export default function ShopFilters({ categories, brands, current }: Props) {
           name="search"
           defaultValue={current.search ?? ""}
           placeholder="Search Nexora…"
-          className="h-11 w-full rounded-full border border-border bg-background pl-11 pr-4 text-sm outline-none transition-colors focus:border-[#3B82F6]"
+          className="h-11 w-full rounded-full border border-border bg-background pl-11 pr-4 text-sm outline-none transition-colors focus:border-[#4E8D9C]"
         />
       </form>
 
@@ -67,7 +72,7 @@ export default function ShopFilters({ categories, brands, current }: Props) {
         <select
           value={current.sort ?? ""}
           onChange={(e) => setParam("sort", e.target.value || null)}
-          className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-[#3B82F6]"
+          className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-[#4E8D9C]"
         >
           <option value="">Featured</option>
           {SORTS.map((s) => (
@@ -82,26 +87,22 @@ export default function ShopFilters({ categories, brands, current }: Props) {
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Category
         </p>
-        <ul className="space-y-1.5">
+        <ul className="space-y-1">
           <li>
             <Link
               href="/shop"
               className={chip(!current.category)}
               prefetch={false}
             >
-              All
+              All categories
             </Link>
           </li>
-          {rootCategories.map((c) => (
-            <li key={c.id}>
-              <Link
-                href={`/shop?category=${encodeURIComponent(c.slug)}`}
-                className={chip(current.category === c.slug)}
-                prefetch={false}
-              >
-                {c.name}
-              </Link>
-            </li>
+          {categoryTree.map((root) => (
+            <CategoryBranch
+              key={root.id}
+              node={root}
+              currentSlug={current.category}
+            />
           ))}
         </ul>
       </div>
@@ -138,11 +139,84 @@ export default function ShopFilters({ categories, brands, current }: Props) {
   );
 }
 
+function CategoryBranch({
+  node,
+  currentSlug,
+  depth = 0,
+}: {
+  node: NxCategoryNode;
+  currentSlug?: string;
+  depth?: number;
+}) {
+  const hasChildren = node.children && node.children.length > 0;
+  // Auto-expand if this branch contains the current selection.
+  const containsSelected = (n: NxCategoryNode): boolean =>
+    n.slug === currentSlug ||
+    (n.children?.some(containsSelected) ?? false);
+  const [open, setOpen] = useState(
+    depth === 0 ? containsSelected(node) : false,
+  );
+
+  const active = node.slug === currentSlug;
+
+  return (
+    <li>
+      <div className="flex items-center gap-1">
+        <Link
+          href={`/shop?category=${encodeURIComponent(node.slug)}`}
+          className={[
+            chip(active),
+            depth > 0 ? "flex-1" : "flex-1",
+          ].join(" ")}
+          style={{ paddingLeft: `${0.75 + depth * 0.75}rem` }}
+          prefetch={false}
+        >
+          <span className="flex items-center justify-between">
+            <span>{node.name}</span>
+            {typeof node.productCount === "number" && node.productCount > 0 && (
+              <span className="text-[10px] tabular-nums text-muted-foreground">
+                {node.productCount}
+              </span>
+            )}
+          </span>
+        </Link>
+        {hasChildren && (
+          <button
+            type="button"
+            aria-label={open ? "Collapse" : "Expand"}
+            onClick={() => setOpen((v) => !v)}
+            className="grid h-7 w-7 place-items-center rounded-md text-foreground/50 hover:bg-secondary hover:text-foreground"
+          >
+            <ChevronRight
+              className={[
+                "h-3.5 w-3.5 transition-transform",
+                open ? "rotate-90" : "",
+              ].join(" ")}
+            />
+          </button>
+        )}
+      </div>
+      {hasChildren && open && (
+        <ul className="mt-0.5 space-y-0.5">
+          {node.children.map((child) => (
+            <CategoryBranch
+              key={child.id}
+              node={child}
+              currentSlug={currentSlug}
+              depth={depth + 1}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
 const chip = (active: boolean) =>
   [
     "block rounded-lg px-3 py-2 text-sm transition-colors",
     active
-      ? "bg-[#242424] text-[#F9F8F6] dark:bg-[#F9F8F6] dark:text-[#242424]"
+      ? "bg-[#281C59] text-[#F9F8F6] dark:bg-[#F9F8F6] dark:text-[#281C59]"
       : "text-foreground/75 hover:bg-secondary",
   ].join(" ");
 
@@ -150,6 +224,6 @@ const pill = (active: boolean) =>
   [
     "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
     active
-      ? "border-transparent bg-[#3B82F6] text-white"
+      ? "border-transparent bg-[#4E8D9C] text-white"
       : "border-border text-foreground/75 hover:border-foreground/40",
   ].join(" ");

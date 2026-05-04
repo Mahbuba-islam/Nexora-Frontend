@@ -1,19 +1,56 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
-import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
+import { useRef, useState, useTransition } from "react";
+import { ArrowRight, Eye, EyeOff, Loader2, Shield, Store, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 
 import { loginAction } from "@/src/app/(commonLayout)/(authRouteGroup)/login/_action";
+import {
+  adminDemoLoginAction,
+  customerDemoLoginAction,
+  sellerDemoLoginAction,
+} from "@/src/app/(commonLayout)/(authRouteGroup)/login/_action";
 import { loginZodSchema } from "@/src/zod/auth.validation";
 import { getFriendlyAuthErrorMessage } from "@/src/lib/authErrorMessages";
 
 interface Props {
   redirectPath?: string;
+  initialEmail?: string;
+  verifiedFlag?: boolean;
 }
 
-export default function NexoraLoginForm({ redirectPath }: Props) {
+const DEMO_ACCOUNTS: {
+  role: "admin" | "seller" | "customer";
+  label: string;
+  action: (redirectPath?: string) => Promise<unknown>;
+  icon: React.ComponentType<{ className?: string }>;
+  tint: string;
+}[] = [
+  {
+    role: "admin",
+    label: "Admin",
+    action: adminDemoLoginAction,
+    icon: Shield,
+    tint: "from-[#281C59] to-[#4E8D9C]",
+  },
+  {
+    role: "seller",
+    label: "Seller",
+    action: sellerDemoLoginAction,
+    icon: Store,
+    tint: "from-[#4E8D9C] to-[#85C79A]",
+  },
+  {
+    role: "customer",
+    label: "Customer",
+    action: customerDemoLoginAction,
+    icon: ShoppingBag,
+    tint: "from-[#85C79A] to-[#EDF7BD]",
+  },
+];
+
+export default function NexoraLoginForm({ redirectPath, initialEmail, verifiedFlag }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{
@@ -21,6 +58,15 @@ export default function NexoraLoginForm({ redirectPath }: Props) {
     password?: string;
   }>({});
   const [pending, startTransition] = useTransition();
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  // 🎉 If we're arriving from the verify-email page, surface a one-shot toast
+  // and prefill the email so the user only types their password once.
+  const verifiedShownRef = useRef(false);
+  if (typeof window !== "undefined" && verifiedFlag && !verifiedShownRef.current) {
+    verifiedShownRef.current = true;
+    toast.success("Email verified — sign in to continue.");
+  }
 
   const safeRedirect =
     redirectPath?.startsWith("/") && !redirectPath.startsWith("//")
@@ -110,7 +156,7 @@ export default function NexoraLoginForm({ redirectPath }: Props) {
         <span className="h-px flex-1 bg-border" />
       </div>
 
-      <form noValidate onSubmit={onSubmit} className="space-y-4">
+      <form noValidate onSubmit={onSubmit} ref={formRef} className="space-y-4">
         <Field
           label="Email"
           name="email"
@@ -119,6 +165,7 @@ export default function NexoraLoginForm({ redirectPath }: Props) {
           placeholder="you@nexora.ai"
           error={fieldErrors.email}
           required
+          defaultValue={initialEmail}
         />
 
         <div>
@@ -131,7 +178,7 @@ export default function NexoraLoginForm({ redirectPath }: Props) {
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs font-medium text-[#3B82F6] hover:underline"
+              className="text-xs font-medium text-[#4E8D9C] hover:underline"
             >
               Forgot?
             </Link>
@@ -143,7 +190,7 @@ export default function NexoraLoginForm({ redirectPath }: Props) {
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               required
-              className="h-12 w-full rounded-2xl border border-border bg-background px-4 pr-12 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#3B82F6]"
+              className="h-12 w-full rounded-2xl border border-border bg-background px-4 pr-12 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#4E8D9C]"
               placeholder="••••••••"
             />
             <button
@@ -190,11 +237,67 @@ export default function NexoraLoginForm({ redirectPath }: Props) {
         New to Nexora?{" "}
         <Link
           href={registerHref}
-          className="font-semibold text-foreground hover:text-[#3B82F6]"
+          className="font-semibold text-foreground hover:text-[#4E8D9C]"
         >
           Create an account
         </Link>
       </p>
+
+      {/* Demo accounts */}
+      <div className="mt-8 rounded-3xl border border-dashed border-border bg-[#EDF7BD]/30 p-4">
+        <div className="flex items-center justify-between">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#281C59]">
+            For recruiters · try a demo
+          </p>
+          <span className="text-[10px] text-muted-foreground">one click</span>
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {DEMO_ACCOUNTS.map((d) => {
+            const Icon = d.icon;
+            return (
+              <button
+                key={d.role}
+                type="button"
+                disabled={pending}
+                onClick={() => {
+                  setFieldErrors({});
+                  setServerError(null);
+                  toast.message(`Signing in as ${d.label.toLowerCase()}…`);
+                  startTransition(async () => {
+                    try {
+                      const result = (await d.action(redirectPath)) as
+                        | { success: false; message: string }
+                        | undefined;
+                      if (result && result.success === false) {
+                        setServerError(result.message);
+                        toast.error(result.message);
+                      }
+                    } catch (err: unknown) {
+                      const e = err as { digest?: string; message?: string };
+                      if (
+                        (typeof e?.digest === "string" && e.digest.startsWith("NEXT_REDIRECT")) ||
+                        String(e?.message ?? "").includes("NEXT_REDIRECT")
+                      ) {
+                        return;
+                      }
+                      const msg = getFriendlyAuthErrorMessage(err, "login");
+                      setServerError(msg);
+                      toast.error(msg);
+                    }
+                  });
+                }}
+                className={`group flex flex-col items-center gap-1 rounded-2xl bg-linear-to-br ${d.tint} p-3 text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md disabled:opacity-50`}
+              >
+                <Icon className="h-4 w-4" />
+                <span className="text-[11px] font-semibold">{d.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <p className="mt-2 text-center text-[10px] text-muted-foreground">
+          seeded read-only data — safe to explore
+        </p>
+      </div>
     </div>
   );
 }
@@ -207,6 +310,7 @@ function Field({
   placeholder,
   error,
   required,
+  defaultValue,
 }: {
   label: string;
   name: string;
@@ -215,6 +319,7 @@ function Field({
   placeholder?: string;
   error?: string;
   required?: boolean;
+  defaultValue?: string;
 }) {
   return (
     <div>
@@ -231,7 +336,8 @@ function Field({
         autoComplete={autoComplete}
         placeholder={placeholder}
         required={required}
-        className="mt-1.5 h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#3B82F6]"
+        defaultValue={defaultValue}
+        className="mt-1.5 h-12 w-full rounded-2xl border border-border bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#4E8D9C]"
       />
       {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
     </div>

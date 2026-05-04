@@ -11,7 +11,7 @@ import {
   Loader2,
   ReceiptText,
   RotateCcw,
-  Sparkles,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -202,7 +202,7 @@ export default function PaymentResultCard({
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <Badge className={`mb-2 ${statusCopy.tone}`}>
-              <Sparkles className="mr-1 size-3.5" />
+              <Wand2 className="mr-1 size-3.5" />
               {statusCopy.badge}
             </Badge>
             <CardTitle className="text-2xl">{statusCopy.title}</CardTitle>

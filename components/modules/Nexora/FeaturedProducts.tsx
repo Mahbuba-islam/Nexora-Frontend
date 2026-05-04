@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Wand2 } from "lucide-react";
 import {
   primaryImage,
   toNumberPrice,
@@ -13,12 +13,12 @@ const FALLBACK_IMG =
   "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80";
 
 const ACCENTS = [
-  "from-[#3B82F6]/15 via-[#4BBFF9]/10 to-transparent",
-  "from-[#242424]/10 via-[#3B82F6]/10 to-transparent",
-  "from-[#4BBFF9]/20 via-[#3B82F6]/10 to-transparent",
+  "from-[#4E8D9C]/15 via-[#85C79A]/10 to-transparent",
+  "from-[#281C59]/10 via-[#4E8D9C]/10 to-transparent",
+  "from-[#85C79A]/20 via-[#4E8D9C]/10 to-transparent",
   "from-[#EFE9E3] via-[#F9F8F6] to-transparent",
-  "from-[#3B82F6]/10 via-[#4BBFF9]/10 to-transparent",
-  "from-[#242424]/15 via-[#3B82F6]/10 to-transparent",
+  "from-[#4E8D9C]/10 via-[#85C79A]/10 to-transparent",
+  "from-[#281C59]/15 via-[#4E8D9C]/10 to-transparent",
 ];
 
 const pickBadge = (
@@ -27,14 +27,14 @@ const pickBadge = (
   if (p.isOnSale) {
     return {
       label: "Sale",
-      cls: "bg-[#F9FF56] text-[#242424] shadow-[0_0_20px_rgba(249,255,86,0.45)]",
+      cls: "bg-[#F9FF56] text-[#281C59] shadow-[0_0_20px_rgba(249,255,86,0.45)]",
     };
   }
-  if (p.isNewArrival) return { label: "New", cls: "bg-[#3B82F6] text-white" };
+  if (p.isNewArrival) return { label: "New", cls: "bg-[#4E8D9C] text-white" };
   if (p.isFeatured)
-    return { label: "AI pick", cls: "bg-[#F9FF56] text-[#242424]", icon: true };
+    return { label: "AI pick", cls: "bg-[#F9FF56] text-[#281C59]", icon: true };
   if (p.isBestseller)
-    return { label: "Bestseller", cls: "bg-[#242424] text-[#F9F8F6]" };
+    return { label: "Bestseller", cls: "bg-[#281C59] text-[#F9F8F6]" };
   return null;
 };
 
@@ -52,7 +52,7 @@ export default async function FeaturedProducts() {
   }
 
   return (
-    <section id="featured" className="relative bg-background py-20 md:py-28">
+    <section id="featured" className="relative bg-background py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="flex items-end justify-between gap-6">
           <div className="max-w-2xl">
@@ -73,7 +73,7 @@ export default async function FeaturedProducts() {
           </Link>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p, i) => {
             const img = primaryImage(p) ?? FALLBACK_IMG;
             const accent = ACCENTS[i % ACCENTS.length];
@@ -83,15 +83,12 @@ export default async function FeaturedProducts() {
             return (
               <article
                 key={p.id}
-                className={[
-                  "nx-card group relative flex flex-col overflow-hidden p-5 md:p-6",
-                  i === 0 ? "lg:col-span-2 lg:row-span-2" : "",
-                ].join(" ")}
+                className="nx-card group relative flex flex-col overflow-hidden p-5 md:p-6"
               >
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                      {p.category?.name ?? p.brand?.name ?? "Tech"}
+                      {p.category?.name ?? p.brand?.name ?? "Featured"}
                     </p>
                     <h3 className="mt-1.5 text-xl font-semibold tracking-tight md:text-2xl">
                       {p.name}
@@ -109,7 +106,7 @@ export default async function FeaturedProducts() {
                         badge.cls,
                       ].join(" ")}
                     >
-                      {badge.icon && <Sparkles className="h-3 w-3" />}
+                      {badge.icon && <Wand2 className="h-3 w-3" />}
                       {badge.label}
                     </span>
                   )}
@@ -119,9 +116,8 @@ export default async function FeaturedProducts() {
                   href={`/shop/${p.slug}`}
                   aria-label={`Shop ${p.name}`}
                   className={[
-                    "relative mt-5 block w-full overflow-hidden rounded-2xl bg-linear-to-br",
+                    "relative mt-5 block w-full overflow-hidden rounded-2xl bg-linear-to-br aspect-4/3",
                     accent,
-                    i === 0 ? "aspect-16/11" : "aspect-4/3",
                   ].join(" ")}
                 >
                   <Image
@@ -146,7 +142,7 @@ export default async function FeaturedProducts() {
                   </div>
                   <Link
                     href={`/shop/${p.slug}`}
-                    className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#242424] px-4 text-xs font-medium text-[#F9F8F6] transition-transform hover:-translate-y-0.5 hover:bg-black dark:bg-[#F9F8F6] dark:text-[#242424] dark:hover:bg-white"
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#281C59] px-4 text-xs font-medium text-[#F9F8F6] transition-transform hover:-translate-y-0.5 hover:bg-black dark:bg-[#F9F8F6] dark:text-[#281C59] dark:hover:bg-white"
                   >
                     View
                     <ArrowRight className="h-3.5 w-3.5" />

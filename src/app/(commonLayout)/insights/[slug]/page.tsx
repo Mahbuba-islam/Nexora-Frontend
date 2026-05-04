@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CalendarClock, Clock3, Compass, Sparkles, Tag } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarClock, Clock3, Compass, Wand2, Tag } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 
@@ -116,7 +116,7 @@ export default async function InsightDetailPage({ params, searchParams }: Insigh
 
             <aside className="space-y-3 rounded-2xl border border-cyan-200/70 bg-white/82 p-4 shadow-sm backdrop-blur">
               <p className="inline-flex items-center gap-1 text-sm font-semibold text-cyan-800">
-                <Sparkles className="size-4" />
+                <Wand2 className="size-4" />
                 Key takeaways
               </p>
 

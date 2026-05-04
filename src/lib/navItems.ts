@@ -172,7 +172,7 @@ export const clientNavItems: NavSection[] = [
       {
         title: "AI Assistant",
         href: "/dashboard/ai-chat",
-        icon: "Sparkles",
+        icon: "Wand2",
       },
     ],
   },

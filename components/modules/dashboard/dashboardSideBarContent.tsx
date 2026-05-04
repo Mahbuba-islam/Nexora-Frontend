@@ -31,7 +31,7 @@ const DashboardSidebarContent = ({dashboardHome, navItems, userInfo} : Dashboard
       {/* Logo / Brand */}
       <div className="flex h-20 items-end px-6 pb-4 border-b">
         <Link href={dashboardHome}>
-          <span className="text-xl font-bold text-primary pt-4">Consult-Edge</span>
+          <span className="text-xl font-bold text-(--nx-ink) dark:text-(--nx-cyan) pt-4">Nexora</span>
         </Link>
       </div>
 
@@ -84,7 +84,7 @@ const DashboardSidebarContent = ({dashboardHome, navItems, userInfo} : Dashboard
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
                     isActive
-                      ? "bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-cyan-500/25"
+                      ? "bg-(--nx-blue-deep) text-white shadow-md"
                       : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                   )}
                 >
@@ -109,7 +109,7 @@ const DashboardSidebarContent = ({dashboardHome, navItems, userInfo} : Dashboard
       className={cn(
         "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
         isActive
-          ? "bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-cyan-500/25"
+          ? "bg-(--nx-blue-deep) text-white shadow-md"
           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       )}
     >
@@ -138,7 +138,7 @@ const DashboardSidebarContent = ({dashboardHome, navItems, userInfo} : Dashboard
       {/* User Info At Bottom */}
       <div className="border-t px-3 py-4">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-linear-to-br from-blue-600 via-cyan-500 to-teal-400 shadow-md shadow-cyan-500/30 flex items-center justify-center shrink-0">
+          <div className="h-10 w-10 rounded-full bg-linear-to-br from-(--nx-ink) via-(--nx-blue-deep) to-(--nx-cyan) shadow-md flex items-center justify-center shrink-0">
             <span className="text-lg font-bold text-white leading-none">
               {userInfo?.name?.charAt(0)?.toUpperCase() || "?"}
             </span>

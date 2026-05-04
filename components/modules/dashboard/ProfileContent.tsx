@@ -17,7 +17,7 @@ import {
   Mail,
   Pencil,
   ShieldCheck,
-  Sparkles,
+  Wand2,
   UserRound,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -100,7 +100,7 @@ export default function ProfileContent() {
 
             <div className="space-y-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/70 bg-white/70 px-2.5 py-0.5 text-xs font-medium text-blue-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-cyan-200">
-                <Sparkles className="size-3" />
+                <Wand2 className="size-3" />
                 My profile
               </span>
               <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { History, Sparkles, TrendingUp, Zap } from "lucide-react";
+import { History, Wand2, TrendingUp, Zap } from "lucide-react";
 
 import SuggestionList from "@/components/AI/local-search/SuggestionList";
 import type { SearchDropdownItem } from "@/components/AI/local-search/types";
@@ -82,7 +82,7 @@ export default function SearchDropdown({
           {/* Header banner */}
           <div className="flex items-center justify-between border-b border-blue-100 bg-linear-to-r from-blue-50 via-cyan-50 to-blue-100 px-3 py-2 text-xs font-medium text-blue-800 dark:border-blue-500/20 dark:from-blue-500/10 dark:via-cyan-500/10 dark:to-blue-500/10 dark:text-blue-200">
             <span className="inline-flex items-center gap-1.5">
-              <Sparkles className="size-3.5" />
+              <Wand2 className="size-3.5" />
               Find experts, industries, and insights instantly
             </span>
             {isLiveAI && (
@@ -135,7 +135,7 @@ export default function SearchDropdown({
               <>
                 <div className={sectionHeaderClass}>
                   <span className="inline-flex items-center gap-1.5">
-                    <Sparkles className="size-3.5" />
+                    <Wand2 className="size-3.5" />
                     Top Matches
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default function SearchDropdown({
             {/* AI section */}
             <div className={sectionHeaderClass}>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-2 py-0.5 text-blue-700 dark:bg-blue-500/20 dark:text-blue-200">
-                <Sparkles className="size-3.5" />
+                <Wand2 className="size-3.5" />
                 AI Suggestions
               </span>
             </div>

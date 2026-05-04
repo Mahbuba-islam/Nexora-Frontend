@@ -138,7 +138,7 @@ export default function ReviewForm({
           onChange={(e) => setTitle(e.target.value)}
           maxLength={120}
           placeholder="Sums up your experience in a line"
-          className="mt-1.5 h-11 w-full rounded-2xl border border-border bg-background px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[#3B82F6]"
+          className="mt-1.5 h-11 w-full rounded-2xl border border-border bg-background px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[#4E8D9C]"
         />
       </div>
 
@@ -156,7 +156,7 @@ export default function ReviewForm({
           rows={4}
           maxLength={2000}
           placeholder="What did you like or dislike? How did it perform for you?"
-          className="mt-1.5 w-full resize-y rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[#3B82F6]"
+          className="mt-1.5 w-full resize-y rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[#4E8D9C]"
         />
       </div>
 

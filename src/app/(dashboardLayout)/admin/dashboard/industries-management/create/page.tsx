@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Layers, Sparkles } from "lucide-react";
+import { ArrowLeft, Layers, Wand2 } from "lucide-react";
 
 import IndustryCreateForm from "@/components/modules/dashboard/Industry/IndustryCreateForm";
 
@@ -36,7 +36,7 @@ export default function CreateIndustryPage() {
               </div>
               <div className="space-y-1">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/60 bg-blue-50/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-200">
-                  <Sparkles className="size-3.5" />
+                  <Wand2 className="size-3.5" />
                   New industry
                 </span>
                 <h1 className="text-2xl font-bold tracking-tight">Create Industry</h1>

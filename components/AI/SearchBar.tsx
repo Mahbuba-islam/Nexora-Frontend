@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Search, Sparkles, X } from "lucide-react";
+import { Search, Wand2, X } from "lucide-react";
 
 import SearchDropdown from "@/components/AI/local-search/SearchDropdown";
 import type { SearchDropdownItem } from "@/components/AI/local-search/types";
@@ -235,7 +235,7 @@ export default function SearchBar({
             navigate
           </span>
           <span className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-300">
-            <Sparkles className="size-3" />
+            <Wand2 className="size-3" />
             Universal DB search
           </span>
         </div>

@@ -50,7 +50,7 @@ export default function Footer() {
       <div
         aria-hidden
         className="pointer-events-none absolute -top-24 left-1/2 h-90 w-180 -translate-x-1/2 rounded-full opacity-30"
-        style={{ background: "radial-gradient(closest-side, #3B82F6, transparent)" }}
+        style={{ background: "radial-gradient(closest-side, #4E8D9C, transparent)" }}
       />
 
       <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-20 md:px-8 md:pb-12">
@@ -61,7 +61,7 @@ export default function Footer() {
               href="/"
               className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#F9F8F6] text-[#242424]">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#F9F8F6] text-[#281C59]">
                 <span className="text-sm font-black">N</span>
               </span>
               Nexora
@@ -113,10 +113,10 @@ export default function Footer() {
         </div>
 
         {/* Big wordmark */}
-        <div className="mt-16 select-none border-t border-white/10 pt-10">
-          <p
-            aria-hidden
-            className="text-center text-[14vw] font-semibold leading-none tracking-tighter text-white/5 md:text-[180px]"
+<div className="mt-10 select-none border-t border-white/10 pt-6">
+        <p
+          aria-hidden
+          className="text-center text-[8vw] font-semibold leading-none tracking-tighter text-white/5 md:text-[96px]"
           >
             NEXORA
           </p>

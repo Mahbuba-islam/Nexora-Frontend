@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Wand2 } from "lucide-react";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -18,15 +18,15 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#F9F8F6] py-24 dark:bg-[#1c1c20] md:py-28">
+    <section className="relative isolate overflow-hidden bg-[#F9F8F6] py-14 dark:bg-[#1c1c20] md:py-20">
       <div
         aria-hidden
-        className="nx-orb absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
-        style={{ background: "radial-gradient(circle, #4BBFF9 0%, transparent 65%)" }}
+        className="nx-orb absolute left-1/2 top-1/2 h-130 w-130 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
+        style={{ background: "radial-gradient(circle, #85C79A 0%, transparent 65%)" }}
       />
       <div className="relative mx-auto max-w-3xl px-4 text-center md:px-8">
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1.5 text-[12px] font-medium text-muted-foreground backdrop-blur">
-          <Sparkles className="h-3.5 w-3.5 text-[#3B82F6]" />
+          <Wand2 className="h-3.5 w-3.5 text-[#4E8D9C]" />
           Drops · Restocks · AI-curated picks
         </div>
         <h2 className="mt-6 text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">

@@ -36,6 +36,12 @@ export interface NxCategory {
   isActive: boolean;
 }
 
+/** Node returned by /categories/tree — root with nested children + counts. */
+export interface NxCategoryNode extends NxCategory {
+  children: NxCategoryNode[];
+  productCount?: number;
+}
+
 export interface NxSpec {
   id: string;
   productId: string;

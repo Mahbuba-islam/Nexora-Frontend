@@ -81,17 +81,17 @@ export const loginAction = async (payload : ILoginPayload, redirectPath ?: strin
 // credentials matching what's actually present in the database.
 // ---------------------------------------------------------------------------
 
-type DemoRole = "client" | "expert" | "admin";
+type DemoRole = "customer" | "seller" | "admin";
 
 const DEMO_ENDPOINTS: Record<DemoRole, string> = {
-    client: "/auth/demo-login",
-    expert: "/auth/demo-login/expert",
+    customer: "/auth/demo-login/customer",
+    seller: "/auth/demo-login/seller",
     admin: "/auth/demo-login/admin",
 };
 
 const DEMO_LABELS: Record<DemoRole, string> = {
-    client: "client",
-    expert: "expert",
+    customer: "customer",
+    seller: "seller",
     admin: "admin",
 };
 
@@ -135,13 +135,13 @@ const runDemoLogin = async (
     return undefined as unknown as ILOginResponse;
 };
 
-export const demoLoginAction = async (
+export const customerDemoLoginAction = async (
     redirectPath?: string,
-): Promise<ILOginResponse | ApiErrorResponse> => runDemoLogin("client", redirectPath);
+): Promise<ILOginResponse | ApiErrorResponse> => runDemoLogin("customer", redirectPath);
 
-export const expertDemoLoginAction = async (
+export const sellerDemoLoginAction = async (
     redirectPath?: string,
-): Promise<ILOginResponse | ApiErrorResponse> => runDemoLogin("expert", redirectPath);
+): Promise<ILOginResponse | ApiErrorResponse> => runDemoLogin("seller", redirectPath);
 
 export const adminDemoLoginAction = async (
     redirectPath?: string,

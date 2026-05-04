@@ -8,7 +8,7 @@ import {
   CalendarRange,
   MessageSquare,
   MessageSquareQuote,
-  Sparkles,
+  Wand2,
   Star,
   TrendingUp,
   UserCircle2,
@@ -159,7 +159,7 @@ const ExpertDashboardContent = () => {
         <CardContent className="relative z-10 grid gap-8 p-6 md:p-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
           <div className="space-y-4">
             <Badge className="border-white/30 bg-white/15 text-white backdrop-blur hover:bg-white/15">
-              <Sparkles className="mr-1 size-3.5" />
+              <Wand2 className="mr-1 size-3.5" />
               Expert Workspace
             </Badge>
 
