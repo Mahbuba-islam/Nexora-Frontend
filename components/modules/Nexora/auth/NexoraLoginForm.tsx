@@ -46,7 +46,7 @@ const DEMO_ACCOUNTS: {
     label: "Customer",
     action: customerDemoLoginAction,
     icon: ShoppingBag,
-    tint: "from-[#85C79A] to-[#EDF7BD]",
+    tint: "from-[#6FB6CC] to-[#4E8D9C]",
   },
 ];
 

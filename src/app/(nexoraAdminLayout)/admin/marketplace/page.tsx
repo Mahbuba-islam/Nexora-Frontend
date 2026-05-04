@@ -32,25 +32,25 @@ export default async function AdminMarketplaceOverviewPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Stat
           label="GMV"
-          value={stats ? formatUSD(toNumberPrice(stats.gmv)) : "—"}
+          value={stats ? formatUSD(toNumberPrice(stats.gmv ?? 0)) : "—"}
           icon={ShoppingBag}
           accent="blue"
         />
         <Stat
           label="Orders"
-          value={stats ? stats.orders.toLocaleString() : "—"}
+          value={stats ? (stats.orders ?? 0).toLocaleString() : "—"}
           icon={ShoppingBag}
           accent="amber"
         />
         <Stat
           label="Active sellers"
-          value={stats ? stats.activeSellers.toLocaleString() : "—"}
+          value={stats ? (stats.activeSellers ?? 0).toLocaleString() : "—"}
           icon={Store}
           accent="green"
         />
         <Stat
           label="Customers"
-          value={stats ? stats.customers.toLocaleString() : "—"}
+          value={stats ? (stats.customers ?? 0).toLocaleString() : "—"}
           icon={Store}
           accent="violet"
         />
@@ -64,9 +64,9 @@ export default async function AdminMarketplaceOverviewPage() {
             </p>
             <p className="mt-1 text-3xl font-semibold tracking-tight">
               {pipeline
-                ? formatUSD(toNumberPrice(pipeline.pendingPayoutAmount))
+                ? formatUSD(toNumberPrice(pipeline.pendingPayoutAmount ?? 0))
                 : stats
-                  ? formatUSD(toNumberPrice(stats.pendingPayouts))
+                  ? formatUSD(toNumberPrice(stats.pendingPayouts ?? 0))
                   : "—"}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">

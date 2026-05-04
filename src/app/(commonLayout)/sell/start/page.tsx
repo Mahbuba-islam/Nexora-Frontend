@@ -20,6 +20,8 @@ import {
 import { toast } from "sonner";
 
 import { httpClient } from "@/src/lib/axious/httpClient";
+import { createNotification } from "@/src/services/notification.service";
+import { getUsers } from "@/src/services/user.services";
 
 interface FormState {
   shopName: string;
@@ -196,6 +198,27 @@ export default function SellOnNexoraStart() {
       } catch {
         /* backend optional */
       }
+
+      // Notify every admin so the application is visible in the dashboard
+      // even when the seller-apply backend route is offline.
+      try {
+        const admins = await getUsers({ role: "ADMIN", limit: 100 });
+        await Promise.all(
+          admins
+            .map((a) => a.userId || a.id)
+            .filter(Boolean)
+            .map((adminUserId) =>
+              createNotification({
+                type: "USER",
+                userId: adminUserId,
+                message: `New seller application: "${form.shopName || "Unnamed shop"}" (${form.category || "uncategorised"}).`,
+              }),
+            ),
+        );
+      } catch {
+        /* notifications are best-effort */
+      }
+
       setDone(true);
       toast.success("Application received");
     } finally {

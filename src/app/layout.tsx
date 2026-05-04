@@ -43,11 +43,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LenisProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <QueryProviders>{children}</QueryProviders>
-              </WishlistProvider>
-            </CartProvider>
+            <QueryProviders>
+              <CartProvider>
+                <WishlistProvider>{children}</WishlistProvider>
+              </CartProvider>
+            </QueryProviders>
             <ScrollToTop />
           </LenisProvider>
           <Toaster richColors />

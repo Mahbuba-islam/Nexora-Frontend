@@ -6,16 +6,25 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   primaryImage,
   toNumberPrice,
   type NxProduct,
 } from "@/src/types/nexora.types";
+import { getMe } from "@/src/services/auth.services";
+import type { IUserProfile } from "@/src/types/user.types";
 
-const STORAGE_KEY = "nexora.wishlist.v1";
+/**
+ * Storage key is scoped per authenticated user so two people sharing a
+ * browser cannot read each other's wishlist. Guests get their own bucket.
+ */
+const storageKey = (userId: string | null) =>
+  `nexora.wishlist.v2.${userId ?? "guest"}`;
 
 export interface WishlistItem {
   id: string;
@@ -44,24 +53,45 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
+  // Identify the active user so wishlists can't leak across accounts.
+  const { data: profile } = useQuery<IUserProfile>({
+    queryKey: ["me"],
+    queryFn: getMe,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
+  const userId = profile?.id ?? null;
+  const activeKeyRef = useRef<string>(storageKey(userId));
+
+  // Re-load (and migrate) from the per-user bucket whenever the
+  // identity changes. Also drop legacy global key so old shared data
+  // doesn't follow a new login.
   useEffect(() => {
+    const key = storageKey(userId);
+    activeKeyRef.current = key;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      // One-time cleanup of the old shared bucket.
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("nexora.wishlist.v1");
+      }
+      const raw = localStorage.getItem(key);
       if (raw) {
         const parsed = JSON.parse(raw) as WishlistItem[];
-        if (Array.isArray(parsed)) setItems(parsed);
+        setItems(Array.isArray(parsed) ? parsed : []);
+      } else {
+        setItems([]);
       }
     } catch {
-      /* ignore */
+      setItems([]);
     } finally {
       setHydrated(true);
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (!hydrated) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      localStorage.setItem(activeKeyRef.current, JSON.stringify(items));
     } catch {
       /* quota */
     }

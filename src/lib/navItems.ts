@@ -141,6 +141,26 @@ export const adminNavItems: NavSection[] = [
    
     ],
   },
+  {
+    title: "Marketplace",
+    items: [
+      {
+        title: "Orders",
+        href: "/admin/dashboard/orders-management",
+        icon: "ShoppingBag",
+      },
+      {
+        title: "Products catalog",
+        href: "/admin/dashboard/products-catalog",
+        icon: "Boxes",
+      },
+      {
+        title: "Payments",
+        href: "/admin/dashboard/payments-analytics",
+        icon: "CreditCard",
+      },
+    ],
+  },
 ];
 
 // CLIENT NAV ITEMS (Patient → Client)

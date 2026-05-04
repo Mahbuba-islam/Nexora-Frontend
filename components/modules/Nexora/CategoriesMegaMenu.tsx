@@ -103,10 +103,10 @@ export default function CategoriesMegaMenu() {
         />
       </button>
 
-      {/* Panel */}
+      {/* Panel — anchor to left edge of trigger, then clamp to viewport */}
       <div
         className={cn(
-          "absolute left-1/2 top-full z-50 mt-2 w-[min(48rem,calc(100vw-2rem))] -translate-x-1/2 transition-all duration-200",
+          "absolute left-0 top-full z-50 mt-2 w-[min(48rem,calc(100vw-2rem))] transition-all duration-200",
           open
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-1 opacity-0",

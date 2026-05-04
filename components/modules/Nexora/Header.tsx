@@ -61,7 +61,7 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
             : "bg-transparent border-b border-transparent",
         )}
       >
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:h-16 md:px-8">
+        <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:h-[52px] md:px-8">
           {/* Logo */}
           <Link
             href="/"

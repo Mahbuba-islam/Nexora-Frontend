@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   LogOut,
   Package,
+  PackagePlus,
   Wallet,
 } from "lucide-react";
 
@@ -15,6 +16,7 @@ export const dynamic = "force-dynamic";
 
 const NAV: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { href: "/seller", label: "Overview", icon: LayoutDashboard },
+  { href: "/seller/products", label: "Products", icon: PackagePlus },
   { href: "/seller/orders", label: "Orders", icon: Package },
   { href: "/seller/payouts", label: "Payouts", icon: Wallet },
 ];

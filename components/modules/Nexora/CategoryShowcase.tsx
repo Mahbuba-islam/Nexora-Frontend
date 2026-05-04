@@ -70,6 +70,36 @@ export default function CategoryShowcase() {
               </div>
             </Link>
           ))}
+
+          {/* Promo CTA tile fills the last grid cell on lg+ */}
+          <Link
+            href="/deals"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 md:p-8 text-white"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, #281C59 0%, #4E8D9C 60%, #A8DCB8 100%)",
+            }}
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-12 -top-12 size-44 rounded-full bg-white/10 blur-3xl"
+            />
+            <div className="relative">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-white/80">
+                AI Bundles
+              </p>
+              <h3 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+                Smart bundles, smarter savings.
+              </h3>
+              <p className="mt-2 max-w-xs text-sm text-white/85">
+                Hand-picked by Nexora AI to match how you actually live.
+              </p>
+            </div>
+            <span className="relative mt-6 inline-flex h-10 w-fit items-center gap-2 rounded-full bg-white px-5 text-xs font-medium text-[#281C59] transition-transform group-hover:translate-x-1">
+              Explore bundles
+              <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </Link>
         </div>
       </div>
     </section>

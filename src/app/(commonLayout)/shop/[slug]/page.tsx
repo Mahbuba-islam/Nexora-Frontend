@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   ArrowRight,
   Check,
@@ -12,6 +12,7 @@ import {
 import {
   getProductBySlug,
   getProducts,
+  getCategoryTree,
 } from "@/src/services/nexora.service";
 import {
   primaryImage,
@@ -59,7 +60,53 @@ export default async function ProductDetailPage({
 }) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) notFound();
+  if (!product) {
+    // Slug might be a category id (e.g. /shop/wearables). Fall back to
+    // the catalog listing filtered by that category instead of 404.
+    try {
+      const tree = await getCategoryTree();
+      const flat: { slug: string }[] = [];
+      const visit = (
+        nodes: ReadonlyArray<{ slug: string; children?: ReadonlyArray<unknown> }>,
+      ) => {
+        for (const n of nodes) {
+          flat.push({ slug: n.slug });
+          if (n.children && Array.isArray(n.children)) {
+            visit(
+              n.children as ReadonlyArray<{
+                slug: string;
+                children?: ReadonlyArray<unknown>;
+              }>,
+            );
+          }
+        }
+      };
+      visit(
+        tree as ReadonlyArray<{
+          slug: string;
+          children?: ReadonlyArray<unknown>;
+        }>,
+      );
+      if (flat.some((c) => c.slug === slug)) {
+        redirect(`/shop?category=${encodeURIComponent(slug)}`);
+      }
+    } catch {
+      /* fall through to 404 */
+    }
+    // Common static category ids surfaced from the homepage showcase.
+    const KNOWN_CATEGORIES = new Set([
+      "phones",
+      "laptops",
+      "audio",
+      "wearables",
+      "accessories",
+      "smart-home",
+    ]);
+    if (KNOWN_CATEGORIES.has(slug)) {
+      redirect(`/shop?category=${encodeURIComponent(slug)}`);
+    }
+    notFound();
+  }
 
   // Related products (same category) — never block detail render on this.
   const relatedRes = product.category?.slug

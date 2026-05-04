@@ -8,7 +8,7 @@ import HeroMedia from "./HeroMedia";
  */
 export default function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#F9F8F6] text-[#18181B] dark:bg-[#18181B] dark:text-[#F9F8F6]">
+    <section className="relative isolate min-h-[60vh] overflow-hidden bg-[#F9F8F6] text-[#18181B] dark:bg-[#18181B] dark:text-[#F9F8F6] lg:min-h-[60vh]">
       {/* Background orbs */}
       <div
         aria-hidden
@@ -117,6 +117,27 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Scroll-down hint */}
+      <a
+        href="#featured"
+        aria-label="Scroll to featured products"
+        className="nx-scroll-cue absolute bottom-4 left-1/2 z-10 -translate-x-1/2 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-lg backdrop-blur transition-transform hover:translate-y-0.5 hover:bg-background"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-5 w-5"
+          aria-hidden
+        >
+          <path d="M12 5v14M19 12l-7 7-7-7" />
+        </svg>
+      </a>
     </section>
   );
 }

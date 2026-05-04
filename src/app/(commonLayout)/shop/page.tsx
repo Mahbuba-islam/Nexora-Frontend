@@ -69,19 +69,19 @@ export default async function ShopPage({
     <div className="bg-background">
       {/* Page header */}
       <header className="border-b border-border bg-[#F9F8F6] dark:bg-[#1c1c20]">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-20">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-[12px] font-medium text-muted-foreground backdrop-blur">
-            <Wand2 className="h-3.5 w-3.5 text-[#4E8D9C]" />
-            All products · curated by AI
+        <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground backdrop-blur">
+            <Wand2 className="h-3 w-3 text-[#4E8D9C]" />
+            Curated by AI
           </div>
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl">
-            Shop the catalog.
-            <span className="text-foreground/50"> Find your next thing.</span>
-          </h1>
-          <p className="mt-3 max-w-xl text-sm text-muted-foreground md:text-base">
-            {meta.total.toLocaleString()} products · {brands.length} brands ·
-            updated daily by Nexora AI.
-          </p>
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
+            <h1 className="text-xl font-semibold tracking-tight md:text-2xl">
+              Shop the catalog
+            </h1>
+            <p className="text-xs text-muted-foreground md:text-sm">
+              {meta.total.toLocaleString()} products · {brands.length} brands · updated daily
+            </p>
+          </div>
         </div>
       </header>
 
