@@ -6,16 +6,28 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   primaryImage,
   toNumberPrice,
   type NxProduct,
 } from "@/src/types/nexora.types";
+import { getMe } from "@/src/services/auth.services";
+import type { IUserProfile } from "@/src/types/user.types";
 
-const STORAGE_KEY = "nexora.cart.v1";
+/**
+ * Cart storage is scoped per authenticated user so two people sharing a
+ * browser (or "logout → other user logs in") never see each other's cart.
+ * Guests get their own bucket that's wiped after sign-in to avoid bleed.
+ */
+const storageKey = (userId: string | null) =>
+  `nexora.cart.v2.${userId ?? "guest"}`;
+
+const LEGACY_KEY = "nexora.cart.v1";
 
 export interface CartItem {
   id: string;
@@ -45,26 +57,45 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
-  // Hydrate from localStorage exactly once.
+  // Identify the active user so carts can't leak across accounts.
+  const { data: profile } = useQuery<IUserProfile>({
+    queryKey: ["me"],
+    queryFn: getMe,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
+  const userId = profile?.id ?? null;
+  const activeKeyRef = useRef<string>(storageKey(userId));
+
+  // Re-load from the per-user bucket whenever identity changes.
+  // Also drop the legacy global key so old shared data doesn't follow
+  // a fresh login.
   useEffect(() => {
+    const key = storageKey(userId);
+    activeKeyRef.current = key;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(LEGACY_KEY);
+      }
+      const raw = localStorage.getItem(key);
       if (raw) {
         const parsed = JSON.parse(raw) as CartItem[];
-        if (Array.isArray(parsed)) setItems(parsed);
+        setItems(Array.isArray(parsed) ? parsed : []);
+      } else {
+        setItems([]);
       }
     } catch {
-      /* ignore corrupt storage */
+      setItems([]);
     } finally {
       setHydrated(true);
     }
-  }, []);
+  }, [userId]);
 
   // Persist on change (skip first render until hydrated).
   useEffect(() => {
     if (!hydrated) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      localStorage.setItem(activeKeyRef.current, JSON.stringify(items));
     } catch {
       /* quota exceeded — silently ignore */
     }

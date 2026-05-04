@@ -8,7 +8,7 @@ import HeroMedia from "./HeroMedia";
  */
 export default function Hero() {
   return (
-    <section className="relative isolate min-h-[60vh] overflow-hidden bg-[#F9F8F6] text-[#18181B] dark:bg-[#18181B] dark:text-[#F9F8F6] lg:min-h-[60vh]">
+    <section className="relative isolate min-h-[42vh] overflow-hidden bg-[#F9F8F6] text-[#18181B] dark:bg-[#18181B] dark:text-[#F9F8F6] lg:min-h-[46vh]">
       {/* Background orbs */}
       <div
         aria-hidden
@@ -26,7 +26,7 @@ export default function Hero() {
       {/* Subtle grid */}
       <div aria-hidden className="nx-grid-bg absolute inset-0 opacity-60" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 pb-12 pt-6 md:px-8 md:pb-16 md:pt-10 lg:grid-cols-12 lg:gap-14 lg:pb-20 lg:pt-14">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 lg:grid-cols-12 lg:gap-12 lg:pb-12 lg:pt-8">
         {/* Copy */}
         <div className="lg:col-span-6">
           <div className="nx-rise inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-[12px] font-medium text-muted-foreground backdrop-blur">
@@ -34,29 +34,29 @@ export default function Hero() {
             New · Fashion, beauty, home & tech — all in one feed
           </div>
 
-          <h1 className="nx-rise nx-rise-delay-1 mt-6 text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl lg:text-[88px]">
+          <h1 className="nx-rise nx-rise-delay-1 mt-4 text-4xl font-semibold leading-[0.95] tracking-tight md:text-5xl lg:text-[60px]">
             Everything you love.
             <br />
             <span className="nx-shimmer-text">Curated by you.</span>
           </h1>
 
-          <p className="nx-rise nx-rise-delay-2 mt-6 max-w-xl text-base text-foreground/70 md:text-lg">
+          <p className="nx-rise nx-rise-delay-2 mt-4 max-w-xl text-sm text-foreground/70 md:text-base">
             From wardrobe staples to smart speakers, Nexora’s AI surfaces the
             shops, brands, and pieces that match your taste — across fashion,
             beauty, home, and tech.
           </p>
 
-          <div className="nx-rise nx-rise-delay-3 mt-8 flex flex-wrap items-center gap-3">
+          <div className="nx-rise nx-rise-delay-3 mt-6 flex flex-wrap items-center gap-3">
             <Link
               href="/shop"
-              className="nx-btn-primary inline-flex h-12 items-center gap-2 px-7 text-sm font-medium"
+              className="nx-btn-primary inline-flex h-10 items-center gap-2 px-6 text-sm font-medium"
             >
               Shop the latest
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="#ai"
-              className="nx-btn-ghost inline-flex h-12 items-center gap-2 px-6 text-sm font-medium"
+              className="nx-btn-ghost inline-flex h-10 items-center gap-2 px-5 text-sm font-medium"
             >
               <Wand2 className="h-4 w-4 text-[#4E8D9C]" />
               Try Nexora AI
@@ -64,14 +64,14 @@ export default function Hero() {
           </div>
 
           {/* Stat strip */}
-          <dl className="nx-rise nx-rise-delay-4 mt-12 grid max-w-lg grid-cols-3 gap-6 text-left">
+          <dl className="nx-rise nx-rise-delay-4 mt-7 grid max-w-lg grid-cols-3 gap-5 text-left">
             {[
               { v: "5", l: "Curated shops" },
               { v: "4", l: "Categories" },
               { v: "24h", l: "Express delivery" },
             ].map((s) => (
               <div key={s.l}>
-                <dt className="text-2xl font-semibold tracking-tight md:text-3xl">{s.v}</dt>
+                <dt className="text-xl font-semibold tracking-tight md:text-2xl">{s.v}</dt>
                 <dd className="mt-1 text-[12px] uppercase tracking-wider text-muted-foreground">
                   {s.l}
                 </dd>
@@ -82,7 +82,7 @@ export default function Hero() {
 
         {/* Hero visual */}
         <div className="relative lg:col-span-6">
-          <div className="relative mx-auto aspect-4/5 w-full max-w-140 overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/30 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/30">
+          <div className="relative mx-auto aspect-4/3 w-full max-w-110 overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/30 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/30">
             <HeroMedia
               poster="https://images.unsplash.com/photo-1592890288564-76628a30a657?auto=format&fit=crop&w=1400&q=85"
               alt="Nexora Vision Pro headset in studio light"

@@ -444,6 +444,18 @@ export function ChatSocketProvider({ children }: { children: React.ReactNode }) 
         return;
       }
 
+      // Backend has no /realtime/token endpoint — feature is disabled.
+      // Stay completely silent: socketClient already shut the connection.
+      const isFeatureDisabled =
+        /realtime token request failed \(404\)/i.test(message) ||
+        /\bablyCode\D*80019\b/.test(`${message} ${ablyCode}`) ||
+        ablyCode === 80019 ||
+        ablyCode === 80017;
+
+      if (isFeatureDisabled) {
+        return;
+      }
+
       // Everything else: stay silent in production (transient reconnect errors
       // are noisy). Only surface during development.
       if (process.env.NODE_ENV !== "production") {

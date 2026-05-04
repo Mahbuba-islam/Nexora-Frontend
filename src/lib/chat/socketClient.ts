@@ -200,9 +200,19 @@ class ChatRealtimeClient {
                   error instanceof Error
                     ? error.message
                     : "Failed to fetch realtime token.";
+                const status =
+                  (error as { status?: number } | undefined)?.status ?? 0;
 
                 this.tokenFailureCount += 1;
                 callback(message, null);
+
+                // 404 means the backend has no realtime endpoint deployed.
+                // Treat realtime as a disabled feature: shut down silently,
+                // never spam the console, never surface a chat_error toast.
+                if (status === 404) {
+                  this.shutdownQuietly();
+                  return;
+                }
 
                 if (this.tokenFailureCount === 1) {
                   this.emitEvent("chat_error", { message });
@@ -217,6 +227,9 @@ class ChatRealtimeClient {
           },
           autoConnect: true,
           echoMessages: false,
+          // Silence Ably's own verbose console.error on token failures —
+          // we already log/handle them ourselves above.
+          logLevel: 0,
         });
 
         this.bindConnectionEvents();
@@ -381,7 +394,11 @@ class ChatRealtimeClient {
     });
 
     if (!response.ok) {
-      throw new Error(`Realtime token request failed (${response.status})`);
+      const err = new Error(
+        `Realtime token request failed (${response.status})`,
+      ) as Error & { status?: number };
+      err.status = response.status;
+      throw err;
     }
 
     const body = await response.json();

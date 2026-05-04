@@ -1,6 +1,7 @@
 import AnnouncementBar from "@/components/modules/Nexora/AnnouncementBar";
 import Footer from "@/components/modules/Nexora/Footer";
 import Header from "@/components/modules/Nexora/Header";
+import NexoraConcierge from "@/components/AI/NexoraConcierge";
 import { getUserInfo } from "@/src/services/auth.services";
 
 // Pages may read cookies / call the live API — opt out of static prerender.
@@ -19,6 +20,7 @@ export default async function CommonLayout({
       <Header isAuthenticated={!!user} role={role} />
       <main className="flex-1">{children}</main>
       <Footer />
+      <NexoraConcierge />
     </div>
   );
 }
