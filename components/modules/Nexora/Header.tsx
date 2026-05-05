@@ -66,30 +66,29 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
       >
         <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:h-[52px] md:px-8">
           {/* Logo */}
-       <Link
+   <Link
   href="/"
   aria-label="Nexora home"
-  className="group inline-flex items-center gap-2 md:gap-2.5 font-semibold tracking-tight"
+  className="group flex items-center gap-2 md:gap-2.5 font-semibold tracking-tight"
 >
-  {/* Logo container */}
-  <span className="relative grid h-9 w-9 md:h-10 md:w-10 place-items-center overflow-hidden rounded-xl bg-[#281C59] dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
+  {/* Logo */}
+  <span className="relative flex h-9 w-9 md:h-10 md:w-10 items-center justify-center  rounded-full  dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
     <Image
       src="/logo/nexora-new-logo.png"
       alt="Nexora logo"
-      width={40}
-      height={40}
+    fill
       priority
-      className="h-full w-full object-cover"
+      className=""
     />
 
     {/* Status dot */}
     <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_6px_rgba(133,199,154,0.9)]" />
   </span>
 
-  {/* Brand name */}
-  <span className="text-[15px] md:text-[16px] font-semibold text-black dark:text-white transition-colors duration-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
+  {/* Text */}
+  {/* <span className="text-[15px] md:text-[16px] leading-none font-semibold text-black dark:text-white transition-colors duration-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
     Nexora
-  </span>
+  </span> */}
 </Link>
 
 

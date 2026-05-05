@@ -57,7 +57,7 @@ export default function Newsletter() {
             disabled={done}
             className="nx-btn-primary inline-flex lg:h-12 h-10 items-center justify-center gap-2 lg:px-6 px-0 w-5 text-sm font-medium disabled:opacity-90"
           >
-            {done ? 
+            {done ? (
               <>
                 <Check className="h-4 w-4" /> Subscribed
               </>
