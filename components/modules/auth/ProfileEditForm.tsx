@@ -31,7 +31,7 @@ export default function EditProfile() {
     onSuccess: async () => {
       toast.success("Profile updated successfully");
       await queryClient.invalidateQueries({ queryKey: ["me"] });
-      router.push("/my-profile");
+      router.push("/account");
       router.refresh();
     },
     onError: (error: unknown) => {

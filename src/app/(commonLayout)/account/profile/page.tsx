@@ -25,6 +25,7 @@ export default async function AccountProfilePage() {
       </header>
 
       <ProfileEditForm
+        redirectTo="/account"
         initial={{
           name: user.name,
           firstName: (user as { firstName?: string }).firstName,

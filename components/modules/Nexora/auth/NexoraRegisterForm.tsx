@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,12 +16,31 @@ interface Props {
 export default function NexoraRegisterForm({ redirectPath }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [password, setPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<{
     fullName?: string;
     email?: string;
     password?: string;
   }>({});
   const [pending, startTransition] = useTransition();
+
+  const strength = useMemo(() => {
+    let s = 0;
+    if (password.length >= 8) s += 1;
+    if (/[A-Za-z]/.test(password)) s += 1;
+    if (/\d/.test(password)) s += 1;
+    if (/[^A-Za-z0-9]/.test(password)) s += 1;
+    if (password.length >= 12) s += 1;
+    return Math.min(4, s);
+  }, [password]);
+  const strengthLabel = ["Too short", "Weak", "Okay", "Good", "Strong"][strength];
+  const strengthColor = [
+    "bg-red-500/70",
+    "bg-orange-500/70",
+    "bg-amber-500/70",
+    "bg-emerald-500/70",
+    "bg-emerald-600",
+  ][strength];
 
   const safeRedirect =
     redirectPath?.startsWith("/") && !redirectPath.startsWith("//")
@@ -125,9 +144,11 @@ export default function NexoraRegisterForm({ redirectPath }: Props) {
               type={showPassword ? "text" : "password"}
               autoComplete="new-password"
               required
-              minLength={6}
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="h-12 w-full rounded-2xl border border-border bg-background px-4 pr-12 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[#4E8D9C]"
-              placeholder="At least 6 characters"
+              placeholder="At least 8 characters, letters + numbers"
             />
             <button
               type="button"
@@ -142,6 +163,24 @@ export default function NexoraRegisterForm({ redirectPath }: Props) {
               )}
             </button>
           </div>
+          {password.length > 0 && (
+            <div className="mt-2 flex items-center gap-2">
+              <div className="flex h-1.5 flex-1 gap-1">
+                {[0, 1, 2, 3].map((i) => (
+                  <span
+                    key={i}
+                    className={[
+                      "h-full flex-1 rounded-full transition-colors",
+                      i < strength ? strengthColor : "bg-border",
+                    ].join(" ")}
+                  />
+                ))}
+              </div>
+              <span className="text-[10px] font-medium text-muted-foreground">
+                {strengthLabel}
+              </span>
+            </div>
+          )}
           {fieldErrors.password && (
             <p className="mt-1.5 text-xs text-red-600">{fieldErrors.password}</p>
           )}
