@@ -41,24 +41,32 @@ export default async function AdminMarketplaceLayout({
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="border-b border-border bg-[#F9F8F6] dark:bg-[#1c1c20]">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-8">
-          <Link href="/" className="flex items-center gap-3" aria-label="Nexora home">
-            <Image
-              src="/logo/nexora-logo.png"
-              alt=""
-              width={36}
-              height={36}
-              className="h-9 w-9 rounded-xl object-cover ring-1 ring-border"
-              priority
-            />
-            <div className="min-w-0">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                Marketplace Admin
-              </p>
-              <h1 className="truncate text-lg font-semibold tracking-tight md:text-xl">
-                Nexora HQ
-              </h1>
-            </div>
-          </Link>
+         <Link
+  href="/"
+  aria-label="Nexora home"
+  className="group flex items-center gap-2 md:gap-2.5 font-semibold tracking-tight"
+>
+  {/* Logo */}
+  <span className="relative flex h-9 w-9 md:h-9 md:w-9 items-center justify-center  rounded-full  dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
+    <Image
+      src="/logo/nexora-new-logo.png"
+      alt="Nexora logo"
+      fill
+      priority
+      sizes="36px"
+      className=""
+    />
+
+    {/* Status dot */}
+    <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_6px_rgba(133,199,154,0.9)]" />
+  </span>
+
+  {/* Text */}
+  {/* <span className="text-[15px] md:text-[16px] leading-none font-semibold text-black dark:text-white transition-colors duration-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
+    Nexora
+  </span> */}
+</Link>
+
           <div className="flex items-center gap-2">
             <Link
               href="/"
@@ -72,8 +80,9 @@ export default async function AdminMarketplaceLayout({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-1 gap-6 px-4 py-6 md:gap-8 md:px-8 md:py-8">
-        <aside className="hidden w-60 shrink-0 lg:block">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col lg:flex-row gap-4 md:gap-8 px-2 md:px-6 py-4 md:py-8">
+        {/* Sidebar for desktop */}
+        <aside className="hidden w-56 shrink-0 lg:block">
           <nav className="nx-card sticky top-24 p-3">
             <ul className="space-y-1">
               {NAV.map((item) => {
@@ -96,8 +105,8 @@ export default async function AdminMarketplaceLayout({
         </aside>
 
         {/* Mobile horizontal nav */}
-        <div className="lg:hidden">
-          <nav className="-mx-4 mb-4 flex gap-1.5 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="lg:hidden sticky top-0 z-30 bg-background/95 pb-2 -mx-2 px-2">
+          <nav className="flex gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {NAV.map((item) => {
               const Icon = item.icon;
               return (
@@ -114,7 +123,7 @@ export default async function AdminMarketplaceLayout({
           </nav>
         </div>
 
-        <main className="flex-1 min-w-0">{children}</main>
+        <main className="flex-1 min-w-0 w-full">{children}</main>
       </div>
     </div>
   );

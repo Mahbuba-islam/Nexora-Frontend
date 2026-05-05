@@ -50,14 +50,14 @@ export default function HeroMedia({
       {/* Image fallback for browsers that block autoplay or have JS off.
           Sits underneath the video so it shows when the <video> can't
           render (e.g. no source files yet). */}
-      <Image
+      {/* <Image
         src={poster}
         alt={alt}
         fill
         priority
         sizes="(min-width: 1024px) 560px, 100vw"
         className="nx-float -z-10 object-cover"
-      />
+      /> */}
 
       {/* Subtle vignette to keep the spec card legible regardless of
           which media layer is showing. */}

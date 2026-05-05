@@ -246,7 +246,7 @@ export default async function AdminProductsPage({
                       {p.images?.[0]?.url ? (
                         <Image
                           src={p.images[0].url}
-                          alt=""
+                          alt={p.name}
                           fill
                           sizes="48px"
                           className="object-cover"
@@ -258,15 +258,27 @@ export default async function AdminProductsPage({
                       <p className="text-[11px] text-muted-foreground">
                         {p.sku} · {p.seller?.shopName ?? "—"}
                       </p>
-                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                      {/* Short description */}
+                      {p.description && (
+                        <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{p.description}</p>
+                      )}
+                      {/* Meta info row */}
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                        <span className="font-semibold text-foreground">{formatUSD(Number(p.price))}</span>
+                        {p.createdAt && (
+                          <span>• {new Date(p.createdAt).toLocaleDateString()}</span>
+                        )}
+                        {p.rating && (
+                          <span>• ⭐ {p.rating.toFixed(1)}</span>
+                        )}
+                        {p.location && (
+                          <span>• {p.location}</span>
+                        )}
                         <StatusPill status={p.status} />
                         <StockPill
                           stock={p.stock ?? 0}
                           alert={p.lowStockAlert ?? 5}
                         />
-                        <span className="text-xs font-semibold">
-                          {formatUSD(Number(p.price))}
-                        </span>
                       </div>
                     </div>
                   </div>

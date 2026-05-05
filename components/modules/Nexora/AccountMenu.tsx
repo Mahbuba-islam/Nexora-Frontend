@@ -16,16 +16,15 @@ import { cn } from "@/src/lib/utils";
 
 interface Props {
   isAuthenticated: boolean;
-  /** Optional role hint so we can show role-aware shortcuts. */
   role?: string | null;
 }
 
 const ITEMS = [
-  { href: "/account", label: "Account", icon: User },
-  { href: "/account/orders", label: "Orders", icon: Package },
+  { href: "/account", label: "Your Dashboard", icon: Package },
   { href: "/account/wishlist", label: "Wishlist", icon: Heart },
   { href: "/account/settings", label: "Settings", icon: Settings },
 ];
+
 
 export default function AccountMenu({ isAuthenticated, role }: Props) {
   const [open, setOpen] = useState(false);

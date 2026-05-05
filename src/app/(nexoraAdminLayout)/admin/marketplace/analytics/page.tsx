@@ -232,7 +232,7 @@ export default async function AdminAnalyticsPage() {
           <ol className="mt-4 divide-y divide-border">
             {topCustomers.map((c, i) => (
               <li
-                key={c.id}
+                key={c.id ?? i}
                 className="flex items-center justify-between gap-3 py-3 text-sm"
               >
                 <div className="flex items-center gap-3 min-w-0">

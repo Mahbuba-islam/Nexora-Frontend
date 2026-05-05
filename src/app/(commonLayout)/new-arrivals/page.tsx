@@ -86,81 +86,12 @@ export default async function NewArrivalsPage() {
           {/* Featured + 3 supporting */}
           {hero && (
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              <Link
-                href={`/shop/${hero.slug}`}
-                className="group relative col-span-12 overflow-hidden rounded-3xl border border-border bg-[#F9F8F6] dark:bg-[#1c1c20] lg:col-span-7"
-              >
-                <div className="relative aspect-16/10 w-full overflow-hidden">
-                  {primaryImage(hero) ? (
-                    <Image
-                      src={primaryImage(hero)!}
-                      alt={hero.name}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  ) : (
-                    <Image
-                      src="/imges/nexora-img-2.jpg"
-                      alt={hero.name}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  )}
-                  <span className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-[#4E8D9C] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
-                    New
-                  </span>
-                </div>
-                <div className="flex items-end justify-between gap-4 p-6">
-                  <div className="min-w-0">
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                      Featured arrival
-                    </p>
-                    <h2 className="mt-1 truncate text-xl font-semibold tracking-tight md:text-2xl">
-                      {hero.name}
-                    </h2>
-                    <p className="mt-1 text-sm text-muted-foreground line-clamp-1">
-                      {hero.shortDesc ?? "Brand-new on Nexora this week."}
-                    </p>
-                  </div>
-                  <p className="shrink-0 text-lg font-semibold md:text-xl">
-                    {formatUSD(toNumberPrice(hero.price))}
-                  </p>
-                </div>
-              </Link>
-
+              <div className="col-span-12 lg:col-span-7">
+                <ProductCard product={hero} priority />
+              </div>
               <div className="col-span-12 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:col-span-5 lg:grid-cols-1">
-                {restRow.map((p) => (
-                  <Link
-                    key={p.id}
-                    href={`/shop/${p.slug}`}
-                    className="group flex items-center gap-4 overflow-hidden rounded-3xl border border-border bg-[#F9F8F6] p-3 transition-shadow hover:shadow-lg dark:bg-[#1c1c20]"
-                  >
-                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-secondary">
-                      {primaryImage(p) ? (
-                        <Image
-                          src={primaryImage(p)!}
-                          alt={p.name}
-                          fill
-                          sizes="80px"
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[10px] font-semibold uppercase tracking-wider text-[#4E8D9C]">
-                        New
-                      </p>
-                      <h3 className="truncate text-sm font-semibold tracking-tight">
-                        {p.name}
-                      </h3>
-                      <p className="mt-0.5 text-xs text-muted-foreground">
-                        {formatUSD(toNumberPrice(p.price))}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-                  </Link>
+                {restRow.map((p, i) => (
+                  <ProductCard key={p.id} product={p} priority={i < 2} />
                 ))}
               </div>
             </section>

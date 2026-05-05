@@ -35,21 +35,7 @@ export default function AuthShell({
         {/* Form pane */}
         <div className="flex w-full items-center justify-center">
           <div className="w-full max-w-md rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl backdrop-blur-xl md:p-9">
-            <Link
-              href="/"
-              className="mb-6 inline-flex items-center gap-2 text-sm font-semibold tracking-tight text-foreground"
-            >
-              <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-[#281C59] ring-1 ring-border dark:bg-[#F9F8F6]">
-                <Image
-                  src="/logo/nexora-logo.png"
-                  alt="Nexora"
-                  width={36}
-                  height={36}
-                  className="h-full w-full object-cover"
-                />
-              </span>
-              Nexora
-            </Link>
+      
             {children}
           </div>
         </div>

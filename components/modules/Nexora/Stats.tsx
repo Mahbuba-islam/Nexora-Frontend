@@ -39,23 +39,23 @@ const STATS = [
 
 export default function Stats() {
   return (
-    <section className="nx-aurora relative px-4 py-16 md:px-8 md:py-24">
-      <div className="mx-auto max-w-7xl">
+    <section className="nx-aurora relative px-4 py-16 md:px-10 md:py-24">
+      <div className="mx-auto max-w-7xl ">
         <div className="mb-10 max-w-2xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-[11px] ml-5  font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             By the numbers
           </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h2 className="mt-3 ml-4  text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             A marketplace operating at{" "}
-            <span className="nx-shimmer-text">internet scale</span>.
+            <span className="nx-shimmer-text ">internet scale</span>.
           </h2>
-          <p className="mt-3 text-sm text-muted-foreground md:text-base">
+          <p className="mt-3 text-sm text-muted-foreground md:text-base ml-5">
             Every metric you see is recomputed in real time from the Nexora
             platform — not a press release.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6 mx-2">
           {STATS.map(({ icon: Icon, value, decimals, suffix, label, accent }) => (
             <div
               key={label}

@@ -57,21 +57,31 @@ export default function Footer() {
         {/* Wordmark */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight"
-            >
-              <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-[#F9F8F6] text-[#281C59]">
-                <Image
-                  src="/logo/nexora-logo.png"
-                  alt="Nexora"
-                  width={20}
-                  height={20}
-                  className="h-full w-full object-cover"
-                />
-              </span>
-              Nexora
-            </Link>
+         <Link
+  href="/"
+  aria-label="Nexora home"
+  className="group flex items-center gap-2 md:gap-2.5 font-semibold tracking-tight"
+>
+  {/* Logo */}
+  <span className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center  rounded-full  dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
+    <Image
+      src="/logo/nexora-new-logo.png"
+      alt="Nexora logo"
+    fill
+      priority
+      className=""
+    />
+
+    {/* Status dot */}
+    <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_6px_rgba(133,199,154,0.9)]" />
+  </span>
+
+  {/* Text */}
+  {/* <span className="text-[15px] md:text-[16px] leading-none font-semibold text-black dark:text-white transition-colors duration-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
+    Nexora
+  </span> */}
+</Link>
+
             <p className="mt-5 max-w-sm text-sm text-white/60">
               The AI-native marketplace for premium tech. Designed for the next
               generation of buyers — calm, curated, and intelligent.

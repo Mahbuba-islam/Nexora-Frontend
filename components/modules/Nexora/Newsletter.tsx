@@ -39,35 +39,49 @@ export default function Newsletter() {
           drops, deals and reviews. Unsubscribe anytime.
         </p>
 
-        <form
-          onSubmit={onSubmit}
-          className="mx-auto mt-10 flex max-w-lg flex-col items-stretch gap-2 rounded-full border border-border bg-background p-1.5 shadow-lg shadow-black/5 sm:flex-row"
-        >
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@nexora.com"
-            className="h-12 flex-1 rounded-full bg-transparent px-5 text-sm outline-none placeholder:text-muted-foreground"
-            aria-label="Email address"
-          />
-          <button
-            type="submit"
-            disabled={done}
-            className="nx-btn-primary inline-flex lg:h-12 h-10 items-center justify-center gap-2 lg:px-6 px-0 w-5 text-sm font-medium disabled:opacity-90"
-          >
-            {done ? (
-              <>
-                <Check className="h-4 w-4" /> Subscribed
-              </>
-            ) : (
-              <>
-                Join the list <ArrowRight className="h-4 w-4" />
-              </>
-            )}
-          </button>
-        </form>
+    <form
+  onSubmit={onSubmit}
+  className="
+    mx-auto mt-10 flex max-w-lg flex-col sm:flex-row items-stretch gap-2
+    border border-border bg-background p-1.5 shadow-lg shadow-black/5
+    rounded-xl sm:rounded-full
+  "
+>
+  <input
+    type="email"
+    required
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    placeholder="you@nexora.com"
+    className="
+      h-12 flex-1 rounded-xl sm:rounded-full
+      bg-transparent px-5 text-sm outline-none
+      placeholder:text-muted-foreground
+    "
+    aria-label="Email address"
+  />
+
+  <button
+    type="submit"
+    disabled={done}
+    className="
+      nx-btn-primary flex h-12 items-center justify-center gap-2
+      px-6 text-sm font-medium rounded-xl sm:rounded-full
+      w-full sm:w-auto disabled:opacity-90
+    "
+  >
+    {done ? (
+      <>
+        <Check className="h-4 w-4" /> Subscribed
+      </>
+    ) : (
+      <>
+        Join the list <ArrowRight className="h-4 w-4" />
+      </>
+    )}
+  </button>
+</form>
+
         <p className="mt-3 text-xs text-muted-foreground">
           By subscribing you agree to our privacy policy.
         </p>

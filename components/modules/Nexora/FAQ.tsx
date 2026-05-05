@@ -36,13 +36,13 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="px-4 py-16 md:px-8 md:py-24">
+    <section className="px-2 py-16 md:px-10 md:py-24 ml-3">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Frequently asked
           </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Everything you wanted to know — answered.
           </h2>
           <p className="mt-4 text-sm text-muted-foreground md:text-base">

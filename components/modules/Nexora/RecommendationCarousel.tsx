@@ -82,7 +82,7 @@ export default function RecommendationCarousel({
           </div>
         </div>
 
-        <div className="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
           {items.slice(0, 8).map((p) => (
             <Link
               key={p.id}
@@ -91,7 +91,6 @@ export default function RecommendationCarousel({
             >
               <div className="relative aspect-square overflow-hidden bg-secondary">
                 {p.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={p.image}
                     alt={p.name}
@@ -117,6 +116,25 @@ export default function RecommendationCarousel({
                 <p className="mt-0.5 line-clamp-2 text-sm font-semibold tracking-tight">
                   {p.name}
                 </p>
+                {/* Add 2-line description if available */}
+                {p.shortDesc && (
+                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{p.shortDesc}</p>
+                )}
+                {/* Meta info row: rating, reviews, sold */}
+                <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
+                  {typeof p.rating === "number" && p.rating > 0 && (
+                    <span className="inline-flex items-center gap-0.5">
+                      <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" className="text-yellow-400"><polygon points="10,1.5 12.6,7.5 19,8 14,12.5 15.5,18.5 10,15.5 4.5,18.5 6,12.5 1,8 7.4,7.5"/></svg>
+                      {p.rating.toFixed(1)}
+                    </span>
+                  )}
+                  {typeof p.reviewCount === "number" && p.reviewCount > 0 && (
+                    <span>({p.reviewCount} reviews)</span>
+                  )}
+                  {typeof p.soldCount === "number" && p.soldCount > 0 && (
+                    <span>{p.soldCount} sold</span>
+                  )}
+                </div>
                 <p className="mt-2 text-sm font-semibold text-(--nx-blue-deep) dark:text-(--nx-cyan)">
                   {formatUSD(p.price)}
                 </p>

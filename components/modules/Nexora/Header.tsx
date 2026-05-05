@@ -72,12 +72,13 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
   className="group flex items-center gap-2 md:gap-2.5 font-semibold tracking-tight"
 >
   {/* Logo */}
-  <span className="relative flex h-9 w-9 md:h-10 md:w-10 items-center justify-center  rounded-full  dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
+  <span className="relative flex h-9 w-9 md:h-9 md:w-9 items-center justify-center  rounded-full  dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
     <Image
       src="/logo/nexora-new-logo.png"
       alt="Nexora logo"
-    fill
+      fill
       priority
+      sizes="36px"
       className=""
     />
 
