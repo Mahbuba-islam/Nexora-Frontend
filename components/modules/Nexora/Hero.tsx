@@ -84,8 +84,9 @@ export default function Hero() {
         <div className="relative lg:col-span-6">
           <div className="relative mx-auto aspect-4/3 w-full max-w-110 overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/30 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/30">
             <HeroMedia
-              poster="https://images.unsplash.com/photo-1592890288564-76628a30a657?auto=format&fit=crop&w=1400&q=85"
-              alt="Nexora Vision Pro headset in studio light"
+              poster="/imges/nexora-img-1.jpg"
+              alt="Nexora — premium tech, AI-curated"
+              sources={[{ src: "/video/OIG4.mp4", type: "video/mp4" }]}
             />
             {/* Floating spec card */}
             <div className="nx-rise nx-rise-delay-3 absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-2xl border border-white/30 bg-white/70 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-black/40">

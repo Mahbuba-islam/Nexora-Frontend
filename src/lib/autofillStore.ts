@@ -1,13 +1,4 @@
-/**
- * On-device profile/autofill memory.
- *
- * Stores frequently-used form values (name, email, phone, etc.) in localStorage
- * so we can offer "Use saved name?" prompts and one-click autofill on booking,
- * contact, expert-application forms.
- *
- * Forward-compatible: when the user is logged in we can hydrate this store
- * from `/api/v1/users/me` instead of (or in addition to) localStorage.
- */
+
 
 "use client";
 

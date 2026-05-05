@@ -19,6 +19,7 @@ import {
 } from "@/src/services/orders.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import { toNumberPrice } from "@/src/types/nexora.types";
+import RequestRefundButton from "@/components/modules/orders/RequestRefundButton";
 
 type Params = Promise<{ id: string }>;
 
@@ -94,6 +95,12 @@ export default async function OrderDetailPage({
           <p className="text-3xl font-semibold tabular-nums tracking-tight">
             {formatUSD(toNumberPrice(order.total))}
           </p>
+          <div className="mt-3 flex justify-end">
+            <RequestRefundButton
+              orderId={order.id}
+              maxAmount={toNumberPrice(order.total)}
+            />
+          </div>
         </div>
       </header>
 

@@ -18,9 +18,9 @@ const finalizeLogin = async (
     const { accessToken, refreshToken, token, user } = response.data;
     const { role, emailVerified, needPasswordChange, email } = user;
 
-    await setTokenInCookies("accessToken", accessToken, 7 * 24 * 60 * 60); // 7 days
-    await setTokenInCookies("refreshToken", refreshToken, 30 * 24 * 60 * 60); // 30 days
-    await setTokenInCookies("better-auth.session_token", token, 24 * 60 * 60); // 1 day in seconds
+    await setTokenInCookies("accessToken", accessToken ?? "", 7 * 24 * 60 * 60); // 7 days
+    await setTokenInCookies("refreshToken", refreshToken ?? "", 30 * 24 * 60 * 60); // 30 days
+    await setTokenInCookies("better-auth.session_token", token ?? "", 24 * 60 * 60); // 1 day in seconds
 
     if (!emailVerified) {
         redirect("/verify-email");
@@ -38,7 +38,7 @@ const finalizeLogin = async (
     redirect(targetPath);
 };
 
-export const loginAction = async (payload : ILoginPayload, redirectPath ?: string ) : Promise<ILOginResponse | ApiErrorResponse> =>{
+export const loginAction = async (payload : ILoginPayload, redirectPath ?: string ) : Promise<ILOginResponse | ApiErrorResponse | void> =>{
     const parsedPayload = loginZodSchema.safeParse(payload);
 
     if(!parsedPayload.success){

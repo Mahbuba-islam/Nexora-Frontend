@@ -50,7 +50,7 @@ export async function getMySellerOrders(
       const res = await httpClient.get<unknown>(path, {
         silent: true,
         withCredentials: true,
-        params: filters,
+        params: filters as Record<string, unknown>,
       });
       const items = parseList(res?.data);
       if (items.length > 0 || res?.success) return items;

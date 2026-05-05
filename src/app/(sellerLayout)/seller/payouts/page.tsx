@@ -7,6 +7,8 @@ import {
 } from "@/src/services/payouts.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import { toNumberPrice } from "@/src/types/nexora.types";
+import StripeConnectCard from "@/components/modules/seller/StripeConnectCard";
+import LowStockAlert from "@/components/modules/seller/LowStockAlert";
 
 export const metadata = { title: "Payouts · Seller · Nexora" };
 
@@ -54,6 +56,9 @@ export default async function SellerPayoutsPage() {
           />
         </div>
       )}
+
+      <StripeConnectCard />
+      <LowStockAlert />
 
       <section className="nx-card overflow-hidden">
         <header className="flex items-center justify-between border-b border-border bg-secondary/40 px-5 py-3">

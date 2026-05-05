@@ -7,6 +7,7 @@ import WelcomeWave from "@/components/modules/Nexora/shared/WelcomeWave";
 import { getProducts } from "@/src/services/nexora.service";
 import { primaryImage, toNumberPrice } from "@/src/types/nexora.types";
 import { formatUSD } from "@/components/modules/Nexora/data";
+import RecommendationCarousel from "@/components/modules/Nexora/RecommendationCarousel";
 
 export const metadata = {
   title: "Your account · Nexora",
@@ -175,6 +176,9 @@ export default async function AccountOverviewPage() {
           </div>
         </section>
       )}
+
+      {/* Personalized v2 — server-side AI recommendations */}
+      <RecommendationCarousel variant="for-you" />
     </div>
   );
 }

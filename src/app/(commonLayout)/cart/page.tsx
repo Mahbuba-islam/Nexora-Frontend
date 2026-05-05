@@ -2,15 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "@/src/providers/CartProvider";
 import { formatUSD } from "@/components/modules/Nexora/data";
+import ShippingQuoteForm from "@/components/modules/Nexora/ShippingQuoteForm";
+import type { NxShippingRate } from "@/src/services/marketplaceExtras.service";
 
 export default function CartPage() {
   const { items, count, subtotal, hydrated, setQty, remove, clear } = useCart();
+  const [selectedRate, setSelectedRate] = useState<NxShippingRate | null>(null);
 
-  // Estimated shipping & tax — purely cosmetic until checkout is wired.
-  const shipping = subtotal > 0 && subtotal < 200 ? 9.99 : 0;
+  // Shipping: live quote takes precedence; fallback to estimate.
+  const shipping =
+    selectedRate?.amount ?? (subtotal > 0 && subtotal < 200 ? 9.99 : 0);
   const tax = +(subtotal * 0.07).toFixed(2);
   const total = subtotal + shipping + tax;
 
@@ -193,6 +198,8 @@ export default function CartPage() {
               Continue shopping
             </Link>
           </div>
+
+          <ShippingQuoteForm onSelect={setSelectedRate} />
         </aside>
       </div>
     </div>

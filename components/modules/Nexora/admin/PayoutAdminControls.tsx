@@ -63,7 +63,10 @@ export function PayoutRowActions({ payoutId, status }: RowActionsProps) {
 
   const submitFailed = () =>
     startTransition(async () => {
-      if (!reason.trim()) return toast.error("Reason is required.");
+      if (!reason.trim()) {
+        toast.error("Reason is required.");
+        return;
+      }
       const res = await adminMarkPayoutFailed(payoutId, reason.trim());
       if (res.success) {
         toast.success("Payout marked failed.");

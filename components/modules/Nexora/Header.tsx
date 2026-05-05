@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Heart, Menu, Search, ShoppingBag, Wand2, Store, ArrowRight, X } from "lucide-react";
 import { NX_NAV } from "./data";
@@ -68,8 +69,15 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
             className="group inline-flex items-center gap-2 font-semibold tracking-tight"
             aria-label="Nexora home"
           >
-            <span className="relative grid h-8 w-8 place-items-center rounded-xl bg-[#281C59] text-[#F9F8F6] dark:bg-[#F9F8F6] dark:text-[#281C59]">
-              <span className="text-sm font-black">N</span>
+            <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-xl bg-[#281C59] ring-1 ring-white/10 dark:bg-[#F9F8F6]">
+              <Image
+                src="/logo/nexora-logo.png"
+                alt=""
+                width={32}
+                height={32}
+                priority
+                className="h-full w-full object-cover"
+              />
               <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_10px_rgba(75,191,249,0.9)]" />
             </span>
             <span className="text-[15px] md:text-base">Nexora</span>
@@ -214,7 +222,7 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
                 <span aria-hidden className="text-foreground/40">→</span>
               </Link>
             ))}
-            {isAuthenticated && (
+            {isAuthenticated ? (
               <>
                 <div className="my-3 h-px bg-border" />
                 <Link
@@ -226,11 +234,51 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
                   <span aria-hidden className="text-foreground/40">→</span>
                 </Link>
                 <Link
+                  href="/account/wishlist"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
+                >
+                  Wishlist
+                  {wishHydrated && wishCount > 0 && (
+                    <span className="rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-semibold text-white">
+                      {wishCount > 99 ? "99+" : wishCount}
+                    </span>
+                  )}
+                </Link>
+                <Link
+                  href="/account/orders"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
+                >
+                  My orders
+                  <span aria-hidden className="text-foreground/40">→</span>
+                </Link>
+                <Link
                   href="/account/settings"
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
                 >
                   Settings
+                  <span aria-hidden className="text-foreground/40">→</span>
+                </Link>
+              </>
+            ) : (
+              <>
+                <div className="my-3 h-px bg-border" />
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-semibold text-foreground transition-colors hover:bg-secondary"
+                >
+                  Sign in
+                  <span aria-hidden className="text-foreground/40">→</span>
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
+                >
+                  Create account
                   <span aria-hidden className="text-foreground/40">→</span>
                 </Link>
               </>

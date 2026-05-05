@@ -1,19 +1,8 @@
-// app/admin/dashboard/profile/page.tsx
-import ProfileContent from "@/components/modules/dashboard/ProfileContent";
-import { getMe } from "@/src/services/auth.services";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
 
-export default async function ProfilePage() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["me"],
-    queryFn: getMe,
-  });
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfileContent />
-    </HydrationBoundary>
-  );
+// Legacy route. The Nexora account hub now lives at `/account`.
+// We keep a redirect so any inbound links (e.g. ProfileEditForm.tsx) still
+// land in a useful place.
+export default function MyProfileRedirect() {
+  redirect("/account");
 }

@@ -24,6 +24,8 @@ import ProductCard from "@/components/modules/Nexora/ProductCard";
 import AddToBag from "@/components/modules/Nexora/AddToBag";
 import WishlistButton from "@/components/modules/Nexora/WishlistButton";
 import ReviewsSection from "@/components/modules/Nexora/reviews/ReviewsSection";
+import ProductQA from "@/components/modules/Nexora/ProductQA";
+import RecommendationCarousel from "@/components/modules/Nexora/RecommendationCarousel";
 
 type Params = Promise<{ slug: string }>;
 
@@ -370,6 +372,12 @@ export default async function ProductDetailPage({
         fallbackAverage={rating}
         fallbackCount={product.reviewCount}
       />
+
+      {/* Frequently bought together */}
+      <RecommendationCarousel productId={product.id} variant="fbt" />
+
+      {/* Q&A */}
+      <ProductQA productId={product.id} />
 
       {/* Related products */}
       {related.length > 0 && (

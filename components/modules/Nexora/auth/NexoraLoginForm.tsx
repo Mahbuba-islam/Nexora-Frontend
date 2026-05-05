@@ -244,9 +244,9 @@ export default function NexoraLoginForm({ redirectPath, initialEmail, verifiedFl
       </p>
 
       {/* Demo accounts */}
-      <div className="mt-8 rounded-3xl border border-dashed border-border bg-[#EDF7BD]/30 p-4">
+      <div className="mt-8 rounded-3xl border border-dashed border-border bg-yello-100 p-4">
         <div className="flex items-center justify-between">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#281C59]">
+          <p className="text-[8px]  uppercase text-muted-foreground">
             For recruiters · try a demo
           </p>
           <span className="text-[10px] text-muted-foreground">one click</span>

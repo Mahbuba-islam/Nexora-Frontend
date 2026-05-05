@@ -165,17 +165,17 @@ export default function DealsPage() {
                 })}
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap sm:items-center">
                 <Link
                   href="#deals"
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-(--nx-ink) shadow-lg transition-transform hover:-translate-y-0.5"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-(--nx-ink) shadow-lg transition-transform hover:-translate-y-0.5 sm:w-auto"
                 >
                   Shop the drops
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/shop?sort=newest"
-                  className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/5 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
                 >
                   Browse the full shop
                 </Link>

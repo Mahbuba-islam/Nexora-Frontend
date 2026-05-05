@@ -1,108 +1,68 @@
-export interface IRegisterResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    status: string;
-    isDeleted: boolean;
-    emailVerified: boolean;
-  };
-  session: any; // BetterAuth session
-  token: string; // better-auth.session_token
-  accessToken: string; // your JWT
-  refreshToken: string; // your JWT
-  client: {
-    id: string;
-    userId: string;
-    fullName: string;
-    email: string;
-    createdAt: string;
-  };
-}
+// Re-created after legacy ConsultEdge cleanup. Re-exports user types so
+// existing `@/src/types/auth.types` imports keep working.
 
-
-
-export interface ILOginResponse{
-    token: string;
-    accessToken: string;
-    refreshToken: string;
-    user: {
-        createdAt: Date;
-        updatedAt: Date;
-        email: string;
-        emailVerified: boolean;
-        name: string;
-        image?: string | null | undefined;
-        role: string;
-        status: string;
-        needPasswordChange: boolean;
-        isDeleted: boolean;
-        deletedAt?: Date | null | undefined;
-    }
-}
-export interface IUserProfile {
-  status: string;
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-
-  client?: {
-    id: string;
-    fullName: string;
-  } | null;
-
-  expert?: {
-    id: string;
-    fullName: string;
-    title: string;
-    experience: number;
-    industry: {
-      id: string;
-      name: string;
-    } | null;
-  } | null;
-
-  admin?: {
-    name: string;
-    id: string;
-  } | null;
-}
-
-
+export type { IUserProfile, UserRole } from "./user.types";
+import type { IUserProfile } from "./user.types";
 
 export interface IUpdateProfilePayload {
-  // Common fields for all users
   name?: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  avatar?: string;
   email?: string;
-  image?: string | null;
-
-  // Expert-only fields
   title?: string;
   experience?: number;
   industryId?: string;
-
-  // Client-only fields
   fullName?: string;
-
-  // Admin-only fields (if needed)
-  adminName?: string;
+  [key: string]: unknown;
 }
 
-
-
 export interface IUpdateProfileResponse {
-  id: string;
-  name: string;
+  success: boolean;
+  message?: string;
+  data?: IUserProfile | null;
+}
+
+export interface ILoginPayload {
   email: string;
-  image: string | null;
-  role: string;
-  status: string;
-  needPasswordChange: boolean;
-  emailVerified: boolean;
-  isDeleted: boolean;
-  deletedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
+  password: string;
+}
+
+export interface ILOginResponse {
+  success?: boolean;
+  message?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  token?: string;
+  data?: {
+    accessToken?: string;
+    refreshToken?: string;
+    token?: string;
+    user?: IUserProfile;
+  } | null;
+  user: IUserProfile & {
+    role?: string;
+    emailVerified?: boolean;
+    needPasswordChange?: boolean;
+    email?: string;
+  };
+}
+
+export interface IRegisterPayload {
+  email: string;
+  password: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface IRegisterResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    user?: IUserProfile;
+    accessToken?: string;
+    refreshToken?: string;
+  } | null;
 }

@@ -159,6 +159,11 @@ export const adminNavItems: NavSection[] = [
         href: "/admin/dashboard/payments-analytics",
         icon: "CreditCard",
       },
+      {
+        title: "Refunds",
+        href: "/admin/marketplace/refunds",
+        icon: "RefreshCw",
+      },
     ],
   },
 ];

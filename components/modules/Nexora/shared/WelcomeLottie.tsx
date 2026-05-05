@@ -58,7 +58,7 @@ export default function WelcomeLottie({
 
   return (
     <div aria-label={ariaLabel} className={className ?? "w-full max-w-xs md:max-w-sm"}>
-      {/* @ts-expect-error - dynamic import inferred as any */}
+      {/* dynamic import; props inferred as any */}
       <Lottie animationData={data} loop autoplay />
     </div>
   );

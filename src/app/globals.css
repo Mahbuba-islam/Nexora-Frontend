@@ -367,9 +367,26 @@ body {
 }
 .nx-pulse-soft { animation: nx-pulse-soft 4s ease-in-out infinite; }
 
+/* Burst — celebratory particle pop on follow / favourite */
+@keyframes nx-burst-particle {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--angle, 0deg)) translate(22px, 0) scale(0.3); }
+}
+.nx-burst-particle {
+  animation: nx-burst-particle 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes nx-burst-ring {
+  0% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(2.4); }
+}
+.nx-burst-ring {
+  animation: nx-burst-ring 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nx-marquee, .nx-float, .nx-orb, .nx-shimmer-text, .nx-rise,
-  .nx-wave, .nx-pop, .nx-tiny-float, .nx-spin-slow, .nx-pulse-soft {
+  .nx-wave, .nx-pop, .nx-tiny-float, .nx-spin-slow, .nx-pulse-soft,
+  .nx-burst-particle, .nx-burst-ring {
     animation: none !important;
   }
 }

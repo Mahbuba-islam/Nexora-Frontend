@@ -42,12 +42,31 @@ export default async function ShopPage({
   if (sp.brand) query.brandSlug = sp.brand;
   if (sp.search) query.search = sp.search;
   if (sp.sort) {
-    const [by, order] = sp.sort.split(":") as [
-      NonNullable<NxProductQuery["sortBy"]>,
-      NonNullable<NxProductQuery["sortOrder"]>,
-    ];
-    query.sortBy = by;
-    query.sortOrder = order;
+    // Friendly tokens — `?sort=newest`, `?sort=price-asc`, `?sort=rating`,
+    // `?sort=bestselling` — plus the explicit `field:order` form.
+    const PRESETS: Record<
+      string,
+      { sortBy: NonNullable<NxProductQuery["sortBy"]>; sortOrder: NonNullable<NxProductQuery["sortOrder"]> }
+    > = {
+      newest: { sortBy: "createdAt", sortOrder: "desc" },
+      oldest: { sortBy: "createdAt", sortOrder: "asc" },
+      "price-asc": { sortBy: "price", sortOrder: "asc" },
+      "price-desc": { sortBy: "price", sortOrder: "desc" },
+      bestselling: { sortBy: "soldCount", sortOrder: "desc" },
+      rating: { sortBy: "avgRating", sortOrder: "desc" },
+    };
+    const preset = PRESETS[sp.sort];
+    if (preset) {
+      query.sortBy = preset.sortBy;
+      query.sortOrder = preset.sortOrder;
+    } else if (sp.sort.includes(":")) {
+      const [by, order] = sp.sort.split(":") as [
+        NonNullable<NxProductQuery["sortBy"]>,
+        NonNullable<NxProductQuery["sortOrder"]>,
+      ];
+      query.sortBy = by;
+      query.sortOrder = order;
+    }
   }
 
   // Parallel reads — never block on filters waiting for products.

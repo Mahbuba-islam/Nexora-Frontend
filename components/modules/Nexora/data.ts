@@ -149,7 +149,7 @@ export const NX_TESTIMONIALS = [
 
 export const NX_NAV = [
   { label: "Deals", href: "/deals" },
-  { label: "New arrivals", href: "/shop?sort=newest" },
+  { label: "New arrivals", href: "/new-arrivals" },
   { label: "Brands", href: "/brands" },
   { label: "Support", href: "/support" },
 ];

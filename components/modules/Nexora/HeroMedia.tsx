@@ -18,18 +18,19 @@ interface Props {
   sources?: { src: string; type: string }[];
 }
 
-const DEFAULT_SOURCES: Props["sources"] = [];
+const DEFAULT_SOURCES: { src: string; type: string }[] = [];
 
 export default function HeroMedia({
   poster,
   alt,
   sources = DEFAULT_SOURCES,
 }: Props) {
+  const list = sources ?? DEFAULT_SOURCES;
   return (
     <>
       {/* Video layer — only rendered when caller provides sources, so we
           don't fire 404s for non-existent placeholder files. */}
-      {sources.length > 0 && (
+      {list.length > 0 && (
         <video
           className="nx-float absolute inset-0 h-full w-full object-cover"
           autoPlay
@@ -40,7 +41,7 @@ export default function HeroMedia({
           poster={poster}
           aria-label={alt}
         >
-          {sources.map((s) => (
+          {list.map((s) => (
             <source key={s.src} src={s.src} type={s.type} />
           ))}
         </video>

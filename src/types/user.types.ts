@@ -1,74 +1,58 @@
-import { UserRole } from "../lib/authUtilis";
+// Re-created after legacy ConsultEdge cleanup. Minimal shape that satisfies
+// every active import across the Nexora codebase.
 
-export interface UserInfo {
-    id : string;
-    name : string,
-    email : string,
-    role : UserRole
-}
-
-export type UserRoleValue = UserRole;
-
-export interface IUserManagementItem {
-    id: string;
-    userId?: string;
-    name?: string;
-    fullName?: string;
-    email: string;
-    phone?: string;
-    address?: string;
-    profilePhoto?: string | null;
-    role?: UserRoleValue | string;
-    status?: UserStatus | string;
-    emailVerified?: boolean;
-    isDeleted?: boolean;
-    createdAt?: string;
-    updatedAt?: string;
-    client?: {
-      id?: string;
-      fullName?: string | null;
-    } | null;
-    expert?: {
-      id?: string;
-      fullName?: string | null;
-      title?: string | null;
-      experience?: number | null;
-      industry?: {
-        id?: string;
-        name?: string | null;
-      } | null;
-    } | null;
-    user?: {
-      id?: string;
-      name?: string;
-      email?: string;
-      role?: UserRoleValue | string;
-      status?: UserStatus | string;
-      emailVerified?: boolean;
-      createdAt?: string;
-      updatedAt?: string;
-    } | null;
-}
-
-export interface IUserManagementQueryParams {
-    [key: string]: unknown;
-    page?: number;
-    limit?: number;
-    searchTerm?: string;
-    role?: UserRoleValue;
-    status?: UserStatus | string;
-    sortBy?: string;
-    sortOrder?: "asc" | "desc";
-}
-
-export enum Gender {
-    MALE = "MALE",
-    FEMALE = "FEMALE",
-    OTHER = "OTHER"
-}
+export type UserRole =
+  | "ADMIN"
+  | "SELLER"
+  | "EXPERT"
+  | "CLIENT"
+  | "CUSTOMER"
+  | "USER"
+  | (string & {});
 
 export enum UserStatus {
-    ACTIVE = "ACTIVE",
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  SUSPENDED = "SUSPENDED",
+  PENDING = "PENDING",
+  BANNED = "BANNED",
   BLOCKED = "BLOCKED",
-  DELETED = "DELETED",
+}
+
+export interface IUserProfile {
+  id: string;
+  userId?: string;
+  email?: string | null;
+  name?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  fullName?: string | null;
+  phone?: string | null;
+  avatar?: string | null;
+  image?: string | null;
+  role?: UserRole | null;
+  status?: UserStatus | string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  // ConsultEdge legacy nested profiles tolerated by some providers/forms.
+  expert?: {
+    fullName?: string | null;
+    title?: string | null;
+    experience?: number | null;
+    industry?: { id?: string | null; name?: string | null } | null;
+    industryId?: string | null;
+    [key: string]: unknown;
+  } | null;
+  client?: {
+    fullName?: string | null;
+    [key: string]: unknown;
+  } | null;
+  admin?: { name?: string | null; [key: string]: unknown } | null;
+  // tolerated extras from backend
+  [key: string]: unknown;
+}
+
+export interface IUserManagementItem extends IUserProfile {
+  ordersCount?: number;
+  lastSeenAt?: string | null;
 }

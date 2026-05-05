@@ -1,37 +1,28 @@
-export type NotificationType =
-  | "bookings"
-  | "schedule"
-  | "system"
-  | "user"
-  | "BOOKING"
-  | "BOOKINGS"
-  | "SCHEDULE"
-  | "SYSTEM"
-  | "USER"
-  | "EXPERT_APPLICATION"
-  | "EXPERT_APPROVED"
-  | "EXPERT_REJECTED"
-  | "EXPERT_VERIFIED"
-  | "VERIFICATION_UPDATE";
+// Re-created after legacy ConsultEdge cleanup. Minimal shape that satisfies
+// every active import across the Nexora codebase.
+
+export type NotificationType = "USER" | "SYSTEM" | "ORDER" | "REVIEW" | (string & {});
 
 export interface INotification {
   id: string;
-  type: NotificationType | string;
+  type: NotificationType;
   message: string;
-  userId: string;
-  createdAt: string;
-  updatedAt?: string;
+  userId?: string | null;
   read?: boolean;
   isRead?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  data?: Record<string, unknown> | null;
+  [key: string]: unknown;
 }
 
 export interface IUnreadNotificationCount {
-  unreadCount: number;
+  count: number;
 }
 
 export interface ICreateNotificationPayload {
-  type: string;
+  type: NotificationType;
   message: string;
   userId?: string;
-  role?: "ADMIN" | "EXPERT" | "CLIENT";
+  data?: Record<string, unknown>;
 }

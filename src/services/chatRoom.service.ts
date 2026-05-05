@@ -152,7 +152,7 @@ const normalizeReactionActorIds = (value: any): string[] => {
             : [];
 
   return entries
-    .map((entry) => {
+    .map((entry: any) => {
       if (typeof entry === "string" || typeof entry === "number") {
         return String(entry);
       }

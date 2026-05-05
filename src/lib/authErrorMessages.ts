@@ -1,8 +1,10 @@
-type AuthMode = "login" | "register";
+type AuthMode = "login" | "register" | "verifyOtp" | "resetPassword";
 
 const DEFAULT_MESSAGES: Record<AuthMode, string> = {
   login: "We couldn't sign you in right now. Please try again.",
   register: "We couldn't create your account right now. Please try again.",
+  verifyOtp: "We couldn't verify that code. Please try again.",
+  resetPassword: "We couldn't reset your password right now. Please try again.",
 };
 
 const INVALID_CREDENTIALS_MESSAGES = [
