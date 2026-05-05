@@ -6,18 +6,25 @@ import { useState, useTransition } from "react";
 import { Loader2, Star } from "lucide-react";
 import { toast } from "sonner";
 
-import { submitReview } from "@/src/services/reviews.service";
+import { submitReview, type NxReview } from "@/src/services/reviews.service";
 
 interface Props {
   productId: string;
   productSlug: string;
   isAuthenticated: boolean;
+  /** Display name to show on the optimistic review when the API doesn't echo one. */
+  currentUserName?: string | null;
+  /** Called after a successful submit so a parent client island can render the
+   *  new review immediately, without a router refresh round-trip. */
+  onSubmitted?: (review: NxReview) => void;
 }
 
 export default function ReviewForm({
   productId,
   productSlug,
   isAuthenticated,
+  currentUserName,
+  onSubmitted,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -59,12 +66,16 @@ export default function ReviewForm({
       return;
     }
 
+    const submittedRating = rating;
+    const submittedTitle = title.trim();
+    const submittedBody = body.trim();
+
     startTransition(async () => {
       const res = await submitReview({
         productId,
-        rating,
-        title: title.trim() || undefined,
-        body: body.trim(),
+        rating: submittedRating,
+        title: submittedTitle || undefined,
+        body: submittedBody,
       });
       if (!res.success) {
         setError(res.message ?? "We couldn't post your review.");
@@ -72,9 +83,30 @@ export default function ReviewForm({
         return;
       }
       toast.success("Thanks! Your review was submitted.");
+
+      // Build an optimistic review for instant rendering. If the API
+      // echoed back the persisted review use that, otherwise synthesize
+      // one from the form values + current user name.
+      const optimistic: NxReview =
+        res.review ??
+        ({
+          id: `local-${Date.now().toString(36)}`,
+          productId,
+          rating: submittedRating,
+          title: submittedTitle || undefined,
+          body: submittedBody,
+          isVerifiedPurchase: false,
+          createdAt: new Date().toISOString(),
+          user: currentUserName ? { name: currentUserName } : undefined,
+        } as NxReview);
+
+      onSubmitted?.(optimistic);
+
       setRating(0);
       setTitle("");
       setBody("");
+      // Best-effort server sync — the optimistic insert above already made
+      // the review visible.
       router.refresh();
     });
   };

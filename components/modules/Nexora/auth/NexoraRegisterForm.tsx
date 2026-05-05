@@ -81,7 +81,7 @@ export default function NexoraRegisterForm({ redirectPath }: Props) {
   };
 
   return (
-    <div className="nx-card mx-auto w-full max-w-md p-8 md:p-10">
+    <div className="w-full text-white">
       <div className="space-y-1">
         <h2 className="text-3xl font-semibold tracking-tight">
           Create account.

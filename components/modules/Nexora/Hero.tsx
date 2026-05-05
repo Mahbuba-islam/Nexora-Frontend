@@ -84,7 +84,7 @@ export default function Hero() {
         <div className="relative lg:col-span-6">
           <div className="relative mx-auto aspect-4/3 w-full max-w-110 overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/30 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/30">
             <HeroMedia
-              poster="/imges/nexora-img-1.jpg"
+              poster="/images/nexora-img-1.jpg"
               alt="Nexora — premium tech, AI-curated"
               sources={[{ src: "/video/OIG4.mp4", type: "video/mp4" }]}
             />

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight, RotateCcw, Search, Star } from "lucide-react";
 import type {
   NxBrand,
   NxCategoryNode,
@@ -18,6 +18,9 @@ interface Props {
     brand?: string;
     search?: string;
     sort?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    minRating?: string;
   };
 }
 
@@ -29,6 +32,8 @@ const SORTS = [
   { value: "avgRating:desc", label: "Top rated" },
 ];
 
+const RATING_PRESETS = [4, 3, 2] as const;
+
 export default function ShopFilters({
   categoryTree,
   brands,
@@ -37,6 +42,8 @@ export default function ShopFilters({
   const router = useRouter();
   const params = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [minPrice, setMinPrice] = useState(current.minPrice ?? "");
+  const [maxPrice, setMaxPrice] = useState(current.maxPrice ?? "");
 
   const setParam = (key: string, value: string | null) => {
     const next = new URLSearchParams(params.toString());
@@ -46,11 +53,38 @@ export default function ShopFilters({
     startTransition(() => router.push(`/shop?${next.toString()}`));
   };
 
+  const setMany = (entries: Array<[string, string | null]>) => {
+    const next = new URLSearchParams(params.toString());
+    for (const [k, v] of entries) {
+      if (v && v.length > 0) next.set(k, v);
+      else next.delete(k);
+    }
+    next.delete("page");
+    startTransition(() => router.push(`/shop?${next.toString()}`));
+  };
+
   const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     setParam("search", String(fd.get("search") ?? "").trim() || null);
   };
+
+  const onSubmitPrice = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setMany([
+      ["minPrice", minPrice.trim() || null],
+      ["maxPrice", maxPrice.trim() || null],
+    ]);
+  };
+
+  const hasAnyFilter =
+    !!current.category ||
+    !!current.brand ||
+    !!current.search ||
+    !!current.sort ||
+    !!current.minPrice ||
+    !!current.maxPrice ||
+    !!current.minRating;
 
   return (
     <aside className="sticky top-20 space-y-7">
@@ -64,6 +98,21 @@ export default function ShopFilters({
           className="h-11 w-full rounded-full border border-border bg-background pl-11 pr-4 text-sm outline-none transition-colors focus:border-[#4E8D9C]"
         />
       </form>
+
+      {hasAnyFilter && (
+        <button
+          type="button"
+          onClick={() => {
+            setMinPrice("");
+            setMaxPrice("");
+            startTransition(() => router.push("/shop"));
+          }}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+        >
+          <RotateCcw className="h-3 w-3" />
+          Reset all filters
+        </button>
+      )}
 
       <div>
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -81,6 +130,76 @@ export default function ShopFilters({
             </option>
           ))}
         </select>
+      </div>
+
+      <div>
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          Price (USD)
+        </p>
+        <form onSubmit={onSubmitPrice} className="flex items-center gap-2">
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            placeholder="Min"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-[#4E8D9C]"
+          />
+          <span className="text-xs text-muted-foreground">to</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            placeholder="Max"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-[#4E8D9C]"
+          />
+          <button
+            type="submit"
+            className="h-10 shrink-0 rounded-xl bg-[#281C59] px-3 text-xs font-semibold text-[#F9F8F6] transition-colors hover:bg-black dark:bg-[#F9F8F6] dark:text-[#281C59] dark:hover:bg-white"
+          >
+            Go
+          </button>
+        </form>
+      </div>
+
+      <div>
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          Rating
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setParam("minRating", null)}
+            className={pill(!current.minRating)}
+          >
+            Any
+          </button>
+          {RATING_PRESETS.map((r) => {
+            const active = current.minRating === String(r);
+            return (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setParam("minRating", String(r))}
+                className={pill(active)}
+                aria-label={`${r} stars and up`}
+              >
+                <span className="inline-flex items-center gap-1">
+                  <Star
+                    className={[
+                      "h-3 w-3",
+                      active ? "fill-current" : "fill-[#F9FF56] text-[#F9FF56]",
+                    ].join(" ")}
+                  />
+                  {r}+
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div>

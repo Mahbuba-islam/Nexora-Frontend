@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Wand2, Star } from "lucide-react";
 import {
@@ -8,6 +7,7 @@ import {
 } from "@/src/types/nexora.types";
 import { formatUSD } from "./data";
 import WishlistButton from "./WishlistButton";
+import SmartImage from "./SmartImage";
 
 const FALLBACK_IMG = "/imges/nexora-img-2.jpg";
 
@@ -49,7 +49,7 @@ export default function ProductCard({ product: p, priority }: Props) {
         aria-label={`View ${p.name}`}
         className="relative block aspect-square w-full overflow-hidden rounded-2xl bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/15 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/15"
       >
-        <Image
+        <SmartImage
           src={img}
           alt={p.images?.[0]?.alt ?? p.name}
           fill

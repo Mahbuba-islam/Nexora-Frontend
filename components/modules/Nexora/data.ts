@@ -150,6 +150,7 @@ export const NX_TESTIMONIALS = [
 export const NX_NAV = [
   { label: "Deals", href: "/deals" },
   { label: "New arrivals", href: "/new-arrivals" },
+  { label: "Stores", href: "/stores" },
   { label: "Brands", href: "/brands" },
   { label: "Support", href: "/support" },
 ];

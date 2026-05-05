@@ -244,6 +244,31 @@ export default function NexoraConcierge() {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, busy]);
 
+  // Allow any component on the page to open / seed the concierge by
+  // dispatching a custom event:
+  //   window.dispatchEvent(new CustomEvent("nexora:open-concierge", {
+  //     detail: { prompt?: string }
+  //   }))
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const detail = (e as CustomEvent<{ prompt?: string }>).detail;
+      setOpen(true);
+      setGreetingVisible(false);
+      if (detail?.prompt && typeof detail.prompt === "string") {
+        // Small delay to let the panel mount before injecting the prompt.
+        window.setTimeout(() => {
+          setInput(detail.prompt!);
+        }, 50);
+      }
+    };
+    window.addEventListener("nexora:open-concierge", onOpen as EventListener);
+    return () =>
+      window.removeEventListener(
+        "nexora:open-concierge",
+        onOpen as EventListener,
+      );
+  }, []);
+
   const send = (raw: string) => {
     const text = raw.trim();
     if (!text || busy) return;

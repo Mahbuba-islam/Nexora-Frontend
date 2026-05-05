@@ -9,6 +9,7 @@ import AISearchDialog from "./AISearchDialog";
 import AccountMenu from "./AccountMenu";
 import CategoriesMegaMenu from "./CategoriesMegaMenu";
 import NotificationBell from "./NotificationBell";
+import ThemeToggle from "./ThemeToggle";
 import { logoutAction } from "@/src/app/(commonLayout)/(authRouteGroup)/logOut/_action";
 import { useCart } from "@/src/providers/CartProvider";
 import { useWishlist } from "@/src/providers/WishlistProvider";
@@ -69,7 +70,7 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
             className="group inline-flex items-center gap-2 font-semibold tracking-tight"
             aria-label="Nexora home"
           >
-            <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-xl bg-[#281C59] ring-1 ring-white/10 dark:bg-[#F9F8F6]">
+            <span className="relative grid h- w-8 place-items-center overflow-hidden rounded-xl bg-[#281C59] ring-1 ring-white/10 dark:bg-[#F9F8F6]">
               <Image
                 src="/logo/nexora-logo.png"
                 alt=""
@@ -146,6 +147,7 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
             <div className="hidden md:block">
               <NotificationBell visible={isAuthenticated} />
             </div>
+            <ThemeToggle className="hidden md:grid" />
             <AccountMenu isAuthenticated={isAuthenticated} role={role} />
             <Link
               href="/cart"
@@ -285,6 +287,10 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
             )}
           </nav>
           <div className="space-y-3 border-t border-border p-5">
+            <div className="flex items-center justify-between rounded-2xl border border-border bg-secondary/40 px-4 py-2.5">
+              <span className="text-sm font-medium text-foreground/80">Theme</span>
+              <ThemeToggle />
+            </div>
             <button
               type="button"
               onClick={() => {

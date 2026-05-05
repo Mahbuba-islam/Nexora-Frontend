@@ -298,7 +298,7 @@ export async function askProductQuestion(
     const res = await httpClient.post<NxProductQuestion>(
       `/products/${productId}/qa`,
       { question },
-      { withCredentials: true },
+      { withCredentials: true, silent: true },
     );
     return res?.data || null;
   } catch {

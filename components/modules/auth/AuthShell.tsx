@@ -47,7 +47,7 @@ export default function AuthShell({
 
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 lg:grid-cols-[1.05fr_1fr] lg:items-center">
         {/* Left: brand panel (desktop only) */}
-        <div className="hidden flex-col gap-8 lg:flex">
+        <div className="hidden flex-col gap-8 lg:flex ">
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-cyan-200">
               <Store className="size-3.5" />

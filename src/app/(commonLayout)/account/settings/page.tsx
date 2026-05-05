@@ -64,6 +64,12 @@ export default async function SettingsPage() {
       {/* Action grid */}
       <section className="grid gap-4 md:grid-cols-2">
         <SettingLink
+          href="/account/profile"
+          icon={User}
+          title="Edit profile"
+          desc="Update your name, phone and avatar."
+        />
+        <SettingLink
           href="/change-password"
           icon={Lock}
           title="Change password"

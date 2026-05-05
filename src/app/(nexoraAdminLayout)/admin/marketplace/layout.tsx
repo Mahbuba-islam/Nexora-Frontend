@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { getUserInfo } from "@/src/services/auth.services";
+import AccountMenu from "@/components/modules/Nexora/AccountMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,7 @@ export default async function AdminMarketplaceLayout({
               <Home className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Back to site</span>
             </Link>
+            <AccountMenu isAuthenticated role={user.role} />
           </div>
         </div>
       </header>

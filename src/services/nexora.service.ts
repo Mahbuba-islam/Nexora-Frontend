@@ -100,3 +100,21 @@ export const getBrands = async (): Promise<NxBrand[]> => {
     return [];
   }
 };
+
+export interface NxBrandCreatePayload {
+  name: string;
+  slug?: string;
+  logo?: string;
+  website?: string;
+  description?: string;
+  isFeatured?: boolean;
+}
+
+export const createBrand = async (
+  payload: NxBrandCreatePayload,
+): Promise<NxBrand | null> => {
+  const res = await httpClient.post<NxBrand>("/brands", payload, {
+    withCredentials: true,
+  });
+  return res?.data ?? null;
+};

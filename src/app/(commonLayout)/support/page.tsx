@@ -23,6 +23,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SupportSearch from "@/components/modules/Nexora/SupportSearch";
+import SupportChannels from "@/components/modules/Nexora/SupportChannels";
 
 export const metadata = { title: "Support · Nexora" };
 
@@ -142,6 +144,7 @@ const CHANNELS = [
     cta: "Start chat",
     href: "#",
     available: true,
+    action: "chat" as const,
   },
   {
     icon: Sparkles,
@@ -150,6 +153,7 @@ const CHANNELS = [
     cta: "Ask the AI",
     href: "#",
     available: true,
+    action: "ai" as const,
   },
   {
     icon: Mail,
@@ -224,44 +228,8 @@ export default function SupportPage() {
               them.
             </p>
 
-            {/* Search */}
-            <form
-              action="/shop"
-              className="mx-auto mt-6 flex w-full max-w-xl items-center gap-2 rounded-full border border-border bg-white/95 pl-3 pr-1.5 shadow-md ring-1 ring-black/5 focus-within:border-(--nx-blue-deep) focus-within:ring-(--nx-blue-deep)/20 dark:bg-white/[0.06] dark:ring-white/10 sm:pl-4"
-            >
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <input
-                name="q"
-                placeholder="Search help articles, orders…"
-                className="h-12 min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-              />
-              <button
-                type="submit"
-                aria-label="Search"
-                className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-full bg-(--nx-ink) px-3 text-xs font-semibold text-white transition-colors hover:bg-(--nx-blue-deep) sm:px-5"
-              >
-                <span className="hidden sm:inline">Search</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            </form>
-
-            {/* Quick chips */}
-            <div className="mt-5 flex flex-wrap justify-center gap-2 text-xs">
-              {[
-                "Where is my order?",
-                "Start a return",
-                "Update payment",
-                "Cancel an order",
-              ].map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 font-medium transition-colors hover:bg-secondary"
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
+            {/* Search + chips (client) */}
+            <SupportSearch />
           </div>
         </div>
       </section>
@@ -351,45 +319,18 @@ export default function SupportPage() {
       {/* CONTACT CHANNELS */}
       <section className="mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
         <div className="rounded-3xl border border-border bg-linear-to-br from-card via-background to-secondary p-6 md:p-10">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {CHANNELS.map((c) => {
-              const I = c.icon;
-              const Wrapper: React.ElementType = c.href === "#" ? "div" : Link;
-              return (
-                <Wrapper
-                  key={c.title}
-                  {...(c.href !== "#" ? { href: c.href } : {})}
-                  className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="grid h-10 w-10 place-items-center rounded-2xl bg-linear-to-br from-(--nx-ink) to-(--nx-blue-deep) text-white">
-                      <I className="h-4 w-4" />
-                    </div>
-                    {c.available ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 nx-pulse-soft" />
-                        Online
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                        Off-hours
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-3 text-base font-semibold tracking-tight">
-                    {c.title}
-                  </p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {c.desc}
-                  </p>
-                  <p className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-(--nx-blue-deep) dark:text-(--nx-cyan)">
-                    {c.cta}
-                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                  </p>
-                </Wrapper>
-              );
-            })}
-          </div>
+          <SupportChannels
+            channels={CHANNELS.map((c) => ({
+              iconName: c.title,
+              Icon: c.icon,
+              title: c.title,
+              desc: c.desc,
+              cta: c.cta,
+              href: c.href,
+              available: c.available,
+              action: "action" in c ? c.action : undefined,
+            }))}
+          />
 
           <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-border bg-background p-5 md:flex-row md:items-center">
             <div>

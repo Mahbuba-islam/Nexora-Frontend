@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import {
@@ -21,6 +20,7 @@ import {
 } from "@/src/types/nexora.types";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import ProductCard from "@/components/modules/Nexora/ProductCard";
+import ProductGallery from "@/components/modules/Nexora/ProductGallery";
 import AddToBag from "@/components/modules/Nexora/AddToBag";
 import WishlistButton from "@/components/modules/Nexora/WishlistButton";
 import ReviewsSection from "@/components/modules/Nexora/reviews/ReviewsSection";
@@ -173,7 +173,7 @@ export default async function ProductDetailPage({
       {/* Hero */}
       <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-10 md:px-8 md:py-14 lg:grid-cols-2 lg:gap-16">
         {/* Gallery */}
-        <Gallery images={images} heroImg={heroImg} name={product.name} />
+        <ProductGallery images={images} fallback={heroImg} name={product.name} />
 
         {/* Buy box */}
         <div className="flex flex-col">
@@ -418,49 +418,6 @@ export default async function ProductDetailPage({
 }
 
 /* ---------- Sub-components ---------- */
-
-function Gallery({
-  images,
-  heroImg,
-  name,
-}: {
-  images: NxProduct["images"];
-  heroImg: string;
-  name: string;
-}) {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-linear-to-br from-[#EFE9E3] via-[#F9F8F6] to-[#85C79A]/15 dark:from-[#281C59] dark:via-[#1c1c20] dark:to-[#4E8D9C]/15">
-        <Image
-          src={heroImg}
-          alt={images?.[0]?.alt ?? name}
-          fill
-          priority
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
-        />
-      </div>
-      {images.length > 1 && (
-        <div className="grid grid-cols-4 gap-3">
-          {images.slice(0, 4).map((img) => (
-            <div
-              key={img.id}
-              className="relative aspect-square overflow-hidden rounded-xl border border-border bg-secondary"
-            >
-              <Image
-                src={img.url}
-                alt={img.alt ?? name}
-                fill
-                sizes="120px"
-                className="object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 function SpecRow({ label, value }: { label: string; value: string }) {
   return (

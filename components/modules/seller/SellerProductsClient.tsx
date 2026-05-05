@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ImagePlus,
   Loader2,
@@ -154,8 +154,32 @@ const seedDrafts = (): ProductDraft[] => [
   },
 ];
 
+const STORAGE_KEY = "nx:seller:products";
+
+const loadFromStorage = (): ProductDraft[] | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as ProductDraft[]) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveToStorage = (drafts: ProductDraft[]) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+  } catch {
+    /* quota / privacy mode — ignore */
+  }
+};
+
 export default function SellerProductsClient() {
   const [drafts, setDrafts] = useState<ProductDraft[]>(seedDrafts);
+  const [hydrated, setHydrated] = useState(false);
   const [aiBusy, setAiBusy] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
@@ -165,6 +189,18 @@ export default function SellerProductsClient() {
     price: "",
     image: "",
   });
+
+  // Hydrate from localStorage so listings survive reload.
+  useEffect(() => {
+    const stored = loadFromStorage();
+    if (stored && stored.length > 0) setDrafts(stored);
+    setHydrated(true);
+  }, []);
+
+  // Persist on every change after hydration.
+  useEffect(() => {
+    if (hydrated) saveToStorage(drafts);
+  }, [drafts, hydrated]);
 
   const liveCount = useMemo(
     () => drafts.filter((d) => d.status === "LIVE").length,
@@ -302,7 +338,7 @@ export default function SellerProductsClient() {
               value={form.title}
               onChange={(e) => update("title", e.target.value)}
               placeholder="e.g. Aurora X Pro 5G"
-              className="mt-1.5"
+              className="mt-1.5 "
             />
           </div>
 
@@ -314,7 +350,7 @@ export default function SellerProductsClient() {
               id="category"
               value={form.category}
               onChange={(e) => update("category", e.target.value)}
-              className="mt-1.5 h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm shadow-sm focus:border-ring focus:outline-none"
+              className="mt-1.5 h-9 w-full rounded-md border border-input bg-[#10203f7c]  px-3 text-sm shadow-sm focus:border-ring focus:outline-none"
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>

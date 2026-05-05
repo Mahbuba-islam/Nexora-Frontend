@@ -102,6 +102,12 @@ export interface NxProductQuery {
   isOnSale?: boolean;
   isBestseller?: boolean;
   isNewArrival?: boolean;
+  /** Inclusive lower price bound (USD). Forwarded to backend as `minPrice`. */
+  minPrice?: number;
+  /** Inclusive upper price bound (USD). Forwarded to backend as `maxPrice`. */
+  maxPrice?: number;
+  /** Minimum average rating (1–5). Forwarded as `minRating`. */
+  minRating?: number;
   sortBy?: "createdAt" | "price" | "soldCount" | "avgRating";
   sortOrder?: "asc" | "desc";
 }

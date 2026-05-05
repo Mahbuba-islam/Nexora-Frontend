@@ -11,6 +11,7 @@ import {
 
 import { getUserInfo } from "@/src/services/auth.services";
 import { logoutAction } from "@/src/app/(commonLayout)/(authRouteGroup)/logOut/_action";
+import AccountMenu from "@/components/modules/Nexora/AccountMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -50,12 +51,15 @@ export default async function SellerLayout({
               {name}
             </h1>
           </div>
-          <Link
-            href="/"
-            className="hidden text-xs font-semibold text-foreground/70 hover:text-foreground md:block"
-          >
-            ← Back to storefront
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="hidden text-xs font-semibold text-foreground/70 hover:text-foreground md:block"
+            >
+              ← Back to storefront
+            </Link>
+            <AccountMenu isAuthenticated role={user.role} />
+          </div>
         </div>
       </header>
 

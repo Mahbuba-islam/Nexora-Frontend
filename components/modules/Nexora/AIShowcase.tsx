@@ -28,7 +28,7 @@ export default function AIShowcase() {
   return (
     <section
       id="ai"
-      className="relative isolate overflow-hidden bg-[#281C59] py-14 text-[#F9F8F6] md:py-20"
+      className="relative isolate overflow-hidden bg-[#0d0432] py-14 text-[#F9F8F6] md:py-20"
     >
       {/* Glow */}
       <div

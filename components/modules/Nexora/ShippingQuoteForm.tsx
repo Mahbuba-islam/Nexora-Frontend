@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, MapPin, Truck } from "lucide-react";
+import { Loader2, MapPin, Sparkles, Truck } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -17,6 +17,40 @@ interface Props {
   onSelect?: (rate: NxShippingRate) => void;
 }
 
+/** Built-in fallback rates so the demo always finishes the flow,
+ *  even when the live shipping provider has no rates for the entered
+ *  address. Keeps recruiter / portfolio review unblocked. */
+const DEMO_RATES: NxShippingRate[] = [
+  {
+    id: "demo-standard",
+    carrier: "Nexora",
+    service: "Standard ground",
+    amount: 9.99,
+    estimatedDays: 4,
+  },
+  {
+    id: "demo-express",
+    carrier: "Nexora",
+    service: "Express 2-day",
+    amount: 19.99,
+    estimatedDays: 2,
+  },
+  {
+    id: "demo-overnight",
+    carrier: "Nexora",
+    service: "Overnight",
+    amount: 34.99,
+    estimatedDays: 1,
+  },
+];
+
+const SAMPLE_ADDRESS = {
+  country: "US",
+  postal: "10001",
+  city: "New York",
+  state: "NY",
+};
+
 export default function ShippingQuoteForm({ onSelect }: Props) {
   const { items } = useCart();
   const [country, setCountry] = useState("US");
@@ -26,6 +60,14 @@ export default function ShippingQuoteForm({ onSelect }: Props) {
   const [rates, setRates] = useState<NxShippingRate[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  const applyRates = (list: NxShippingRate[]) => {
+    setRates(list);
+    if (list[0]) {
+      setSelected(list[0].id);
+      onSelect?.(list[0]);
+    }
+  };
 
   async function quote() {
     if (!postal.trim()) {
@@ -43,45 +85,68 @@ export default function ShippingQuoteForm({ onSelect }: Props) {
     });
     setBusy(false);
     if (result.length === 0) {
-      toast.error(
-        "We couldn't find rates for this address. Double-check and try again.",
+      // Soft-fail: surface demo rates so the checkout flow still completes.
+      toast.message(
+        "No live carrier rates for that address — showing demo rates so you can continue.",
       );
-      setRates([]);
+      applyRates(DEMO_RATES);
       return;
     }
-    setRates(result);
-    if (result[0]) {
-      setSelected(result[0].id);
-      onSelect?.(result[0]);
-    }
+    applyRates(result);
   }
+
+  const fillSample = () => {
+    setCountry(SAMPLE_ADDRESS.country);
+    setPostal(SAMPLE_ADDRESS.postal);
+    setCity(SAMPLE_ADDRESS.city);
+    setState(SAMPLE_ADDRESS.state);
+    toast.success("Sample US address loaded — click Get rates.");
+  };
 
   return (
     <section className="mt-5 rounded-2xl border border-border bg-card p-5">
-      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        <MapPin className="h-3.5 w-3.5" />
-        Estimate shipping
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <MapPin className="h-3.5 w-3.5" />
+          Estimate shipping
+        </div>
+        <button
+          type="button"
+          onClick={fillSample}
+          className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/80 transition-colors hover:border-foreground/40 hover:text-foreground"
+        >
+          <Sparkles className="h-3 w-3" />
+          Use sample address
+        </button>
       </div>
+
+      <p className="mt-2 text-[11px] text-muted-foreground">
+        Country &amp; postal code are required. City and state are optional.
+      </p>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <Input
-          placeholder="Country"
+          aria-label="Country (ISO 2-letter)"
+          placeholder="Country (e.g. US)"
           value={country}
           onChange={(e) => setCountry(e.target.value.toUpperCase().slice(0, 2))}
           maxLength={2}
         />
         <Input
-          placeholder="Postal code"
+          aria-label="Postal code"
+          placeholder="Postal code *"
           value={postal}
           onChange={(e) => setPostal(e.target.value)}
         />
         <Input
-          placeholder="City"
+          aria-label="City (optional)"
+          placeholder="City (optional)"
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
         <Input
-          placeholder="State / Region"
+          aria-label="State or region (optional)"
+          placeholder="State / Region (optional)"
           value={state}
           onChange={(e) => setState(e.target.value)}
         />

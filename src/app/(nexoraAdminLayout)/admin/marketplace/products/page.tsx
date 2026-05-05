@@ -4,14 +4,7 @@ import { ArrowUpRight, Filter, Package, Plus, Search } from "lucide-react";
 
 import { getAdminProducts } from "@/src/services/admin.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
-import RowActionButton from "@/components/modules/admin/RowActionButton";
-import InlineEditDialog from "@/components/modules/admin/InlineEditDialog";
-import {
-  bulkProductsAction,
-  deleteProductAction,
-  restoreProductAction,
-  updateProductAction,
-} from "../_actions";
+import ProductRowActions from "@/components/modules/admin/ProductRowActions";
 
 export const metadata = { title: "Products · Nexora Admin" };
 export const dynamic = "force-dynamic";
@@ -70,18 +63,15 @@ export default async function AdminProductsPage({
             Curate the catalog. Edit, feature, archive, or restore at scale.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/seller/products/new"
-            className="inline-flex h-9 items-center gap-1.5 rounded-full bg-foreground px-3.5 text-xs font-semibold text-background hover:bg-foreground/90"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            New product
-          </Link>
-        </div>
+        <Link
+          href="/seller/products"
+          className="inline-flex h-9 items-center gap-1.5 rounded-full bg-foreground px-3.5 text-xs font-semibold text-background hover:bg-foreground/90"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          New product
+        </Link>
       </header>
 
-      {/* Stat strip */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Listings on page" value={products.length} icon={Package} />
         <Stat label="Active" value={totalActive} accent="emerald" />
@@ -89,11 +79,7 @@ export default async function AdminProductsPage({
         <Stat label="Out of stock" value={outOfStock} accent="rose" />
       </div>
 
-      {/* Filters */}
-      <form
-        method="get"
-        className="nx-card flex flex-wrap items-end gap-3 p-4"
-      >
+      <form method="get" className="nx-card flex flex-wrap items-end gap-3 p-4">
         <label className="flex-1 min-w-50">
           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Search
@@ -153,12 +139,13 @@ export default async function AdminProductsPage({
         </button>
       </form>
 
-      {/* Table */}
       <div className="nx-card overflow-hidden">
         {products.length === 0 ? (
           <div className="px-6 py-16 text-center">
             <Package className="mx-auto h-10 w-10 text-foreground/30" />
-            <p className="mt-4 text-sm font-semibold">No products match your filters.</p>
+            <p className="mt-4 text-sm font-semibold">
+              No products match your filters.
+            </p>
             <p className="mt-1 text-xs text-muted-foreground">
               Try clearing filters or seeding demo data on the backend.
             </p>
@@ -232,68 +219,17 @@ export default async function AdminProductsPage({
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-1.5">
-                          <InlineEditDialog
-                            title={`Edit ${p.name}`}
-                            triggerLabel="Edit"
-                            fields={[
-                              {
-                                name: "price",
-                                label: "Price (USD)",
-                                type: "number",
-                                step: "0.01",
-                                defaultValue: Number(p.price),
-                              },
-                              {
-                                name: "stock",
-                                label: "Stock",
-                                type: "number",
-                                defaultValue: p.stock ?? 0,
-                              },
-                              {
-                                name: "status",
-                                label: "Status",
-                                type: "select",
-                                defaultValue: p.status,
-                                options: STATUS_OPTIONS.filter(
-                                  (s) => s.value !== "ALL",
-                                ),
-                              },
-                            ]}
-                            onSave={(payload) =>
-                              updateProductAction(p.id, payload)
-                            }
+                          <ProductRowActions
+                            product={{
+                              id: p.id,
+                              name: p.name,
+                              price: Number(p.price),
+                              stock: p.stock ?? 0,
+                              status: p.status,
+                              isFeatured: p.isFeatured,
+                              isDeleted: p.isDeleted,
+                            }}
                           />
-                          {p.isFeatured ? (
-                            <RowActionButton
-                              variant="subtle"
-                              label="Unfeature"
-                              action={() =>
-                                bulkProductsAction([p.id], "unfeature")
-                              }
-                            />
-                          ) : (
-                            <RowActionButton
-                              variant="subtle"
-                              label="Feature"
-                              action={() =>
-                                bulkProductsAction([p.id], "feature")
-                              }
-                            />
-                          )}
-                          {p.isDeleted ? (
-                            <RowActionButton
-                              variant="primary"
-                              label="Restore"
-                              action={() => restoreProductAction(p.id)}
-                            />
-                          ) : (
-                            <RowActionButton
-                              variant="danger"
-                              label="Archive"
-                              confirm={`Archive "${p.name}"? It will be hidden from the storefront.`}
-                              action={() => deleteProductAction(p.id)}
-                            />
-                          )}
                         </div>
                       </td>
                     </tr>
@@ -302,7 +238,6 @@ export default async function AdminProductsPage({
               </table>
             </div>
 
-            {/* Mobile cards */}
             <ul className="divide-y divide-border md:hidden">
               {products.map((p) => (
                 <li key={p.id} className="space-y-3 px-4 py-4">
@@ -336,49 +271,17 @@ export default async function AdminProductsPage({
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    <InlineEditDialog
-                      title={`Edit ${p.name}`}
-                      triggerLabel="Edit"
-                      fields={[
-                        {
-                          name: "price",
-                          label: "Price (USD)",
-                          type: "number",
-                          step: "0.01",
-                          defaultValue: Number(p.price),
-                        },
-                        {
-                          name: "stock",
-                          label: "Stock",
-                          type: "number",
-                          defaultValue: p.stock ?? 0,
-                        },
-                        {
-                          name: "status",
-                          label: "Status",
-                          type: "select",
-                          defaultValue: p.status,
-                          options: STATUS_OPTIONS.filter(
-                            (s) => s.value !== "ALL",
-                          ),
-                        },
-                      ]}
-                      onSave={(payload) => updateProductAction(p.id, payload)}
+                    <ProductRowActions
+                      product={{
+                        id: p.id,
+                        name: p.name,
+                        price: Number(p.price),
+                        stock: p.stock ?? 0,
+                        status: p.status,
+                        isFeatured: p.isFeatured,
+                        isDeleted: p.isDeleted,
+                      }}
                     />
-                    {p.isDeleted ? (
-                      <RowActionButton
-                        variant="primary"
-                        label="Restore"
-                        action={() => restoreProductAction(p.id)}
-                      />
-                    ) : (
-                      <RowActionButton
-                        variant="danger"
-                        label="Archive"
-                        confirm={`Archive "${p.name}"?`}
-                        action={() => deleteProductAction(p.id)}
-                      />
-                    )}
                     <Link
                       href={`/shop/${p.slug}`}
                       className="inline-flex h-8 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-semibold text-foreground/70 hover:bg-secondary"
@@ -390,9 +293,7 @@ export default async function AdminProductsPage({
               ))}
             </ul>
 
-            {meta && meta.totalPages > 1 && (
-              <Pagination meta={meta} sp={sp} />
-            )}
+            {meta && meta.totalPages > 1 && <Pagination meta={meta} sp={sp} />}
           </>
         )}
       </div>

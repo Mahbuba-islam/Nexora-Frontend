@@ -7,10 +7,9 @@ const COLS = [
     title: "Shop",
     links: [
       { label: "New arrivals", href: "/shop?sort=new" },
-      { label: "Phones", href: "/shop/phones" },
-      { label: "Laptops", href: "/shop/laptops" },
-      { label: "Audio", href: "/shop/audio" },
-      { label: "Wearables", href: "/shop/wearables" },
+      { label: "Mans Fashion", href: "/shop/mans-fashion" },
+      { label: "Womens Fashion", href: "/shop/womens-fashion" },
+   { label: "Wearables", href: "/shop/tech/wearables" },
       { label: "Deals", href: "/deals" },
     ],
   },
@@ -18,15 +17,15 @@ const COLS = [
     title: "Nexora AI",
     links: [
       { label: "How it works", href: "/ai" },
-      { label: "AI search", href: "/ai/search" },
-      { label: "Smart bundles", href: "/ai/bundles" },
+       { label: "Smart bundles", href: "/ai/bundles" },
+      { label: "AI Search", href: "/ai/search" },
       { label: "Concierge", href: "/ai/concierge" },
     ],
   },
   {
     title: "Support",
     links: [
-      { label: "Help center", href: "/help" },
+      { label: "Help center", href: "/support" },
       { label: "Order status", href: "/orders" },
       { label: "Shipping", href: "/shipping" },
       { label: "Returns", href: "/returns" },
@@ -66,8 +65,8 @@ export default function Footer() {
                 <Image
                   src="/logo/nexora-logo.png"
                   alt="Nexora"
-                  width={36}
-                  height={36}
+                  width={20}
+                  height={20}
                   className="h-full w-full object-cover"
                 />
               </span>

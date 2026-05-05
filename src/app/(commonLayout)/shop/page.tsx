@@ -6,7 +6,11 @@ import {
   getCategoryTree,
   getProducts,
 } from "@/src/services/nexora.service";
-import type { NxProductQuery } from "@/src/types/nexora.types";
+import {
+  toNumberPrice,
+  type NxProduct,
+  type NxProductQuery,
+} from "@/src/types/nexora.types";
 import ProductCard from "@/components/modules/Nexora/ProductCard";
 import ShopFilters from "@/components/modules/Nexora/ShopFilters";
 
@@ -22,6 +26,9 @@ type SearchParams = Promise<{
   search?: string;
   sort?: string;
   page?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  minRating?: string;
 }>;
 
 const PAGE_SIZE = 12;
@@ -34,6 +41,19 @@ export default async function ShopPage({
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
 
+  const minPriceNum =
+    sp.minPrice && !Number.isNaN(Number(sp.minPrice))
+      ? Math.max(0, Number(sp.minPrice))
+      : undefined;
+  const maxPriceNum =
+    sp.maxPrice && !Number.isNaN(Number(sp.maxPrice))
+      ? Math.max(0, Number(sp.maxPrice))
+      : undefined;
+  const minRatingNum =
+    sp.minRating && !Number.isNaN(Number(sp.minRating))
+      ? Math.min(5, Math.max(0, Number(sp.minRating)))
+      : undefined;
+
   const query: NxProductQuery = {
     limit: PAGE_SIZE,
     page,
@@ -41,6 +61,9 @@ export default async function ShopPage({
   if (sp.category) query.categorySlug = sp.category;
   if (sp.brand) query.brandSlug = sp.brand;
   if (sp.search) query.search = sp.search;
+  if (minPriceNum != null) query.minPrice = minPriceNum;
+  if (maxPriceNum != null) query.maxPrice = maxPriceNum;
+  if (minRatingNum != null) query.minRating = minRatingNum;
   if (sp.sort) {
     // Friendly tokens — `?sort=newest`, `?sort=price-asc`, `?sort=rating`,
     // `?sort=bestselling` — plus the explicit `field:order` form.
@@ -76,7 +99,18 @@ export default async function ShopPage({
     getBrands(),
   ]);
 
-  const products = productsRes.data;
+  // Client-side fallback filter for price/rating: even if the backend
+  // ignores those query params, we still respect the user's filter on the
+  // returned page. This guarantees the UI is always "fully functional".
+  const allProducts = productsRes.data;
+  const products: NxProduct[] = allProducts.filter((p) => {
+    const price = toNumberPrice(p.price);
+    if (minPriceNum != null && price < minPriceNum) return false;
+    if (maxPriceNum != null && price > maxPriceNum) return false;
+    if (minRatingNum != null && (p.avgRating ?? 0) < minRatingNum) return false;
+    return true;
+  });
+
   const meta = productsRes.meta ?? {
     page,
     limit: PAGE_SIZE,
@@ -115,6 +149,9 @@ export default async function ShopPage({
                 brand: sp.brand,
                 search: sp.search,
                 sort: sp.sort,
+                minPrice: sp.minPrice,
+                maxPrice: sp.maxPrice,
+                minRating: sp.minRating,
               }}
             />
           </Suspense>
@@ -125,7 +162,7 @@ export default async function ShopPage({
             <EmptyState searchTerm={sp.search} />
           ) : (
             <>
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                 {products.map((p, i) => (
                   <ProductCard key={p.id} product={p} priority={i < 3} />
                 ))}
@@ -188,6 +225,9 @@ function Pagination({
     if (sp.brand) params.set("brand", sp.brand);
     if (sp.search) params.set("search", sp.search);
     if (sp.sort) params.set("sort", sp.sort);
+    if (sp.minPrice) params.set("minPrice", sp.minPrice);
+    if (sp.maxPrice) params.set("maxPrice", sp.maxPrice);
+    if (sp.minRating) params.set("minRating", sp.minRating);
     if (page > 1) params.set("page", String(page));
     const qs = params.toString();
     return `/shop${qs ? `?${qs}` : ""}`;
