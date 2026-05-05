@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
@@ -61,8 +62,14 @@ export default function Footer() {
               href="/"
               className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#F9F8F6] text-[#281C59]">
-                <span className="text-sm font-black">N</span>
+              <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-[#F9F8F6] text-[#281C59]">
+                <Image
+                  src="/logo/nexora-logo.png"
+                  alt="Nexora"
+                  width={36}
+                  height={36}
+                  className="h-full w-full object-cover"
+                />
               </span>
               Nexora
             </Link>

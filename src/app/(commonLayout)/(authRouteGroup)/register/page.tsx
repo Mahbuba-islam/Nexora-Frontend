@@ -1,3 +1,4 @@
+import AuthShell from "@/components/modules/Nexora/auth/AuthShell";
 import NexoraRegisterForm from "@/components/modules/Nexora/auth/NexoraRegisterForm";
 
 export const metadata = {
@@ -11,5 +12,12 @@ interface Props {
 
 export default async function RegisterPage({ searchParams }: Props) {
   const sp = await searchParams;
-  return <NexoraRegisterForm redirectPath={sp.redirect} />;
+  return (
+    <AuthShell
+      headline="Join Nexora — premium tech, curated by AI."
+      subline="Track every order, build smart wishlists, and get personalised drops the moment they go live."
+    >
+      <NexoraRegisterForm redirectPath={sp.redirect} />
+    </AuthShell>
+  );
 }

@@ -1,4 +1,5 @@
-import { Store } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Store } from "lucide-react";
 
 import { getAdminSellers } from "@/src/services/marketplace.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
@@ -48,6 +49,7 @@ export default async function AdminSellersPage() {
                 <th className="px-5 py-3 text-right">Products</th>
                 <th className="px-5 py-3 text-right">Orders</th>
                 <th className="px-5 py-3 text-right">GMV</th>
+                <th className="px-5 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -84,6 +86,14 @@ export default async function AdminSellersPage() {
                   </td>
                   <td className="px-5 py-3 text-right font-semibold">
                     {s.gmv ? formatUSD(toNumberPrice(s.gmv)) : "—"}
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <Link
+                      href={`/admin/marketplace/sellers/${s.id}`}
+                      className="inline-flex h-8 items-center gap-1 rounded-full border border-border bg-background px-3 text-[11px] font-semibold text-foreground/80 hover:bg-secondary"
+                    >
+                      Manage <ArrowUpRight className="h-3 w-3" />
+                    </Link>
                   </td>
                 </tr>
               ))}

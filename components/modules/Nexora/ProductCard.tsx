@@ -9,8 +9,7 @@ import {
 import { formatUSD } from "./data";
 import WishlistButton from "./WishlistButton";
 
-const FALLBACK_IMG =
-  "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80";
+const FALLBACK_IMG = "/imges/nexora-img-2.jpg";
 
 const pickBadge = (
   p: NxProduct,
