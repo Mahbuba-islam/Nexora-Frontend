@@ -10,6 +10,7 @@ import {
   toNumberPrice,
   type NxProduct,
 } from "@/src/types/nexora.types";
+import { getProducts } from "@/src/services/nexora.service";
 import { formatUSD } from "./data";
 
 const SUGGESTIONS = [
@@ -18,10 +19,6 @@ const SUGGESTIONS = [
   "Phone with the best low-light camera",
   "Lightweight ultrabook for travel",
 ];
-
-const API_BASE = (
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000/api/v1"
-).replace(/\/+$/, "");
 
 interface Props {
   open: boolean;
@@ -78,26 +75,45 @@ export default function AISearchDialog({ open, onClose }: Props) {
     }
     setLoading(true);
     setError(false);
-    const ac = new AbortController();
+    let cancelled = false;
     const t = window.setTimeout(async () => {
       try {
-        const url = `${API_BASE}/products?search=${encodeURIComponent(
-          term,
-        )}&limit=6`;
-        const res = await fetch(url, { signal: ac.signal });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as { data: NxProduct[] };
-        setResults(Array.isArray(json?.data) ? json.data : []);
+        // Try the canonical `search` field first; fall back to `q` for
+        // backends that haven't been updated. Whichever returns a
+        // non-empty page wins, otherwise we union the two result sets.
+        const [a, b] = await Promise.all([
+          getProducts({ search: term, limit: 6 }),
+          getProducts({
+            // some backends expose `q` instead of `search`
+            // @ts-expect-error optional alt query key
+            q: term,
+            limit: 6,
+          }),
+        ]);
+        if (cancelled) return;
+        const seen = new Set<string>();
+        const merged: NxProduct[] = [];
+        for (const list of [a.data ?? [], b.data ?? []]) {
+          for (const p of list) {
+            if (!seen.has(p.id)) {
+              seen.add(p.id);
+              merged.push(p);
+            }
+          }
+        }
+        setResults(merged.slice(0, 6));
+        setError(!a.success && !b.success);
       } catch (e) {
-        if ((e as Error).name === "AbortError") return;
+        if (cancelled) return;
+        console.warn("[AISearchDialog]", (e as Error)?.message);
         setError(true);
         setResults([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }, 220);
     return () => {
-      ac.abort();
+      cancelled = true;
       window.clearTimeout(t);
     };
   }, [query, open]);

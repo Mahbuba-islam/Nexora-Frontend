@@ -11,6 +11,9 @@ import {
 import { formatUSD } from "@/components/modules/Nexora/data";
 import { toNumberPrice } from "@/src/types/nexora.types";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = {
   title: "Orders · Nexora",
 };
@@ -52,7 +55,9 @@ export default async function OrdersPage() {
 }
 
 function flattenItems(order: NxOrder): NxOrderItem[] {
-  return order.sellerOrders.flatMap((so) => so.items);
+  return (order.sellerOrders ?? [])
+    .flatMap((so) => so?.items ?? [])
+    .filter((it): it is NxOrderItem => Boolean(it));
 }
 
 function OrderCard({ order }: { order: NxOrder }) {
@@ -109,7 +114,7 @@ function OrderCard({ order }: { order: NxOrder }) {
           ) : (
             <Package className="h-3 w-3" />
           )}
-          {order.status.toLowerCase()}
+          {order.status?.toLowerCase() ?? "pending"}
         </span>
       </div>
 
@@ -117,15 +122,15 @@ function OrderCard({ order }: { order: NxOrder }) {
         {items.slice(0, 3).map((item) => (
           <li key={item.id} className="flex items-center gap-4 px-5 py-4">
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary">
-              {item.image && (
+              {item.image ? (
                 <Image
                   src={item.image}
-                  alt={item.name}
+                  alt={item.name || "Product"}
                   fill
                   sizes="64px"
                   className="object-cover"
                 />
-              )}
+              ) : null}
             </div>
             <div className="min-w-0 flex-1">
               {item.productSlug ? (

@@ -21,6 +21,9 @@ import { formatUSD } from "@/components/modules/Nexora/data";
 import { toNumberPrice } from "@/src/types/nexora.types";
 import RequestRefundButton from "@/components/modules/orders/RequestRefundButton";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 type Params = Promise<{ id: string }>;
 
 export const metadata = {
@@ -338,15 +341,15 @@ function SellerOrderCard({ sellerOrder }: { sellerOrder: NxSellerOrder }) {
         {sellerOrder.items.map((item) => (
           <li key={item.id} className="flex items-center gap-4 px-5 py-4">
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary">
-              {item.image && (
+              {item.image ? (
                 <Image
                   src={item.image}
-                  alt={item.name}
+                  alt={item.name || "Product"}
                   fill
                   sizes="64px"
                   className="object-cover"
                 />
-              )}
+              ) : null}
             </div>
             <div className="min-w-0 flex-1">
               {item.productSlug ? (

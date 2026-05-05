@@ -38,6 +38,10 @@ const ICON_BY_TYPE: Record<
   PAYOUT_PAID: Wallet,
   PAYOUT_FAILED: Wallet,
   REVIEW_RECEIVED: Wand2,
+  PROMO: Wand2,
+  PRICE_DROP: Wand2,
+  NEW_SELLER_APPLICATION: ShoppingBag,
+  SYSTEM: Bell,
   GENERAL: Bell,
 };
 

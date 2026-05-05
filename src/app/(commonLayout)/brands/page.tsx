@@ -410,7 +410,7 @@ export default function BrandsPage() {
               </p>
             </div>
             <Link
-              href="/seller/apply"
+              href="/sell/start"
               className="inline-flex h-11 items-center gap-2 self-start rounded-full bg-white px-6 text-sm font-semibold text-(--nx-ink) shadow-lg transition-transform hover:-translate-y-0.5"
             >
               Become a seller

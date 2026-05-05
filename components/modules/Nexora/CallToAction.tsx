@@ -31,22 +31,22 @@ export default function CallToAction() {
               </p>
             </div>
 
-            <div className="flex flex-col items-start gap-4 md:items-end">
+            <div className="flex w-full flex-col items-stretch gap-3 md:items-end">
               <Link
                 href="/register"
-                className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-[#281C59] shadow-[0_10px_30px_-10px_rgba(255,255,255,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-12px_rgba(255,255,255,0.55)]"
+                className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-[#281C59] shadow-[0_10px_30px_-10px_rgba(255,255,255,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-12px_rgba(255,255,255,0.55)] md:w-72"
               >
                 Create free account
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href="/shop"
-                className="group inline-flex h-12 items-center gap-2 rounded-full border border-white/30 px-6 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-white/30 px-7 text-sm font-semibold text-white transition-colors hover:bg-white/10 md:w-72"
               >
                 Browse the marketplace
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <p className="text-[11px] text-white/55">
+              <p className="mt-1 text-[11px] text-white/55 md:text-right">
                 No credit card · Cancel any time · 30-day returns
               </p>
             </div>

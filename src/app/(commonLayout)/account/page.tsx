@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Heart, Mail, Package, Wand2 } from "lucide-react";
 
@@ -8,6 +7,7 @@ import { getProducts } from "@/src/services/nexora.service";
 import { primaryImage, toNumberPrice } from "@/src/types/nexora.types";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import RecommendationCarousel from "@/components/modules/Nexora/RecommendationCarousel";
+import SmartImage from "@/components/modules/Nexora/SmartImage";
 
 export const metadata = {
   title: "Your account · Nexora",
@@ -153,7 +153,7 @@ export default async function AccountOverviewPage() {
                   className="nx-card group overflow-hidden p-3"
                 >
                   <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-linear-to-br from-(--nx-blue)/10 to-(--nx-cyan)/10">
-                    <Image
+                    <SmartImage
                       src={img}
                       alt={p.images?.[0]?.alt ?? p.name}
                       fill

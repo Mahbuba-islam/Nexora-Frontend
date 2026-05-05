@@ -2,11 +2,18 @@
 
 import Link from "next/link";
 import type { ComponentType } from "react";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Headphones,
+  Mail,
+  MessageCircle,
+  Sparkles,
+} from "lucide-react";
+
+export type SupportChannelIcon = "chat" | "ai" | "email" | "phone";
 
 interface Channel {
-  iconName: string;
-  Icon: ComponentType<{ className?: string }>;
+  iconName: SupportChannelIcon;
   title: string;
   desc: string;
   cta: string;
@@ -24,6 +31,13 @@ interface Props {
   channels: Channel[];
 }
 
+const ICON_MAP: Record<SupportChannelIcon, ComponentType<{ className?: string }>> = {
+  chat: MessageCircle,
+  ai: Sparkles,
+  email: Mail,
+  phone: Headphones,
+};
+
 const openConcierge = (prompt?: string) => {
   if (typeof window === "undefined") return;
   window.dispatchEvent(
@@ -37,7 +51,7 @@ export default function SupportChannels({ channels }: Props) {
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {channels.map((c) => {
-        const I = c.Icon;
+        const I = ICON_MAP[c.iconName] ?? MessageCircle;
         const inner = (
           <>
             <div className="flex items-start justify-between">

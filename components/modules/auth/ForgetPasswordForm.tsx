@@ -89,7 +89,7 @@ export default function ForgetPasswordForm({
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={field.handleBlur}
                 readOnly={lockEmail}
-                className="h-11 w-full rounded-xl border border-slate-200/70 bg-white/70 px-4 text-sm outline-none backdrop-blur transition placeholder:text-muted-foreground focus-visible:border-cyan-500/60 focus-visible:ring-2 focus-visible:ring-cyan-500/30 read-only:bg-slate-100/70 read-only:text-muted-foreground dark:border-white/10 dark:bg-white/5 dark:read-only:bg-white/5"
+                className="h-11 w-full rounded-xl border border-[#281C59]/20 bg-white/70 px-4 text-sm outline-none backdrop-blur transition placeholder:text-muted-foreground focus-visible:border-[#4E8D9C]/60 focus-visible:ring-2 focus-visible:ring-[#4E8D9C]/30 read-only:bg-slate-100/70 read-only:text-muted-foreground dark:border-white/10 dark:bg-white/5 dark:read-only:bg-white/5"
               />
               {field.state.meta.errors?.[0] ? (
                 <Alert variant="destructive">
@@ -105,7 +105,7 @@ export default function ForgetPasswordForm({
             <AppSubmitButton
               isPending={isSubmitting}
               pendingLabel={pendingLabel}
-              className="h-11 w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-cyan-500/25 hover:from-blue-700 hover:to-cyan-600"
+              className="h-11 w-full rounded-xl bg-linear-to-r from-[#281C59] to-[#4E8D9C] text-white shadow-md shadow-[#4E8D9C]/25 hover:from-[#1f1647] hover:to-[#3f7585]"
             >
               {submitLabel}
             </AppSubmitButton>
@@ -116,7 +116,7 @@ export default function ForgetPasswordForm({
       {showLoginLink ? (
         <p className="text-center text-sm text-muted-foreground">
           Remember your password?{" "}
-          <Link href="/login" className="font-medium text-primary hover:underline">
+          <Link href="/login" className="font-medium text-[#4E8D9C] hover:text-[#281C59] hover:underline dark:text-[#85C79A] dark:hover:text-[#F9FF56]">
             Back to login
           </Link>
         </p>

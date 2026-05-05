@@ -41,7 +41,7 @@ export default async function StoresPage() {
             Want to be one of the first?
           </p>
           <Link
-            href="/seller/apply"
+            href="/sell/start"
             className="mt-5 inline-flex h-10 items-center gap-1.5 rounded-full bg-foreground px-4 text-xs font-semibold text-background hover:bg-foreground/90"
           >
             Open a Nexora store

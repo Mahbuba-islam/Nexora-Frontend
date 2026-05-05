@@ -15,6 +15,10 @@ export type NxNotificationType =
   | "PAYOUT_PAID"
   | "PAYOUT_FAILED"
   | "REVIEW_RECEIVED"
+  | "PROMO"
+  | "PRICE_DROP"
+  | "NEW_SELLER_APPLICATION"
+  | "SYSTEM"
   | "GENERAL";
 
 export interface NxNotification {
@@ -101,9 +105,12 @@ export async function getUnreadCount(): Promise<number> {
 }
 
 export async function markNotificationRead(id: string): Promise<boolean> {
-  const candidates: { method: "patch" | "post"; path: string }[] = [
+  const candidates: { method: "patch" | "post" | "put"; path: string }[] = [
     { method: "patch", path: `/notifications/${id}/read` },
     { method: "post", path: `/notifications/${id}/read` },
+    { method: "put", path: `/notifications/${id}/read` },
+    { method: "patch", path: `/notifications/${id}/mark-read` },
+    { method: "post", path: `/notifications/${id}/mark-read` },
     { method: "patch", path: `/notifications/${id}` },
   ];
   for (const c of candidates) {
@@ -121,13 +128,19 @@ export async function markNotificationRead(id: string): Promise<boolean> {
 }
 
 export async function markAllNotificationsRead(): Promise<boolean> {
-  const candidates = [
-    "/notifications/read-all",
-    "/notifications/mark-all-read",
+  const candidates: { method: "patch" | "post" | "put"; path: string }[] = [
+    { method: "patch", path: "/notifications/read-all" },
+    { method: "post", path: "/notifications/read-all" },
+    { method: "patch", path: "/notifications/mark-all-read" },
+    { method: "post", path: "/notifications/mark-all-read" },
+    { method: "patch", path: "/notifications/mark-all" },
+    { method: "post", path: "/notifications/mark-all" },
+    { method: "patch", path: "/notifications/read" },
+    { method: "post", path: "/notifications/read" },
   ];
-  for (const path of candidates) {
+  for (const c of candidates) {
     try {
-      await httpClient.post<unknown>(path, undefined, {
+      await httpClient[c.method]<unknown>(c.path, undefined, {
         silent: true,
         withCredentials: true,
       });
@@ -137,4 +150,16 @@ export async function markAllNotificationsRead(): Promise<boolean> {
     }
   }
   return false;
+}
+
+export async function deleteNotification(id: string): Promise<boolean> {
+  try {
+    await httpClient.delete<unknown>(`/notifications/${id}`, {
+      silent: true,
+      withCredentials: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
 }

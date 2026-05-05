@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Star } from "lucide-react";
 
 import type {
@@ -72,6 +72,17 @@ export default function ReviewsClient({
   const handleAdd = (incoming: NxReview) => {
     setReviews((prev) => [incoming, ...prev]);
   };
+
+  // Listen for QuickRateStars (or other widgets) firing instant ratings.
+  useEffect(() => {
+    const onAdded = (e: Event) => {
+      const detail = (e as CustomEvent<NxReview>).detail;
+      if (detail && detail.productId === productId) handleAdd(detail);
+    };
+    window.addEventListener("nx:review-added", onAdded as EventListener);
+    return () =>
+      window.removeEventListener("nx:review-added", onAdded as EventListener);
+  }, [productId]);
 
   const average =
     summary.totalReviews > 0 ? summary.averageRating : fallbackAverage;
@@ -197,11 +208,16 @@ export default function ReviewsClient({
                     {r.title}
                   </h4>
                 )}
-                {r.body && (
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/80">
-                    {r.body}
-                  </p>
-                )}
+                <p
+                  className={[
+                    "mt-2 text-sm leading-relaxed",
+                    r.body ? "text-foreground/80" : "italic text-muted-foreground",
+                  ].join(" ")}
+                >
+                  {r.body?.trim()
+                    ? r.body
+                    : "The buyer rated this product without leaving a written review."}
+                </p>
               </li>
             ))}
           </ul>

@@ -46,7 +46,7 @@ export default async function AdminSellerDetailPage({
             <Pill>
               Commission ·{" "}
               {seller.commissionRate != null
-                ? `${(seller.commissionRate * 100).toFixed(1)}%`
+                ? `${(Number(seller.commissionRate) * 100).toFixed(1)}%`
                 : "—"}
             </Pill>
           </div>

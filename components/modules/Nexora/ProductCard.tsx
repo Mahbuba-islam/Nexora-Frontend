@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Wand2, Star } from "lucide-react";
+import { Wand2, Star, Truck } from "lucide-react";
 import {
   primaryImage,
   toNumberPrice,
@@ -39,10 +39,16 @@ export default function ProductCard({ product: p, priority }: Props) {
   const badge = pickBadge(p);
   const price = toNumberPrice(p.price);
   const old = toNumberPrice(p.compareAtPrice);
-  const rating = p.avgRating ?? 0;
+  const onSale = old > 0 && old > price;
+  const discountPct = onSale ? Math.round(((old - price) / old) * 100) : 0;
+  const rating = Number(p.avgRating ?? 0) || 0;
+  const reviewCount = Number(p.reviewCount ?? 0) || 0;
+  const sold = Number(p.soldCount ?? 0) || 0;
+  const lowStock =
+    p.trackInventory && !p.allowBackorder && p.stock > 0 && p.stock <= 5;
 
   return (
-    <article className="nx-card group relative flex flex-col overflow-hidden p-4">
+    <article className="nx-card group relative flex flex-col overflow-hidden p-3 transition-shadow hover:shadow-lg">
       <WishlistButton product={p} />
       <Link
         href={`/shop/${p.slug}`}
@@ -68,54 +74,102 @@ export default function ProductCard({ product: p, priority }: Props) {
             {badge.label}
           </span>
         )}
+        {onSale && (
+          <span className="absolute right-3 top-3 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-lg">
+            -{discountPct}%
+          </span>
+        )}
         {p.stock <= 0 && (
           <span className="absolute bottom-3 left-3 rounded-full bg-[#281C59]/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur">
             Sold out
           </span>
         )}
+        {lowStock && (
+          <span className="absolute bottom-3 left-3 rounded-full bg-orange-500/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur">
+            Only {p.stock} left
+          </span>
+        )}
       </Link>
 
-      <div className="mt-4 flex flex-1 flex-col">
-        <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-          {p.category?.name ?? p.brand?.name ?? "Tech"}
+      <div className="mt-3 flex flex-1 flex-col">
+        <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          {p.brand?.name ?? p.category?.name ?? "Tech"}
         </p>
         <Link
           href={`/shop/${p.slug}`}
-          className="mt-1 line-clamp-1 text-base font-semibold tracking-tight text-foreground hover:text-[#4E8D9C]"
+          className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-tight tracking-tight text-foreground hover:text-[#4E8D9C]"
         >
           {p.name}
         </Link>
-        {p.shortDesc && (
-          <p className="mt-1 line-clamp-2 text-xs text-foreground/65">
-            {p.shortDesc}
-          </p>
-        )}
 
-        <div className="mt-4 flex items-end justify-between gap-2">
-          <div className="flex items-baseline gap-2">
-            <span className="text-base font-semibold tracking-tight">
-              {formatUSD(price)}
-            </span>
-            {old > 0 && old > price && (
-              <span className="text-xs text-muted-foreground line-through">
-                {formatUSD(old)}
+        {/* Rating row — Amazon/Temu style */}
+        <div className="mt-2 flex items-center gap-1.5 text-xs">
+          {rating > 0 ? (
+            <>
+              <div className="flex items-center gap-0.5" aria-label={`Rated ${rating.toFixed(1)} out of 5`}>
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star
+                    key={i}
+                    className={[
+                      "h-3.5 w-3.5",
+                      i < Math.round(rating)
+                        ? "fill-[#F9B900] text-[#F9B900]"
+                        : "text-foreground/20",
+                    ].join(" ")}
+                  />
+                ))}
+              </div>
+              <span className="font-semibold tabular-nums text-foreground">
+                {rating.toFixed(1)}
               </span>
-            )}
-          </div>
-          {rating > 0 && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Star className="h-3.5 w-3.5 fill-[#4E8D9C] text-[#4E8D9C]" />
-              {rating.toFixed(1)}
-            </div>
+              {reviewCount > 0 && (
+                <span className="text-muted-foreground">
+                  ({reviewCount.toLocaleString()})
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="text-[11px] text-muted-foreground">No reviews yet</span>
           )}
+        </div>
+
+        {/* Price */}
+        <div className="mt-2 flex items-baseline gap-2">
+          <span className="text-lg font-semibold tracking-tight">
+            {formatUSD(price)}
+          </span>
+          {onSale && (
+            <span className="text-xs text-muted-foreground line-through">
+              {formatUSD(old)}
+            </span>
+          )}
+          {onSale && (
+            <span className="text-[10px] font-bold uppercase tracking-wide text-red-500">
+              Save {formatUSD(old - price)}
+            </span>
+          )}
+        </div>
+
+        {/* Trust strip */}
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-muted-foreground">
+          {sold > 0 && (
+            <span className="font-medium">
+              {sold >= 1000
+                ? `${(sold / 1000).toFixed(1).replace(/\.0$/, "")}k+ sold`
+                : `${sold} sold`}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1">
+            <Truck className="h-3 w-3" />
+            Free shipping
+          </span>
         </div>
 
         <Link
           href={`/shop/${p.slug}`}
-          className="mt-4 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-[#281C59] text-xs font-medium text-[#F9F8F6] transition-transform hover:-translate-y-0.5 hover:bg-black dark:bg-[#F9F8F6] dark:text-[#281C59] dark:hover:bg-white"
+          className="mt-3 inline-flex h-9 w-full items-center justify-center rounded-full bg-[#281C59] text-xs font-semibold text-[#F9F8F6] transition-all hover:-translate-y-0.5 hover:bg-black dark:bg-[#F9F8F6] dark:text-[#281C59] dark:hover:bg-white"
         >
           View product
-          <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
     </article>

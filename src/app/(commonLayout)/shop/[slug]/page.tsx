@@ -24,8 +24,10 @@ import ProductGallery from "@/components/modules/Nexora/ProductGallery";
 import AddToBag from "@/components/modules/Nexora/AddToBag";
 import WishlistButton from "@/components/modules/Nexora/WishlistButton";
 import ReviewsSection from "@/components/modules/Nexora/reviews/ReviewsSection";
+import QuickRateStars from "@/components/modules/Nexora/reviews/QuickRateStars";
 import ProductQA from "@/components/modules/Nexora/ProductQA";
 import RecommendationCarousel from "@/components/modules/Nexora/RecommendationCarousel";
+import { getUserInfo } from "@/src/services/auth.services";
 
 type Params = Promise<{ slug: string }>;
 
@@ -124,12 +126,16 @@ export default async function ProductDetailPage({
     .filter((r) => r.id !== product.id)
     .slice(0, 4);
 
+  const user = await getUserInfo();
+  const currentUserName =
+    (user as { name?: string | null } | null)?.name ?? null;
+
   const price = toNumberPrice(product.price);
   const compare = toNumberPrice(product.compareAtPrice);
   const onSale = compare > 0 && compare > price;
   const discount = onSale ? Math.round(((compare - price) / compare) * 100) : 0;
   const inStock = product.allowBackorder || product.stock > 0;
-  const rating = product.avgRating ?? 0;
+  const rating = Number(product.avgRating ?? 0) || 0;
 
   // Image gallery: dedupe by url, keep primary first.
   const images = [...(product.images ?? [])].sort((a, b) => {
@@ -221,29 +227,40 @@ export default async function ProductDetailPage({
           )}
 
           {/* Rating */}
-          <div className="mt-5 flex items-center gap-3">
-            <div className="flex items-center gap-0.5">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <Star
-                  key={i}
-                  className={[
-                    "h-4 w-4",
-                    i < Math.round(rating)
-                      ? "fill-[#F9FF56] text-[#F9FF56]"
-                      : "text-foreground/20",
-                  ].join(" ")}
-                />
-              ))}
-            </div>
-            <span className="text-xs text-muted-foreground">
-              {rating > 0 ? rating.toFixed(1) : "No ratings yet"}
-              {product.reviewCount > 0 && (
-                <> · {product.reviewCount.toLocaleString()} reviews</>
-              )}
-            </span>
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
+            {rating > 0 ? (
+              <>
+                <div className="flex items-center gap-0.5">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star
+                      key={i}
+                      className={[
+                        "h-4 w-4",
+                        i < Math.round(rating)
+                          ? "fill-[#F9FF56] text-[#F9FF56]"
+                          : "text-foreground/20",
+                      ].join(" ")}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {rating.toFixed(1)}
+                  {product.reviewCount > 0 && (
+                    <> · {product.reviewCount.toLocaleString()} reviews</>
+                  )}
+                </span>
+              </>
+            ) : (
+              <QuickRateStars
+                productId={product.id}
+                productSlug={product.slug}
+                isAuthenticated={!!user}
+                currentUserName={currentUserName}
+              />
+            )}
             {product.soldCount > 0 && (
               <span className="text-xs text-muted-foreground">
-                · {product.soldCount.toLocaleString()} sold
+                {product.soldCount.toLocaleString()} sold
               </span>
             )}
           </div>

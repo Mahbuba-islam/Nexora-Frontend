@@ -7,6 +7,7 @@ import {
   CheckCheck,
   Package,
   ShoppingBag,
+  Trash2,
   Wand2,
   Truck,
   Wallet,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 
 import {
+  deleteNotification,
   markAllNotificationsRead,
   markNotificationRead,
   type NxNotification,
@@ -35,6 +37,10 @@ const ICON_BY_TYPE: Record<
   PAYOUT_PAID: Wallet,
   PAYOUT_FAILED: Wallet,
   REVIEW_RECEIVED: Wand2,
+  PROMO: Wand2,
+  PRICE_DROP: Wand2,
+  NEW_SELLER_APPLICATION: ShoppingBag,
+  SYSTEM: Bell,
   GENERAL: Bell,
 };
 
@@ -69,6 +75,19 @@ export default function NotificationListClient({
       if (ok) {
         setItems((prev) => prev.map((n) => ({ ...n, isRead: true })));
         setUnread(0);
+      }
+    });
+  };
+
+  const onDelete = (id: string) => {
+    const target = items.find((n) => n.id === id);
+    startTransition(async () => {
+      const ok = await deleteNotification(id);
+      if (ok) {
+        setItems((prev) => prev.filter((n) => n.id !== id));
+        if (target && !target.isRead) {
+          setUnread((u) => Math.max(0, u - 1));
+        }
       }
     });
   };
@@ -145,6 +164,17 @@ export default function NotificationListClient({
                   Mark read
                 </button>
               )}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onDelete(n.id);
+                }}
+                aria-label="Delete notification"
+                className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-foreground/40 transition-colors hover:bg-red-500/10 hover:text-red-600"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
             </div>
           );
           return (

@@ -30,6 +30,19 @@ const ITEMS = [
 export default function AccountMenu({ isAuthenticated, role }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpen(false), 140);
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -39,6 +52,8 @@ export default function AccountMenu({ isAuthenticated, role }: Props) {
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
+
+  useEffect(() => () => cancelClose(), []);
 
   if (!isAuthenticated) {
     return (
@@ -57,13 +72,29 @@ export default function AccountMenu({ isAuthenticated, role }: Props) {
   };
 
   return (
-    <div ref={ref} className="relative hidden md:block">
+    <div
+      ref={ref}
+      className="relative hidden md:block"
+      onMouseEnter={() => {
+        cancelClose();
+        setOpen(true);
+      }}
+      onMouseLeave={scheduleClose}
+      onFocusCapture={() => {
+        cancelClose();
+        setOpen(true);
+      }}
+      onBlurCapture={(e) => {
+        if (!ref.current?.contains(e.relatedTarget as Node)) scheduleClose();
+      }}
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label="Account menu"
         aria-expanded={open}
-        className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary"
+        aria-haspopup="menu"
+        className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4E8D9C]/40"
       >
         <User className="h-4.5 w-4.5" />
       </button>

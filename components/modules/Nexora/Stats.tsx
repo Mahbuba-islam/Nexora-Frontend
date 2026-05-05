@@ -1,27 +1,37 @@
 import { Boxes, Globe2, ShieldCheck, Sparkles } from "lucide-react";
 
+import CountUp from "./CountUp";
+
 const STATS = [
   {
     icon: Sparkles,
-    value: "12M+",
+    value: 12,
+    decimals: 0,
+    suffix: "M+",
     label: "AI recommendations served",
     accent: "text-[#4E8D9C]",
   },
   {
     icon: Boxes,
-    value: "85K",
+    value: 85,
+    decimals: 0,
+    suffix: "K",
     label: "Curated tech products",
     accent: "text-[#A8DCB8]",
   },
   {
     icon: Globe2,
-    value: "120+",
+    value: 120,
+    decimals: 0,
+    suffix: "+",
     label: "Countries shipped to",
     accent: "text-[#6FB6CC]",
   },
   {
     icon: ShieldCheck,
-    value: "99.98%",
+    value: 99.98,
+    decimals: 2,
+    suffix: "%",
     label: "Order safety rating",
     accent: "text-[#281C59] dark:text-[#A8DCB8]",
   },
@@ -46,7 +56,7 @@ export default function Stats() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {STATS.map(({ icon: Icon, value, label, accent }) => (
+          {STATS.map(({ icon: Icon, value, decimals, suffix, label, accent }) => (
             <div
               key={label}
               className="nx-card flex flex-col items-start gap-3 p-5 md:p-6"
@@ -57,7 +67,7 @@ export default function Stats() {
                 <Icon className="h-5 w-5" />
               </span>
               <div className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-                {value}
+                <CountUp value={value} decimals={decimals} suffix={suffix} />
               </div>
               <p className="text-xs text-muted-foreground md:text-sm">{label}</p>
             </div>

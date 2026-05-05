@@ -184,13 +184,13 @@ export default function CartPage() {
               </span>
             </div>
 
-            <button
-              type="button"
+            <Link
+              href="/checkout"
               className="nx-btn-primary mt-6 inline-flex h-12 w-full items-center justify-center gap-2 px-6 text-sm font-semibold"
             >
               Checkout
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </Link>
             <Link
               href="/shop"
               className="mt-3 block text-center text-xs font-medium text-muted-foreground hover:text-foreground"

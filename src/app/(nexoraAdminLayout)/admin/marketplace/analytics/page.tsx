@@ -103,7 +103,7 @@ export default async function AdminAnalyticsPage() {
           tone="rose"
           delta={
             refunds?.refundRatePct != null
-              ? `${refunds.refundRatePct.toFixed(2)}% refund rate`
+              ? `${Number(refunds.refundRatePct ?? 0).toFixed(2)}% refund rate`
               : undefined
           }
         />
@@ -138,12 +138,12 @@ export default async function AdminAnalyticsPage() {
               />
               <FunnelStep
                 label="Conversion rate"
-                value={`${funnel.conversionRatePct.toFixed(1)}%`}
+                value={`${Number(funnel.conversionRatePct ?? 0).toFixed(1)}%`}
                 tone="emerald"
               />
               <FunnelStep
                 label="Abandonment"
-                value={`${funnel.abandonmentRatePct.toFixed(1)}%`}
+                value={`${Number(funnel.abandonmentRatePct ?? 0).toFixed(1)}%`}
                 tone="rose"
               />
             </div>

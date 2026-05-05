@@ -133,7 +133,7 @@ export default function NexoraLoginForm({ redirectPath, initialEmail, verifiedFl
   };
 
   return (
-    <div className="w-full text-white">
+    <div className="w-full text-foreground">
       <div className="space-y-1">
         <h2 className="text-3xl font-semibold tracking-tight">Sign in.</h2>
         <p className="text-sm text-muted-foreground">
@@ -244,9 +244,9 @@ export default function NexoraLoginForm({ redirectPath, initialEmail, verifiedFl
       </p>
 
       {/* Demo accounts */}
-      <div className="mt-8 rounded-3xl border border-dashed border-border bg-yello-100 p-4">
+      <div className="mt-8 rounded-3xl border border-dashed border-border bg-secondary/40 p-4">
         <div className="flex items-center justify-between">
-          <p className="text-[8px]  uppercase text-muted-foreground">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             For recruiters · try a demo
           </p>
           <span className="text-[10px] text-muted-foreground">one click</span>

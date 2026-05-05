@@ -10,6 +10,7 @@ import AccountMenu from "./AccountMenu";
 import CategoriesMegaMenu from "./CategoriesMegaMenu";
 import NotificationBell from "./NotificationBell";
 import ThemeToggle from "./ThemeToggle";
+import MoreMenu from "./MoreMenu";
 import { logoutAction } from "@/src/app/(commonLayout)/(authRouteGroup)/logOut/_action";
 import { useCart } from "@/src/providers/CartProvider";
 import { useWishlist } from "@/src/providers/WishlistProvider";
@@ -65,24 +66,32 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
       >
         <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:h-[52px] md:px-8">
           {/* Logo */}
-          <Link
-            href="/"
-            className="group inline-flex items-center gap-2 font-semibold tracking-tight"
-            aria-label="Nexora home"
-          >
-            <span className="relative grid h- w-8 place-items-center overflow-hidden rounded-xl bg-[#281C59] ring-1 ring-white/10 dark:bg-[#F9F8F6]">
-              <Image
-                src="/logo/nexora-logo.png"
-                alt=""
-                width={32}
-                height={32}
-                priority
-                className="h-full w-full object-cover"
-              />
-              <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_10px_rgba(75,191,249,0.9)]" />
-            </span>
-            <span className="text-[15px] md:text-base">Nexora</span>
-          </Link>
+       <Link
+  href="/"
+  aria-label="Nexora home"
+  className="group inline-flex items-center gap-2 md:gap-2.5 font-semibold tracking-tight"
+>
+  {/* Logo container */}
+  <span className="relative grid h-9 w-9 md:h-10 md:w-10 place-items-center overflow-hidden rounded-xl bg-[#281C59] dark:bg-[#F9F8F6] ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-[1.03] group-hover:ring-indigo-400/40">
+    <Image
+      src="/logo/nexora-new-logo.png"
+      alt="Nexora logo"
+      width={40}
+      height={40}
+      priority
+      className="h-full w-full object-cover"
+    />
+
+    {/* Status dot */}
+    <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#85C79A] shadow-[0_0_6px_rgba(133,199,154,0.9)]" />
+  </span>
+
+  {/* Brand name */}
+  <span className="text-[15px] md:text-[16px] font-semibold text-black dark:text-white transition-colors duration-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
+    Nexora
+  </span>
+</Link>
+
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
@@ -96,19 +105,21 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
                 {item.label}
               </Link>
             ))}
+            <MoreMenu />
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
-              aria-label="AI search"
+              aria-label="Ask Nexora AI"
               onClick={() => setAiOpen(true)}
               className="hidden h-9 items-center gap-2 rounded-full border border-border bg-background/60 px-3 text-xs text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
             >
               <Wand2 className="h-3.5 w-3.5 text-[#4E8D9C]" />
-              Ask Nexora AI
-              <span className="ml-2 rounded-md border border-border px-1.5 py-0.5 text-[10px] font-medium text-foreground/70">
+              <span className="hidden lg:inline">Ask Nexora AI</span>
+              <span className="lg:hidden">Ask AI</span>
+              <span className="ml-1 rounded-md border border-border px-1.5 py-0.5 text-[10px] font-medium text-foreground/70">
                 ⌘K
               </span>
             </button>
@@ -120,34 +131,35 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
             >
               <Search className="h-4.5 w-4.5" />
             </button>
+
             <Link
               href="/sell/start"
-              className="group hidden h-9 items-center gap-2 rounded-full bg-linear-to-r from-[#281C59] to-[#4E8D9C] px-4 text-xs font-semibold text-white shadow-[0_8px_24px_-12px_rgba(40,28,89,0.6)] transition-all hover:shadow-[0_12px_30px_-10px_rgba(78,141,156,0.7)] hover:-translate-y-px md:inline-flex"
+              className="group hidden h-9 items-center gap-1.5 rounded-full bg-linear-to-r from-[#281C59] to-[#4E8D9C] px-3.5 text-xs font-semibold text-white shadow-[0_8px_24px_-12px_rgba(40,28,89,0.6)] transition-all hover:-translate-y-px hover:shadow-[0_12px_30px_-10px_rgba(78,141,156,0.7)] md:inline-flex"
               aria-label="Sell on Nexora"
             >
               <Store className="h-3.5 w-3.5" />
-              Sell on Nexora
-              <span className="hidden text-[10px] font-medium uppercase tracking-[0.18em] text-white/70 lg:inline">
-                Join now
-              </span>
+              <span>Sell</span>
               <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <Link
-              href="/account/wishlist"
-              aria-label={`Wishlist (${wishCount} items)`}
-              className="relative hidden h-9 w-9 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary md:grid"
-            >
-              <Heart className="h-4.5 w-4.5" />
-              {wishHydrated && wishCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
-                  {wishCount > 99 ? "99+" : wishCount}
-                </span>
-              )}
-            </Link>
-            <div className="hidden md:block">
+
+            {/* Icon tray — groups secondary actions for visual hierarchy */}
+            <div className="hidden items-center gap-0.5 rounded-full border border-border bg-background/40 p-0.5 md:flex">
+              <Link
+                href="/account/wishlist"
+                aria-label={`Wishlist (${wishCount} items)`}
+                className="relative grid h-8 w-8 place-items-center rounded-full text-foreground/80 transition-colors hover:bg-secondary"
+              >
+                <Heart className="h-4 w-4" />
+                {wishHydrated && wishCount > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+                    {wishCount > 99 ? "99+" : wishCount}
+                  </span>
+                )}
+              </Link>
               <NotificationBell visible={isAuthenticated} />
+              <ThemeToggle className="grid" />
             </div>
-            <ThemeToggle className="hidden md:grid" />
+
             <AccountMenu isAuthenticated={isAuthenticated} role={role} />
             <Link
               href="/cart"
@@ -221,6 +233,32 @@ export default function Header({ isAuthenticated = false, role = null }: HeaderP
                 className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium text-foreground/90 transition-colors hover:bg-secondary"
               >
                 {item.label}
+                <span aria-hidden className="text-foreground/40">→</span>
+              </Link>
+            ))}
+            {/* More — same destinations as the desktop dropdown */}
+            <div className="my-3 px-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                More
+              </p>
+            </div>
+            {[
+              { href: "/about", label: "About" },
+              { href: "/ai", label: "How it works" },
+              { href: "/support", label: "Help center" },
+              { href: "/shipping", label: "Shipping" },
+              { href: "/returns", label: "Returns" },
+              { href: "/warranty", label: "Warranty" },
+              { href: "/orders", label: "Order status" },
+              { href: "/terms", label: "Terms & policies" },
+            ].map((m) => (
+              <Link
+                key={m.href}
+                href={m.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary"
+              >
+                {m.label}
                 <span aria-hidden className="text-foreground/40">→</span>
               </Link>
             ))}

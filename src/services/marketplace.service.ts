@@ -82,17 +82,48 @@ export async function getPayoutPipeline(): Promise<NxPayoutPipeline | null> {
   }
 }
 
+type RawAdminSeller = NxAdminSeller & {
+  user?: { id?: string; name?: string | null; email?: string | null; status?: string };
+  totalSales?: string | number | null;
+  orderCount?: number | null;
+  createdAt?: string | null;
+};
+
+function normalizeAdminSeller(raw: RawAdminSeller): NxAdminSeller {
+  const ownerName = raw.ownerName ?? raw.user?.name ?? undefined;
+  const ownerEmail = raw.ownerEmail ?? raw.user?.email ?? undefined;
+  return {
+    ...raw,
+    ownerName: ownerName ?? undefined,
+    ownerEmail: ownerEmail ?? undefined,
+    gmv: raw.gmv ?? (raw.totalSales != null ? String(raw.totalSales) : undefined),
+    ordersCount: raw.ordersCount ?? raw.orderCount ?? undefined,
+    joinedAt: raw.joinedAt ?? raw.createdAt ?? new Date().toISOString(),
+  };
+}
+
 export async function getAdminSellers(): Promise<NxAdminSeller[]> {
-  const candidates = ["/sellers", "/admin/sellers"];
+  const candidates = [
+    "/sellers/admin",
+    "/sellers/admin/list",
+    "/admin/sellers",
+    "/sellers",
+  ];
   for (const path of candidates) {
     try {
       const res = await httpClient.get<
-        NxAdminSeller[] | { sellers: NxAdminSeller[] }
+        | RawAdminSeller[]
+        | { sellers?: RawAdminSeller[]; data?: RawAdminSeller[] }
       >(path, { silent: true, withCredentials: true });
       const data = res?.data;
-      if (Array.isArray(data)) return data;
-      if (data && Array.isArray((data as { sellers?: NxAdminSeller[] }).sellers))
-        return (data as { sellers: NxAdminSeller[] }).sellers;
+      if (Array.isArray(data)) {
+        return data.map(normalizeAdminSeller);
+      }
+      if (data && typeof data === "object") {
+        const obj = data as { sellers?: RawAdminSeller[]; data?: RawAdminSeller[] };
+        if (Array.isArray(obj.sellers)) return obj.sellers.map(normalizeAdminSeller);
+        if (Array.isArray(obj.data)) return obj.data.map(normalizeAdminSeller);
+      }
     } catch {
       // try next
     }

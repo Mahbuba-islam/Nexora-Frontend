@@ -3,14 +3,10 @@ import {
   ArrowRight,
   BookOpen,
   CreditCard,
-  Headphones,
   HelpCircle,
   LifeBuoy,
-  Mail,
-  MessageCircle,
   Package,
   RefreshCw,
-  Search,
   Shield,
   Sparkles,
   Truck,
@@ -138,7 +134,7 @@ const FAQ_GROUPS = [
 
 const CHANNELS = [
   {
-    icon: MessageCircle,
+    iconName: "chat" as const,
     title: "Live chat",
     desc: "Avg. wait under 2 minutes",
     cta: "Start chat",
@@ -147,7 +143,7 @@ const CHANNELS = [
     action: "chat" as const,
   },
   {
-    icon: Sparkles,
+    iconName: "ai" as const,
     title: "Nexora AI",
     desc: "Instant answers, 24/7",
     cta: "Ask the AI",
@@ -156,7 +152,7 @@ const CHANNELS = [
     action: "ai" as const,
   },
   {
-    icon: Mail,
+    iconName: "email" as const,
     title: "Email",
     desc: "support@nexora.shop · replies in 4h",
     cta: "Send email",
@@ -164,7 +160,7 @@ const CHANNELS = [
     available: true,
   },
   {
-    icon: Headphones,
+    iconName: "phone" as const,
     title: "Phone",
     desc: "Mon–Fri · 9am–6pm",
     cta: "Call us",
@@ -321,8 +317,7 @@ export default function SupportPage() {
         <div className="rounded-3xl border border-border bg-linear-to-br from-card via-background to-secondary p-6 md:p-10">
           <SupportChannels
             channels={CHANNELS.map((c) => ({
-              iconName: c.title,
-              Icon: c.icon,
+              iconName: c.iconName,
               title: c.title,
               desc: c.desc,
               cta: c.cta,
