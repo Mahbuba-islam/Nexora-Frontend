@@ -21,26 +21,18 @@ export const commonProtectedRoutes : RouteConfig = {
     pattern : []
 }
 
-export const expertProtectedRoutes : RouteConfig = {
-    pattern: [/^\/expert\/dashboard/ ], // Matches any path that starts with /expert/dashboard
-    exact : []
-}
-
-export const adminProtectedRoutes : RouteConfig = {
-    pattern: [/^\/admin\/dashboard/ ], // Matches any path that starts with /admin/dashboard
-    exact : []
-}
 
 
 
-export const clientProtectedRoutes : RouteConfig = {
-    pattern: [/^\/dashboard/ ], // Matches any path that starts with /dashboard
-    exact : [ "/payment/success"]
-};
+
 
 // Nexora marketplace — seller workspace.
 export const sellerProtectedRoutes: RouteConfig = {
     pattern: [/^\/seller(\/|$)/],
+    exact: [],
+};
+export const adminProtectedRoutes: RouteConfig = {
+    pattern: [/^\/admin(\/|$)/],
     exact: [],
 };
 
@@ -57,10 +49,8 @@ export const isRouteMatches = (pathname : string, routes : RouteConfig) => {
     return routes.pattern.some((pattern : RegExp) => pattern.test(pathname));
 }
 
-export const getRouteOwner = (pathname : string) :  "ADMIN" | "EXPERT" | "CLIENT" | "SELLER" | "CUSTOMER" | "COMMON" | null => {
-    if(isRouteMatches(pathname, expertProtectedRoutes)) {
-        return "EXPERT";
-    }
+export const getRouteOwner = (pathname : string) :  "ADMIN" | "SELLER" | "CUSTOMER" | "COMMON" | null => {
+   
 
     if(isRouteMatches(pathname, sellerProtectedRoutes)) {
         return "SELLER";
@@ -70,9 +60,7 @@ export const getRouteOwner = (pathname : string) :  "ADMIN" | "EXPERT" | "CLIENT
         return "ADMIN";
     }
     
-    if(isRouteMatches(pathname, clientProtectedRoutes)) {
-        return "CLIENT";
-    }
+    
 
     if(isRouteMatches(pathname, customerProtectedRoutes)) {
         return "CUSTOMER";
@@ -92,12 +80,7 @@ export const getDefaultDashboardRoute = (role : UserRole) => {
     if(role === "SELLER") {
         return "/seller";
     }
-    if(role === "EXPERT") {
-        return "/expert/dashboard";
-    }
-    if(role === "CLIENT") {
-        return "/dashboard";
-    }
+  
     if(role === "CUSTOMER") {
         return "/";
     }
