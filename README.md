@@ -1,62 +1,92 @@
 
-# **Nexora — Multi‑Seller E‑Commerce Platform**  
-A modern, AI‑powered multi‑seller marketplace built with a premium, minimal design system and a modular full‑stack architecture.
+# 🚀 Nexora — Multi-Seller E-Commerce Platform
 
-Nexora combines marketplace commerce, seller tools, AI‑assisted shopping, and a clean, universal brand identity.
+🔗 Live Demo: https://nexora-frontend-nine.vercel.app
+
+Nexora is a modern, AI-powered multi-seller e-commerce platform built with a scalable full-stack architecture and a premium design system.
+
+It enables sellers to create their own stores, helps users discover products intelligently using AI, and provides a seamless shopping + marketplace experience.
 
 ---
 
-## **✨ Features**
-### **🛍️ Marketplace**
-- Multi‑seller product listings  
-- Category‑based browsing  
-- Deals, new arrivals, trending items  
-- Storefront pages for each seller  
+## ✨ Core Features
 
-### **👤 Authentication**
-- Email/password login  
-- Google OAuth (GIS / Redirect flow)  
-- JWT‑based session handling  
-- Secure role‑based access (Admin, Seller, Customer)
+- 🧠 **AI Shopping Assistant** — helps users find the right products and improves discovery experience  
+- 🤖 **AI Product Recommendation Engine** — smart suggestions based on user behavior and intent  
+- 🏪 **AI Store Builder for Sellers** — assists sellers in creating and optimizing their storefront  
+- 📦 **Multi-Seller Store System** — each seller can create and manage their own store  
+- 🛍️ **Smart Marketplace** — category-based browsing, trending products, and deals system  
+- 🔔 **Intelligent Notification System** — real-time updates for orders, messages, payments, and platform activity  
+- 💳 **Secure Payment System** — smooth and reliable checkout flow  
+- 👤 **Role-Based System** — Admin, Seller, and Customer experiences  
 
-### **🤖 Nexora AI**
-- AI‑powered product search  
-- Smart recommendations  
-- “Ask Nexora AI” assistant  
-- Weekly curated email drops
+---
 
-### **📦 Seller Dashboard**
-- Product management  
+## 🧠 AI Integration
+
+Nexora uses AI to enhance both buyer and seller experience:
+
+- Product discovery assistant (“Ask Nexora AI”)  
+- Smart product suggestions and ranking  
+- Seller store setup guidance  
+- Personalized shopping experience  
+
+---
+
+## 👤 Authentication & Security
+
+- Email/password authentication  
+- Google OAuth integration  
+- JWT-based secure sessions  
+- Role-based access control (Admin / Seller / Customer)  
+
+---
+
+## 🏪 Seller Features
+
+- Create and manage personal storefront  
+- Add / update / delete products  
 - Inventory tracking  
-- Order management  
-- Analytics & insights  
-
-### **🎨 Premium UI/UX**
-- Minimal, universal branding  
-- Nexora color system (Indigo, Teal, Mint, Pale Yellow)  
-- Fully responsive layout  
-- Pixel‑perfect navbar, forms, and components  
-- Dark mode support  
-
-### **⚙️ Backend**
-- Node.js + Express  
-- MongoDB / Prisma  
-- Modular service architecture  
-- MailerSend + Gmail SMTP  
-- Google OAuth callback flow  
-- Render deployment ready  
-
-### **🚀 Frontend**
-- Next.js (App Router)  
-- Tailwind CSS + shadcn/ui  
-- Server Actions  
-- Optimized images  
-- API integration with backend  
+- Order management system  
+- Sales analytics dashboard  
 
 ---
 
-## **📁 Project Structure**
-```
+## 🎨 UI / UX System
+
+- Minimal and modern design system  
+- Responsive mobile-first layout  
+- Dark mode support  
+- Reusable component architecture  
+- Clean and consistent branding system  
+
+---
+
+## ⚙️ Tech Stack
+
+### Frontend
+- Next.js (App Router)  
+- Tailwind CSS  
+- shadcn/ui  
+- TypeScript  
+
+### Backend
+- Node.js + Express  
+- Modular architecture  
+- MongoDB / Prisma  
+
+### Services & Tools
+- Stripe (Payments)  
+- Cloudinary (Images)  
+- MailerSend / Gmail SMTP (Email)  
+- Google OAuth  
+- AI APIs (OpenAI / Gemini)  
+
+---
+
+## 📁 Project Structure
+
+```text
 nexora/
 │
 ├── frontend/
@@ -73,73 +103,74 @@ nexora/
 │   │   ├── middleware/
 │   │   ├── services/
 │   │   └── utils/
-│   └── prisma/ or models/
+│   └── prisma/
 │
 └── README.md
-```
+````
 
 ---
 
-## **🔧 Environment Variables**
+## ⚙️ Environment Variables
 
-### **Frontend**
-```
+### Frontend
+
+```env
 NEXT_PUBLIC_API_BASE_URL=
 NEXT_PUBLIC_API_URL=
 NEXT_PUBLIC_AUTH_BASE_URL=
 NEXT_PUBLIC_AUTH_URL=
+
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=
+
 OPENAI_API_KEY=
 AI_PROVIDER=gemini
 GEMINI_API_KEY=
 GEMINI_MODEL=
 OPENAI_MODEL=
-
-### **Backend**
 ```
+
+---
+
+### Backend
+
+```env
 PORT=
 MONGO_URI=
+
 JWT_SECRET=
+
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_CALLBACK_URL=
+
 MAILERSEND_API_KEY=
 SMTP_EMAIL=
 SMTP_PASSWORD=
+
 OPENAI_API_KEY=
 AI_PROVIDER=gemini
 GEMINI_API_KEY=
 GEMINI_MODEL=
 OPENAI_MODEL=
 
+STRIPE_SECRET_KEY=
+```
 
 ---
 
-## **🧠 Google OAuth Setup**
-1. Go to Google Cloud Console  
-2. Create OAuth Client (Web Application)  
-3. Add authorized redirect URI:
+## 🚀 Running Locally
 
-```
-https://your-backend.com/api/v1/auth/callback/google
-```
+### Backend
 
-4. Add client ID + secret to backend env  
-5. Add client ID to frontend env  
-
----
-
-## **🚀 Running Locally**
-
-### **Backend**
-```
+```bash
 cd backend
 npm install
 npm run dev
 ```
 
-### **Frontend**
-```
+### Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
@@ -147,47 +178,57 @@ npm run dev
 
 ---
 
-## **📦 Deployment**
-Nexora is optimized for:
+## 📦 Deployment
 
-- **Render** (Backend)  
-- **Vercel** (Frontend)  
-- **Cloudinary** (Images)  
-- **MailerSend / Gmail SMTP** (Emails)
-
----
-
-## **🧪 Testing**
-- Jest (backend)  
-- React Testing Library (frontend)  
-- Postman collection included (optional)
+* Frontend → Vercel
+* Backend → Render
+* Images → Cloudinary
+* Emails → MailerSend / Gmail SMTP
+* Payments → Stripe
 
 ---
 
-## **📄 License**
-This project is proprietary and owned by **Nexora**.  
+## 🧪 Testing
+
+* Jest (Backend)
+* React Testing Library (Frontend)
+* Postman API collection support
+
+---
+
+## 🧠 Roadmap
+
+* AI-powered seller analytics dashboard
+* Multi-currency support
+* Mobile app (React Native)
+* Real-time order tracking
+* Affiliate system
+* Advanced AI personalization engine
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+We welcome improvements in UI, backend scalability, and AI features.
+
+---
+
+## 📄 License
+
+This project is proprietary and owned by **Nexora**.
 All rights reserved.
 
 ---
 
-## **💡 Roadmap**
-- AI‑powered seller analytics  
-- Multi‑currency support  
-- Mobile app (React Native)  
-- Real‑time order tracking  
-- Affiliate system  
-- AI‑generated product descriptions  
+## 👨‍💻 Author
 
----
+**Mahbuba Akter**
+Full-Stack Web Developer
 
-## **🤝 Contributing**
-Contributions are welcome for UI, backend modules, and integrations.  
-Open a PR or create an issue.
-
----
-
-## **🖤 Credits**
-Designed & developed by **Mahbuba Akter**.
-
----
+```
 
