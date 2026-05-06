@@ -6,6 +6,8 @@ import {
   getCategoryTree,
   getProducts,
 } from "@/src/services/nexora.service";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import {
   toNumberPrice,
   type NxProduct,
@@ -33,31 +35,19 @@ type SearchParams = Promise<{
 
 const PAGE_SIZE = 12;
 
-export default async function ShopPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  const sp = await searchParams;
+export default function ShopPage({ searchParams }: { searchParams: SearchParams }) {
+  const queryClient = useQueryClient();
+  const [sp, setSp] = useState<any>({});
+  useEffect(() => {
+    (async () => {
+      setSp(await searchParams);
+    })();
+  }, [searchParams]);
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
-
-  const minPriceNum =
-    sp.minPrice && !Number.isNaN(Number(sp.minPrice))
-      ? Math.max(0, Number(sp.minPrice))
-      : undefined;
-  const maxPriceNum =
-    sp.maxPrice && !Number.isNaN(Number(sp.maxPrice))
-      ? Math.max(0, Number(sp.maxPrice))
-      : undefined;
-  const minRatingNum =
-    sp.minRating && !Number.isNaN(Number(sp.minRating))
-      ? Math.min(5, Math.max(0, Number(sp.minRating)))
-      : undefined;
-
-  const query: NxProductQuery = {
-    limit: PAGE_SIZE,
-    page,
-  };
+  const minPriceNum = sp.minPrice && !Number.isNaN(Number(sp.minPrice)) ? Math.max(0, Number(sp.minPrice)) : undefined;
+  const maxPriceNum = sp.maxPrice && !Number.isNaN(Number(sp.maxPrice)) ? Math.max(0, Number(sp.maxPrice)) : undefined;
+  const minRatingNum = sp.minRating && !Number.isNaN(Number(sp.minRating)) ? Math.min(5, Math.max(0, Number(sp.minRating))) : undefined;
+  const query: NxProductQuery = { limit: PAGE_SIZE, page };
   if (sp.category) query.categorySlug = sp.category;
   if (sp.brand) query.brandSlug = sp.brand;
   if (sp.search) query.search = sp.search;
@@ -65,12 +55,7 @@ export default async function ShopPage({
   if (maxPriceNum != null) query.maxPrice = maxPriceNum;
   if (minRatingNum != null) query.minRating = minRatingNum;
   if (sp.sort) {
-    // Friendly tokens — `?sort=newest`, `?sort=price-asc`, `?sort=rating`,
-    // `?sort=bestselling` — plus the explicit `field:order` form.
-    const PRESETS: Record<
-      string,
-      { sortBy: NonNullable<NxProductQuery["sortBy"]>; sortOrder: NonNullable<NxProductQuery["sortOrder"]> }
-    > = {
+    const PRESETS: Record<string, { sortBy: NonNullable<NxProductQuery["sortBy"]>; sortOrder: NonNullable<NxProductQuery["sortOrder"]> }> = {
       newest: { sortBy: "createdAt", sortOrder: "desc" },
       oldest: { sortBy: "createdAt", sortOrder: "asc" },
       "price-asc": { sortBy: "price", sortOrder: "asc" },
@@ -83,41 +68,34 @@ export default async function ShopPage({
       query.sortBy = preset.sortBy;
       query.sortOrder = preset.sortOrder;
     } else if (sp.sort.includes(":")) {
-      const [by, order] = sp.sort.split(":") as [
-        NonNullable<NxProductQuery["sortBy"]>,
-        NonNullable<NxProductQuery["sortOrder"]>,
-      ];
+      const [by, order] = sp.sort.split(":") as [NonNullable<NxProductQuery["sortBy"]>, NonNullable<NxProductQuery["sortOrder"]>];
       query.sortBy = by;
       query.sortOrder = order;
     }
   }
-
-  // Parallel reads — never block on filters waiting for products.
-  const [productsRes, categoryTree, brands] = await Promise.all([
-    getProducts(query),
-    getCategoryTree(),
-    getBrands(),
-  ]);
-
-  // Client-side fallback filter for price/rating: even if the backend
-  // ignores those query params, we still respect the user's filter on the
-  // returned page. This guarantees the UI is always "fully functional".
-  const allProducts = productsRes.data;
-  const products: NxProduct[] = allProducts.filter((p) => {
+  const { data: productsRes = { data: [], meta: {} }, isLoading } = useQuery({
+    queryKey: ["products", query],
+    queryFn: () => getProducts(query),
+    staleTime: 1000 * 30,
+  });
+  const products: NxProduct[] = (productsRes.data || []).filter((p) => {
     const price = toNumberPrice(p.price);
     if (minPriceNum != null && price < minPriceNum) return false;
     if (maxPriceNum != null && price > maxPriceNum) return false;
     if (minRatingNum != null && (p.avgRating ?? 0) < minRatingNum) return false;
     return true;
   });
-
-  const meta = productsRes.meta ?? {
-    page,
-    limit: PAGE_SIZE,
-    total: products.length,
-    totalPages: 1,
-  };
-
+  const meta = productsRes.meta ?? { page, limit: PAGE_SIZE, total: products.length, totalPages: 1 };
+  const { data: categoryTree = [] } = useQuery({
+    queryKey: ["categoryTree"],
+    queryFn: () => getCategoryTree(),
+    staleTime: 1000 * 60,
+  });
+  const { data: brands = [] } = useQuery({
+    queryKey: ["brands"],
+    queryFn: () => getBrands(),
+    staleTime: 1000 * 60,
+  });
   return (
     <div className="bg-background">
       {/* Page header */}
@@ -137,7 +115,6 @@ export default async function ShopPage({
           </div>
         </div>
       </header>
-
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-12 md:px-8 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-3">
           <Suspense fallback={null}>
@@ -156,9 +133,10 @@ export default async function ShopPage({
             />
           </Suspense>
         </div>
-
         <div className="lg:col-span-9">
-          {products.length === 0 ? (
+          {isLoading ? (
+            <div>Loading products...</div>
+          ) : products.length === 0 ? (
             <EmptyState searchTerm={sp.search} />
           ) : (
             <>
@@ -167,10 +145,7 @@ export default async function ShopPage({
                   <ProductCard key={p.id} product={p} priority={i < 3} />
                 ))}
               </div>
-
-              {meta.totalPages > 1 && (
-                <Pagination meta={meta} sp={sp} />
-              )}
+              {meta.totalPages > 1 && <Pagination meta={meta} sp={sp} />}
             </>
           )}
         </div>

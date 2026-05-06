@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { ArrowUpRight, Store } from "lucide-react";
 
+
 import { getAdminSellers } from "@/src/services/marketplace.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import { toNumberPrice } from "@/src/types/nexora.types";
+import { useState } from "react";
 
 export const metadata = { title: "Sellers · Nexora Admin" };
 
@@ -14,8 +16,41 @@ const STATUS_STYLES = {
   REJECTED: "bg-zinc-500/15 text-zinc-700",
 } as const;
 
-export default async function AdminSellersPage() {
-  const sellers = await getAdminSellers();
+
+import { useEffect } from "react";
+
+const STATUS_OPTIONS = [
+  { value: "", label: "All statuses" },
+  { value: "PENDING", label: "Pending" },
+  { value: "APPROVED", label: "Approved" },
+  { value: "SUSPENDED", label: "Suspended" },
+  { value: "REJECTED", label: "Rejected" },
+];
+
+export default function AdminSellersPage() {
+  const [sellers, setSellers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [status, setStatus] = useState("");
+  const [shopName, setShopName] = useState("");
+  const [owner, setOwner] = useState("");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const fetchSellers = async () => {
+      const res = await getAdminSellers({
+        page,
+        limit: 20,
+        status: status || undefined,
+        shopName: shopName || undefined,
+        owner: owner || undefined,
+        search: search || undefined,
+      });
+      setSellers(res.data || []);
+      setTotalPages(res.meta?.totalPages || 1);
+    };
+    fetchSellers();
+  }, [page, status, shopName, owner, search]);
 
   return (
     <div>
@@ -27,6 +62,39 @@ export default async function AdminSellersPage() {
           Manage shops, approvals, and shop performance.
         </p>
       </header>
+
+      <form className="flex flex-wrap gap-3 mb-4">
+        <input
+          type="text"
+          placeholder="Search by shop name or owner"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="h-9 rounded-md border border-input px-3 text-sm"
+        />
+        <input
+          type="text"
+          placeholder="Shop name"
+          value={shopName}
+          onChange={e => setShopName(e.target.value)}
+          className="h-9 rounded-md border border-input px-3 text-sm"
+        />
+        <input
+          type="text"
+          placeholder="Owner"
+          value={owner}
+          onChange={e => setOwner(e.target.value)}
+          className="h-9 rounded-md border border-input px-3 text-sm"
+        />
+        <select
+          value={status}
+          onChange={e => setStatus(e.target.value)}
+          className="h-9 rounded-md border border-input px-3 text-sm"
+        >
+          {STATUS_OPTIONS.map(o => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      </form>
 
       {sellers.length === 0 ? (
         <div className="nx-card flex flex-col items-center justify-center p-12 text-center">
@@ -58,40 +126,23 @@ export default async function AdminSellersPage() {
                   <td className="px-5 py-3">
                     <p className="font-semibold">{s.shopName}</p>
                     {s.shopSlug && (
-                      <p className="text-xs text-muted-foreground">
-                        /{s.shopSlug}
-                      </p>
+                      <p className="text-xs text-muted-foreground">/{s.shopSlug}</p>
                     )}
                   </td>
                   <td className="px-5 py-3">
                     <p>{s.ownerName || "—"}</p>
                     {s.ownerEmail && (
-                      <p className="text-xs text-muted-foreground">
-                        {s.ownerEmail}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{s.ownerEmail}</p>
                     )}
                   </td>
                   <td className="px-5 py-3">
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_STYLES[s.status]}`}
-                    >
-                      {s.status}
-                    </span>
+                    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_STYLES[s.status]}`}>{s.status}</span>
                   </td>
+                  <td className="px-5 py-3 text-right">{s.productCount ?? "—"}</td>
+                  <td className="px-5 py-3 text-right">{s.ordersCount ?? "—"}</td>
+                  <td className="px-5 py-3 text-right font-semibold">{s.gmv ? formatUSD(toNumberPrice(s.gmv)) : "—"}</td>
                   <td className="px-5 py-3 text-right">
-                    {s.productCount ?? "—"}
-                  </td>
-                  <td className="px-5 py-3 text-right">
-                    {s.ordersCount ?? "—"}
-                  </td>
-                  <td className="px-5 py-3 text-right font-semibold">
-                    {s.gmv ? formatUSD(toNumberPrice(s.gmv)) : "—"}
-                  </td>
-                  <td className="px-5 py-3 text-right">
-                    <Link
-                      href={`/admin/marketplace/sellers/${s.id}`}
-                      className="inline-flex h-8 items-center gap-1 rounded-full border border-border bg-background px-3 text-[11px] font-semibold text-foreground/80 hover:bg-secondary"
-                    >
+                    <Link href={`/admin/marketplace/sellers/${s.id}`} className="inline-flex h-8 items-center gap-1 rounded-full border border-border bg-background px-3 text-[11px] font-semibold text-foreground/80 hover:bg-secondary">
                       Manage <ArrowUpRight className="h-3 w-3" />
                     </Link>
                   </td>
@@ -99,6 +150,27 @@ export default async function AdminSellersPage() {
               ))}
             </tbody>
           </table>
+          <footer className="flex items-center justify-between border-t border-border px-4 py-3 text-xs text-muted-foreground">
+            <span>
+              Page {page} of {totalPages}
+            </span>
+            <div className="flex gap-2">
+              <button
+                className="px-3 py-1 rounded border border-input"
+                disabled={page === 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              >
+                Prev
+              </button>
+              <button
+                className="px-3 py-1 rounded border border-input"
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              >
+                Next
+              </button>
+            </div>
+          </footer>
         </div>
       )}
     </div>

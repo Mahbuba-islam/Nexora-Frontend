@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles, Store } from "lucide-react";
 
+
 import { getAdminSellers } from "@/src/services/marketplace.service";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 export const metadata = {
   title: "Stores · Nexora",
@@ -10,9 +13,20 @@ export const metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default async function StoresPage() {
-  const sellers = await getAdminSellers();
+
+export default function StoresPage() {
+  const queryClient = useQueryClient();
+  const { data: sellers = [], isLoading } = useQuery({
+    queryKey: ["adminSellers"],
+    queryFn: () => getAdminSellers(),
+    staleTime: 1000 * 30,
+  });
   const approved = sellers.filter((s) => s.status === "APPROVED");
+
+  // Optional: refetch on mount to ensure freshness
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["adminSellers"] });
+  }, [queryClient]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 md:px-8 md:py-16">
@@ -31,7 +45,9 @@ export default async function StoresPage() {
         </p>
       </header>
 
-      {approved.length === 0 ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : approved.length === 0 ? (
         <div className="nx-card flex flex-col items-center justify-center p-12 text-center">
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-secondary text-foreground/70">
             <Store className="h-6 w-6" />
