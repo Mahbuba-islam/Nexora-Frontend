@@ -13,11 +13,13 @@ export interface NxProductCreatePayload {
 
 // Create product API call
 export const createProduct = async (
-  payload: NxProductCreatePayload,
+  payload: NxProductCreatePayload | FormData,
 ): Promise<NxProduct | null> => {
   try {
+    const isFormData = typeof FormData !== "undefined" && payload instanceof FormData;
     const res = await httpClient.post<NxProduct>("/products", payload, {
       withCredentials: true,
+      headers: isFormData ? {} : { "Content-Type": "application/json" },
     });
     return res?.data ?? null;
   } catch (err) {

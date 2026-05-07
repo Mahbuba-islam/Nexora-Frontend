@@ -1,5 +1,9 @@
 "use client";
 
+// Cloudinary config (replace with your own if needed)
+const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/demo/image/upload"; // demo account, replace with your own
+const CLOUDINARY_UPLOAD_PRESET = "ml_default"; // replace with your unsigned preset
+
 import { useEffect, useMemo, useState } from "react";
 import {
   ImagePlus,
@@ -16,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createProduct } from "@/src/services/nexora.service";
+import { createProduct, getCategories } from "@/src/services/nexora.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
 
 /* ---------------- TYPES ---------------- */
@@ -141,26 +145,26 @@ export default function SellerProductsClient() {
   const [form, setForm] = useState({
     title: "",
     description: "",
-    category: "Phones",
+    categoryId: "",
     price: "",
     image: "",
   });
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-  // Handle image file selection and preview
+  // Store file and show preview
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    // For demo: use local preview. Replace with upload logic if backend ready.
+    setImageFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result as string);
-      update("image", reader.result as string);
       setUploading(false);
     };
     reader.readAsDataURL(file);
-    // If you have an upload API, upload here and set image URL to form.image
   };
 
   /* -------- HYDRATION -------- */
@@ -169,6 +173,17 @@ export default function SellerProductsClient() {
     const stored = loadFromStorage();
     if (stored?.length) setDrafts(stored);
     setHydrated(true);
+    // Fetch categories from backend
+    (async () => {
+      try {
+        const cats = await getCategories();
+        setCategories(cats.map((c: any) => ({ id: c.id, name: c.name })));
+        // Set default categoryId if not set
+        if (cats.length && !form.categoryId) {
+          setForm((f) => ({ ...f, categoryId: cats[0].id }));
+        }
+      } catch {}
+    })();
   }, []);
 
   useEffect(() => {
@@ -229,33 +244,53 @@ export default function SellerProductsClient() {
   /* -------- SUBMIT -------- */
 
   const submit = async () => {
-    if (!form.title || !form.price) {
-      toast.error("Title & price required");
+    // Strict validation and debug logging
+    const errors: string[] = [];
+    const title = form.title.trim();
+    if (!title) errors.push("Title is required");
+    const priceNum = Number(form.price);
+    if (!form.price || isNaN(priceNum) || priceNum <= 0) errors.push("Price must be a positive number");
+    if (!form.categoryId) errors.push("Category is required");
+    // Validate categoryId is a UUID (basic check)
+    if (form.categoryId && !/^([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i.test(form.categoryId)) {
+      errors.push("Category ID is not a valid UUID");
+    }
+    if (errors.length) {
+      errors.forEach(e => toast.error(e));
       return;
     }
 
     setSaving(true);
-
     try {
-      // Map category to categoryId if needed (requires category list from backend)
-      // For now, send category as string in description for demo
-      const payload = {
-        name: form.title,
-        description: form.description + (form.category ? `\nCategory: ${form.category}` : ""),
-        price: Number(form.price),
-        images: form.image ? [{ url: form.image }] : [{ url: FALLBACK_IMAGE }],
-        status: "ACTIVE" as const,
-        isNewArrival: true,
-        stock: 10,
-      };
-      const created = await createProduct(payload);
+      // Build FormData for backend (multer/Cloudinary)
+      const formData = new FormData();
+      formData.append("name", title);
+      formData.append("description", form.description || "");
+      formData.append("sku", title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") + "-" + Date.now());
+      formData.append("categoryId", form.categoryId);
+      formData.append("price", String(priceNum));
+      formData.append("stock", "10");
+      formData.append("isNewArrival", "true");
+      formData.append("status", "ACTIVE");
+      if (imageFile) {
+        formData.append("file", imageFile);
+      }
+
+      // Debug: log all FormData entries
+      const debugObj: Record<string, any> = {};
+      formData.forEach((v, k) => { debugObj[k] = v; });
+      // eslint-disable-next-line no-console
+      console.log("[DEBUG] Submitting product FormData:", debugObj);
+
+      const created = await createProduct(formData);
       if (created) {
+        const selectedCategory = categories.find(c => c.id === form.categoryId);
         setDrafts((prev) => [
           {
             id: created.id,
             title: created.name,
             description: created.description || "",
-            category: form.category,
+            category: selectedCategory?.name || "",
             price: Number(created.price),
             image: created.images?.[0]?.url || FALLBACK_IMAGE,
             status: created.status === "ACTIVE" ? "LIVE" : "DRAFT",
@@ -265,11 +300,12 @@ export default function SellerProductsClient() {
         setForm({
           title: "",
           description: "",
-          category: "Phones",
+          categoryId: categories[0]?.id || "",
           price: "",
           image: "",
         });
         setImagePreview("");
+        setImageFile(null);
         toast.success("Product published and sent to public catalog");
       } else {
         toast.error("Failed to create product. Please try again.");
@@ -330,12 +366,12 @@ export default function SellerProductsClient() {
 
         <div className="flex gap-2">
           <select
-            value={form.category}
-            onChange={(e) => update("category", e.target.value)}
+            value={form.categoryId}
+            onChange={(e) => update("categoryId", e.target.value)}
             className="border p-2 rounded"
           >
-            {CATEGORIES.map((c) => (
-              <option key={c}>{c}</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
 

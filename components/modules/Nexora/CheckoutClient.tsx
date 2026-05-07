@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CountrySelect } from "@/components/ui/CountrySelect";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -18,6 +19,9 @@ import { toast } from "sonner";
 import { useCart } from "@/src/providers/CartProvider";
 import { formatUSD } from "@/components/modules/Nexora/data";
 import { httpClient } from "@/src/lib/axious/httpClient";
+import { createNotification } from "@/src/services/notification.service";
+import { getProductBySlug } from "@/src/services/nexora.service";
+import { getUsers } from "@/src/services/user.services";
 
 interface Props {
   defaultName: string;
@@ -37,7 +41,7 @@ interface ShippingForm {
   country: string;
 }
 
-const COUNTRIES = ["United States", "Canada", "United Kingdom", "Australia", "Bangladesh", "India", "Germany", "France"];
+// Removed old COUNTRIES array, now using CountrySelect
 
 const PAYMENT_METHODS = [
   { id: "card", label: "Credit / debit card", desc: "Visa · Mastercard · Amex" },
@@ -64,13 +68,16 @@ export default function CheckoutClient({
     city: "",
     region: "",
     postal: "",
-    country: "United States",
+    country: "US", // Default to US code
   });
 
   const setField =
     (k: keyof ShippingForm) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  // Special setter for country to ensure only ISO code is set
+  const setCountry = (code: string) => setForm(f => ({ ...f, country: code }));
 
   const shipping = subtotal > 0 && subtotal < 200 ? 9.99 : 0;
   const tax = +(subtotal * 0.07).toFixed(2);
@@ -83,7 +90,7 @@ export default function CheckoutClient({
       city: f.city || "New York",
       region: f.region || "NY",
       postal: f.postal || "10010",
-      country: f.country || "United States",
+      country: f.country || "US", // Always use ISO code
     }));
 
   const validate = (): string | null => {
@@ -160,6 +167,28 @@ export default function CheckoutClient({
         checkoutRes?.data?.id ??
         `NX-${Date.now().toString(36).toUpperCase()}`;
 
+      // Notify sellers for each product in the order
+      try {
+        // Get all sellers
+        const users = await getUsers({ role: "SELLER" });
+        for (const it of items) {
+          // Try to get product info to find seller
+          const prod = await getProductBySlug(it.slug || it.id);
+          if (prod && prod.sellerId) {
+            const seller = users.find((u) => u.id === prod.sellerId);
+            if (seller) {
+              await createNotification({
+                type: "ORDER_PLACED",
+                message: `You have a new order for your product: ${prod.name}`,
+                userId: seller.id,
+                data: { productId: prod.id, orderNumber: ordernum },
+              });
+            }
+          }
+        }
+      } catch (e) {
+        // Notification failure should not block checkout
+      }
       clear();
       setDone({ orderNumber: String(ordernum) });
       toast.success("Order placed — thank you!");
@@ -301,14 +330,7 @@ export default function CheckoutClient({
                 onChange={setField("phone")}
                 autoComplete="tel"
               />
-              <Field
-                label="Country"
-                as="select"
-                value={form.country}
-                onChange={setField("country")}
-                options={COUNTRIES}
-                autoComplete="country-name"
-              />
+              <CountrySelect value={form.country} onChange={setCountry} />
               <Field
                 className="sm:col-span-2"
                 label="Street address"

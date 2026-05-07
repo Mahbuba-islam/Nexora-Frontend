@@ -65,8 +65,74 @@ export default function ShopClient({ searchParams }: { searchParams: SearchParam
     queryFn: () => getProducts(query),
     staleTime: 1000 * 30,
   });
-  // ...rest of the UI rendering logic...
+  // Responsive shop UI rendering
+  const products = productsRes.data || [];
+  const meta = productsRes.meta || {};
+  const totalPages = meta.totalPages || 1;
+  const currentPage = meta.page || page;
+
+  // Placeholder: fetch categories/brands for filters if needed
+  // const categories = ...
+  // const brands = ...
+
   return (
-    <div>/* TODO: Render shop UI here using productsRes, isLoading, etc. */</div>
+    <section className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8 py-6 min-h-[60vh]">
+      {/* Filters row (optional, can be improved) */}
+      {/* <ShopFilters categoryTree={categories} brands={brands} current={sp} /> */}
+
+      {/* Loading state */}
+      {isLoading ? (
+        <div className="flex justify-center items-center py-20">
+          <span className="text-muted-foreground text-lg">Loading products...</span>
+        </div>
+      ) : products.length === 0 ? (
+        <div className="flex flex-col items-center py-20">
+          <span className="text-muted-foreground text-lg mb-2">No products found.</span>
+          <Link href="/shop" className="text-primary underline">Reset filters</Link>
+        </div>
+      ) : (
+        <>
+          {/* Product grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product: any) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          {/* Pagination controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-10 gap-2">
+              <button
+                className="px-3 py-1 rounded bg-muted text-foreground disabled:opacity-50"
+                onClick={() => {
+                  if (currentPage > 1) {
+                    const params = new URLSearchParams({ ...sp, page: String(currentPage - 1) });
+                    window.location.search = params.toString();
+                  }
+                }}
+                disabled={currentPage <= 1}
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1 text-muted-foreground">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className="px-3 py-1 rounded bg-muted text-foreground disabled:opacity-50"
+                onClick={() => {
+                  if (currentPage < totalPages) {
+                    const params = new URLSearchParams({ ...sp, page: String(currentPage + 1) });
+                    window.location.search = params.toString();
+                  }
+                }}
+                disabled={currentPage >= totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </section>
   );
 }

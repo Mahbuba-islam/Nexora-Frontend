@@ -2,12 +2,16 @@
 // Backend exposes: /admin/products, /admin/users, /sellers/admin/*, /stats/*.
 import { httpClient } from "@/src/lib/axious/httpClient";
 import type { ApiResponse, paginationMeta } from "@/src/types/api.types";
+import { ReactNode } from "react";
 
 // -----------------------------------------------------------------
 // Shared shapes (backend-aligned, kept loose for forward-compat)
 // -----------------------------------------------------------------
 
 export interface AdminProduct {
+  location: ReactNode;
+  rating: import("react/jsx-runtime").JSX.Element;
+  description: import("react/jsx-runtime").JSX.Element;
   id: string;
   name: string;
   slug: string;

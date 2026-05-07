@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Filter, Package, Plus, Search } from "lucide-react";
+import { ArrowUpRight, Filter, Package, Plus, Search, X } from "lucide-react";
 
 import { getAdminProducts } from "@/src/services/admin.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
@@ -80,20 +80,33 @@ export default async function AdminProductsPage({
       </div>
 
       <form method="get" className="nx-card flex flex-wrap items-end gap-3 p-4">
-        <label className="flex-1 min-w-50">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Search
-          </span>
-          <div className="mt-1.5 flex h-10 items-center gap-2 rounded-full border border-border bg-background px-3">
-            <Search className="h-4 w-4 text-foreground/50" />
-            <input
-              name="search"
-              defaultValue={sp.search ?? ""}
-              placeholder="Name, SKU, brand…"
-              className="flex-1 bg-transparent text-sm focus:outline-none"
-            />
-          </div>
-        </label>
+     <label className="flex-1 min-w-50">
+  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+    Search
+  </span>
+
+  <div className="mt-1.5 flex h-10 items-center gap-2 rounded-full border border-border bg-background px-3">
+    <Search className="h-4 w-4 text-foreground/50" />
+
+    <input
+      name="search"
+      defaultValue={sp.search ?? ""}
+      placeholder="Name, SKU, brand…"
+      className="flex-1 bg-transparent text-sm focus:outline-none"
+    />
+
+    {/* ❌ CLEAR BUTTON (X) */}
+    {sp.search && (
+      <Link
+        href="?page=1"
+        className="flex h-6 w-6 items-center justify-center rounded-full hover:bg-secondary transition"
+        title="Clear search"
+      >
+        <X className="h-4 w-4 text-foreground/60" />
+      </Link>
+    )}
+  </div>
+</label>
         <label className="min-w-40">
           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Status
@@ -268,9 +281,9 @@ export default async function AdminProductsPage({
                         {p.createdAt && (
                           <span>• {new Date(p.createdAt).toLocaleDateString()}</span>
                         )}
-                        {p.rating && (
-                          <span>• ⭐ {p.rating.toFixed(1)}</span>
-                        )}
+                        {typeof p.rating === 'number' && !isNaN(Number(p.rating)) ? (
+                          <span>• ⭐ {Number(p.rating).toFixed(1)}</span>
+                        ) : null}
                         {p.location && (
                           <span>• {p.location}</span>
                         )}
