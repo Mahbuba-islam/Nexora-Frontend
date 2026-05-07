@@ -1,3 +1,30 @@
+// Payload for creating a product
+export interface NxProductCreatePayload {
+  name: string;
+  description?: string;
+  price: number | string;
+  categoryId?: string;
+  brandId?: string;
+  images?: { url: string; alt?: string }[];
+  stock?: number;
+  status?: "ACTIVE" | "DRAFT";
+  isNewArrival?: boolean;
+}
+
+// Create product API call
+export const createProduct = async (
+  payload: NxProductCreatePayload,
+): Promise<NxProduct | null> => {
+  try {
+    const res = await httpClient.post<NxProduct>("/products", payload, {
+      withCredentials: true,
+    });
+    return res?.data ?? null;
+  } catch (err) {
+    console.warn("[nexora] createProduct failed:", (err as Error)?.message);
+    return null;
+  }
+};
 import type { ApiResponse } from "@/src/types/api.types";
 import type {
   NxBrand,

@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { httpClient } from "@/src/lib/axious/httpClient";
+import { createProduct } from "@/src/services/nexora.service";
 import { formatUSD } from "@/components/modules/Nexora/data";
 
 /* ---------------- TYPES ---------------- */
@@ -145,6 +145,23 @@ export default function SellerProductsClient() {
     price: "",
     image: "",
   });
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
+  // Handle image file selection and preview
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    // For demo: use local preview. Replace with upload logic if backend ready.
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+      update("image", reader.result as string);
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
+    // If you have an upload API, upload here and set image URL to form.image
+  };
 
   /* -------- HYDRATION -------- */
 
@@ -220,27 +237,43 @@ export default function SellerProductsClient() {
     setSaving(true);
 
     try {
-      const newItem: ProductDraft = {
-        id: `local-${Date.now()}`,
-        title: form.title,
-        description: form.description,
-        category: form.category,
+      // Map category to categoryId if needed (requires category list from backend)
+      // For now, send category as string in description for demo
+      const payload = {
+        name: form.title,
+        description: form.description + (form.category ? `\nCategory: ${form.category}` : ""),
         price: Number(form.price),
-        image: form.image || FALLBACK_IMAGE,
-        status: "LIVE",
+        images: form.image ? [{ url: form.image }] : [{ url: FALLBACK_IMAGE }],
+        status: "ACTIVE" as const,
+        isNewArrival: true,
+        stock: 10,
       };
-
-      setDrafts((prev) => [newItem, ...prev]);
-
-      setForm({
-        title: "",
-        description: "",
-        category: "Phones",
-        price: "",
-        image: "",
-      });
-
-      toast.success("Product published");
+      const created = await createProduct(payload);
+      if (created) {
+        setDrafts((prev) => [
+          {
+            id: created.id,
+            title: created.name,
+            description: created.description || "",
+            category: form.category,
+            price: Number(created.price),
+            image: created.images?.[0]?.url || FALLBACK_IMAGE,
+            status: created.status === "ACTIVE" ? "LIVE" : "DRAFT",
+          },
+          ...prev,
+        ]);
+        setForm({
+          title: "",
+          description: "",
+          category: "Phones",
+          price: "",
+          image: "",
+        });
+        setImagePreview("");
+        toast.success("Product published and sent to public catalog");
+      } else {
+        toast.error("Failed to create product. Please try again.");
+      }
     } finally {
       setSaving(false);
     }
@@ -314,7 +347,30 @@ export default function SellerProductsClient() {
           />
         </div>
 
-        <Button onClick={submit} disabled={saving}>
+        {/* Image upload */}
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="product-image" className="font-medium flex items-center gap-2">
+            <ImagePlus className="h-4 w-4" />
+            Product Image
+          </Label>
+          <Input
+            id="product-image"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            disabled={uploading}
+          />
+          {uploading && <span className="text-xs text-muted-foreground">Uploading...</span>}
+          {(imagePreview || form.image) && (
+            <img
+              src={imagePreview || form.image}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded border mt-2"
+            />
+          )}
+        </div>
+
+        <Button onClick={submit} disabled={saving || uploading}>
           {saving ? <Loader2 className="animate-spin" /> : <Save />}
           Publish
         </Button>

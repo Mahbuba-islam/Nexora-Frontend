@@ -1,6 +1,7 @@
 // Nexora — seller (storefront) service.
 // Apply-as-seller and self-service shop endpoints.
 import { httpClient } from "@/src/lib/axious/httpClient";
+import { createNotification } from "@/src/services/notification.service";
 
 export interface ApplyAsSellerPayload {
   shopName: string;
@@ -50,6 +51,17 @@ export async function applyAsSeller(
       silent: true,
     });
     const body = res?.data;
+    // Notify admin(s) when a new seller applies
+    try {
+      await createNotification({
+        type: "NEW_SELLER_APPLICATION",
+        message: `New seller application: ${payload.shopName} (${payload.contactEmail})`,
+        // Optionally, set userId to admin or leave undefined for broadcast
+        data: { shopName: payload.shopName, contactEmail: payload.contactEmail },
+      });
+    } catch (e) {
+      // Notification failure should not block seller creation
+    }
     return {
       success: true,
       message: body?.message ?? "Application submitted",
